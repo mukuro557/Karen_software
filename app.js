@@ -30,6 +30,10 @@ app.get("/loginpage", function (req, res) {
     res.sendFile(path.join(__dirname, "/login_page.html"))
 });
 
+app.put("/item/lost/edit", function (req, res) {
+    
+});
+
 // ========== Starting server ============
 const PORT = 35000
 app.listen(PORT, function () {
