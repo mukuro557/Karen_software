@@ -1,0 +1,8 @@
+node_modules/
+server.rest
+public/
+uploads/
+_DS_Store
+README.md
+package.json
+package-lock.json
