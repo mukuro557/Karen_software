@@ -31,7 +31,23 @@ app.get("/loginpage", function (req, res) {
 });
 
 app.put("/item/lost/edit", function (req, res) {
-    
+    const Email_user = req.body.Email_user;
+    const Status = req.body.Status;
+
+
+    const sql = "update item set Email committee = ?,Status = ? where Inventory_Number = ? and Year = ?";
+
+    con.query(sql, [Email_user, Status,inventory,year ], function () {
+        if (err) {
+            console.error(err.message);
+            res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+            return;
+        }
+
+        else {
+          
+        }
+    });
 });
 
 // ========== Starting server ============
