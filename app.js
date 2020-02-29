@@ -22,12 +22,67 @@ app.use(body_parser.json());
 
 //Root Page (landing page 1)
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "/landing_page1.html"))
+    res.sendFile(path.join(__dirname, "/landing1.html"))
 });
 
-//Login Page
-app.get("/loginpage", function (req, res) {
-    res.sendFile(path.join(__dirname, "/login_page.html"))
+//Return login page
+app.get("/page/login", function (req, res) {
+    res.sendFile(path.join(__dirname, "/login.html"))
+});
+
+//Return manage user page
+app.get("/page/manageUser", function (req, res) {
+    res.sendFile(path.join(__dirname, "/manageUser.html"))
+});
+
+//Return home page
+app.get("/page/home", function (req, res) {
+    res.sendFile(path.join(__dirname, "/home.html"))
+});
+
+//Return profile page
+app.get("/page/profile", function (req, res) {
+    res.sendFile(path.join(__dirname, "/profile.html"))
+});
+
+//Return dashboard page
+app.get("/page/dashboard", function (req, res) {
+    res.sendFile(path.join(__dirname, "/dashboard.html"))
+});
+
+//Return lost item page
+app.get("/page/lostItem", function (req, res) {
+    res.sendFile(path.join(__dirname, "/lostItem.htm"))
+});
+
+//Return date time page
+app.get("/page/dateTime", function (req, res) {
+    res.sendFile(path.join(__dirname, "/dateTime.html"))
+});
+
+//Return date manage page
+app.get("/page/dateManage", function (req, res) {
+    res.sendFile(path.join(__dirname, "/dateManage.html"))
+});
+
+//Return date landing2 page
+app.get("/page/landing2", function (req, res) {
+    res.sendFile(path.join(__dirname, "/landing2.html"))
+});
+
+//Return single item page
+app.get("/page/singleItem", function (req, res) {
+    res.sendFile(path.join(__dirname, "/singleItem.html"))
+});
+
+//Return index page
+app.get("/page/mainpageAdmin", function (req, res) {
+    res.sendFile(path.join(__dirname, "/index.html"))
+});
+
+//Return data table page
+app.get("/page/maindataTable", function (req, res) {
+    res.sendFile(path.join(__dirname, "/mainDataTable.html"))
 });
 
 app.put("/item/lost/edit", function (req, res) {
@@ -37,7 +92,7 @@ app.put("/item/lost/edit", function (req, res) {
 
     const sql = "update item set Email committee = ?,Status = ? where Inventory_Number = ? and Year = ?";
 
-    con.query(sql, [Email_user, Status,inventory,year ], function () {
+    con.query(sql, [Email_user, Status, inventory, year], function () {
         if (err) {
             console.error(err.message);
             res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
@@ -45,7 +100,7 @@ app.put("/item/lost/edit", function (req, res) {
         }
 
         else {
-          
+
         }
     });
 });
