@@ -223,7 +223,83 @@ app.get("/item/dashboard/number/status/normal", function (req, res) {
     })
 });
 
+// Load lost item info
+app.get("/item/lost", function (req, res) {
+    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item"
 
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
+
+// Load some info of item of landing1
+app.get("/item/landing1/showSomeInfo", function (req, res) {
+    const sql = "select Inventory_Number,Asset_description,Received_date,Department,Image from item"
+
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
+
+// Load all info of item of landing1
+app.get("/item/landing1/showAllInfo", function (req, res) {
+    const sql = "select Inventory_Number,Status,Model,Location,Original_value,Email_user,Cost_center,Serial,Date_Upload,Asset_description,Received_date,Department,Image from item"
+
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
+
+// Load some info of item of landing2
+app.get("/item/landing2/showSomeInfo", function (req, res) {
+    const sql = "select Inventory_Number,Status,Model,Cost_center,Received_date,Department,Image from item"
+
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
+
+// Load date and time of job
+app.get("/dateTime/showDateTime", function (req, res) {
+    const sql = "select Date_start,Date_end from date_check"
+
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
+
+// Load info of main datatable page
+app.get("/maindataTable/info", function (req, res) {
+    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_user,Status from item"
+
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
 
 // ================ EXAMPLE Draft of the API =================
 app.put("/item/lost/edit", function (req, res) {
