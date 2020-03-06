@@ -88,11 +88,11 @@ app.get("/page/maindataTable", function (req, res) {
 //================== Services (functions) ===================
 
 // Load inspected item number by the user with lost status
-app.get("/user/profile/inspectedItem/status/lost/:Email_Importer", function (req, res) {
-    const Email_Importer = req.params.Email_Importer;
-    const sql = "SELECT count(status) FROM item WHERE status=0 AND Email_Importer=?;"
+app.get("/user/profile/inspectedItem/status/lost/:Email_Committee", function (req, res) {
+    const Email_Committee = req.params.Email_Committee;
+    const sql = "SELECT count(status) FROM item WHERE status=0 AND Email_Committee=?;"
 
-    con.query(sql, [Email_Importer], function (err, result, fields) {
+    con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -102,11 +102,11 @@ app.get("/user/profile/inspectedItem/status/lost/:Email_Importer", function (req
 });
 
 // Load inspected item number by the user with repair status
-app.get("/user/profile/inspectedItem/status/repair/:Email_Importer", function (req, res) {
-    const Email_Importer = req.params.Email_Importer;
-    const sql = "SELECT count(status) FROM item WHERE status=2 AND Email_Importer=?;"
+app.get("/user/profile/inspectedItem/status/repair/:Email_Committee", function (req, res) {
+    const Email_Committee = req.params.Email_Committee;
+    const sql = "SELECT count(status) FROM item WHERE status=2 AND Email_Committee=?;"
 
-    con.query(sql, [Email_Importer], function (err, result, fields) {
+    con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -116,11 +116,11 @@ app.get("/user/profile/inspectedItem/status/repair/:Email_Importer", function (r
 });
 
 // Load inspected item number by the user with normal status
-app.get("/user/profile/inspectedItem/status/normal/:Email_Importer", function (req, res) {
-    const Email_Importer = req.params.Email_Importer;
-    const sql = "SELECT count(status) FROM item WHERE status=1 AND Email_Importer=?;"
+app.get("/user/profile/inspectedItem/status/normal/:Email_Committee", function (req, res) {
+    const Email_Committee = req.params.Email_Committee;
+    const sql = "SELECT count(status) FROM item WHERE status=1 AND Email_Committee=?;"
 
-    con.query(sql, [Email_Importer], function (err, result, fields) {
+    con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -130,11 +130,11 @@ app.get("/user/profile/inspectedItem/status/normal/:Email_Importer", function (r
 });
 
 // Load inspected item number by the user
-app.get("/user/profile/inspectedItem/number/:Email_Importer", function (req, res) {
-    const Email_Importer = req.params.Email_Importer;
-    const sql = "SELECT count(Email_Importer) FROM `item` WHERE Email_Importer=?;"
+app.get("/user/profile/inspectedItem/number/:Email_Committee", function (req, res) {
+    const Email_Committee = req.params.Email_Committee;
+    const sql = "SELECT count(Email_Committee) FROM `item` WHERE Email_Committee=?;"
 
-    con.query(sql, [Email_Importer], function (err, result, fields) {
+    con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -158,11 +158,11 @@ app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
 });
 
 // Load inspected item by the user
-app.get("/user/profile/inspectedItem/info/:Email_user", function (req, res) {
-    const Email_user = req.params.Email_user;
-    const sql = "select IMAGE,Inventory_Number,Asset_Description,Model,Date_Scan,Cost_center,Location,Status from item where Email_Importer=?;"
+app.get("/user/profile/inspectedItem/info/:Email_Committee", function (req, res) {
+    const Email_Committee = req.params.Email_Committee;
+    const sql = "select IMAGE,Inventory_Number,Asset_Description,Model,Date_Scan,Cost_center,Location,Status from item where Email_Committee=?;"
 
-    con.query(sql, [Email_user], function (err, result, fields) {
+    con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -173,7 +173,7 @@ app.get("/user/profile/inspectedItem/info/:Email_user", function (req, res) {
 
 // Load all item info
 app.get("/item/dashboard/showAllInfo", function (req, res) {
-    const sql = "select IMAGE,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Importer,Status from item"
+    const sql = "select IMAGE,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -251,7 +251,7 @@ app.get("/item/landing1/showSomeInfo", function (req, res) {
 
 // Load all info of item of landing1
 app.get("/item/landing1/showAllInfo", function (req, res) {
-    const sql = "select Inventory_Number,Status,Model,Location,Original_value,Email_user,Cost_center,Serial,Date_Upload,Asset_description,Received_date,Department,Image from item"
+    const sql = "select Inventory_Number,Status,Model,Location,Original_value,Email_Committee,Cost_center,Serial,Date_Upload,Asset_description,Received_date,Department,Image from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -290,7 +290,7 @@ app.get("/dateTime/showDateTime", function (req, res) {
 
 // Load info of main datatable page
 app.get("/maindataTable/info", function (req, res) {
-    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_user,Status from item"
+    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
