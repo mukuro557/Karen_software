@@ -33,6 +33,10 @@ content-type: application/json
 GET  http://localhost:35000/item/landing2/showSomeInfo
 content-type: application/json
 
+### Load item number all in database
+GET  http://localhost:35000/item/numberAll
+content-type: application/json
+
 ### Load item number
 GET  http://localhost:35000/item/dashboard/number/2
 content-type: application/json
@@ -41,11 +45,11 @@ content-type: application/json
 GET  http://localhost:35000/item/dashboard/showAllInfo
 content-type: application/json
 
-### Load inspected item numbers
+### Load inspected item total numbers by a user
 GET  http://localhost:35000/user/profile/inspectedItem/Total/Number/tanapun@gmail.com
 content-type: application/json
 
-### Load inspected item numbers
+### Load inspected item numbers of status by user
 GET  http://localhost:35000/user/profile/inspectedItem/0/tanapun@gmail.com
 content-type: application/json
 

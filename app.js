@@ -5,6 +5,8 @@ const body_parser = require("body-parser");
 const multer = require("multer");
 const mysql = require("mysql");
 const config = require("./dbConfig.js");
+const authRoutes = require("./routes/auth-routes");
+const passportSetup = require("./config/passport-setup");
 
 //=========Put to use==========
 const app = express();
@@ -15,6 +17,7 @@ app.use("/style.css", express.static(path.join(__dirname, 'style.css')));
 //<=========== Middleware ==========>
 app.use(body_parser.urlencoded({ extended: true })); //when you post service
 app.use(body_parser.json());
+app.use("/auth" , authRoutes);
 // =========== Services ===========
 
 
@@ -22,7 +25,8 @@ app.use(body_parser.json());
 
 //Root Page (landing page 1)
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "/landing1.html"))
+    // res.sendFile(path.join(__dirname, "/landing1.html"))
+    res.render("home.ejs");
 });
 
 //Return login page
@@ -102,7 +106,7 @@ app.put("/item/addImage",function (req, res){
     })
 });
 
-// Load inspected item numbers
+// Load inspected total item numbers by a user
 app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
     const sql = "SELECT count(status) AS 'Numbers of Inspected Item' FROM item WHERE Email_Committee=?;"
@@ -116,7 +120,7 @@ app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (r
     })
 });
 
-// Load inspected item numbers
+// Load inspected item numbers of status by user
 app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
     const Status = req.params.Status;
@@ -229,6 +233,18 @@ app.get("/item/landing1/showAllInfo", function (req, res) {
 app.get("/item/landing2/showSomeInfo", function (req, res) {
     const sql = "select Inventory_Number,Status,Model,Cost_center,Received_date,Department,Image from item"
 
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
+
+// Load item number all in database
+app.get("/item/numberAll", function (req, res) {
+    const sql = "SELECT count(status) AS 'Numbers of Inspected Item' FROM item"
     con.query(sql, function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
