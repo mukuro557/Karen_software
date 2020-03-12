@@ -6,11 +6,15 @@ content-type: application/json
 GET  http://localhost:35000/item/landing1/showAllInfo
 content-type: application/json
 
+### Load some info of item of landing1
+GET  http://localhost:35000/item/landing1/showSomeInfo
+content-type: application/json
+
 ### Load some info of item of landing2
 GET  http://localhost:35000/item/landing2/showSomeInfo
 content-type: application/json
 
-### Load item number with normal status
+### Load item number with normal status เพิ่มคำสั่ง As
 GET  http://localhost:35000/item/dashboard/number/status/normal
 content-type: application/json
 
