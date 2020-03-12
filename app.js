@@ -87,6 +87,21 @@ app.get("/page/maindataTable", function (req, res) {
 
 //================== Services (functions) ===================
 
+// Add image to an item
+app.put("/item/addImage",function (req, res){
+    const image = req.body.image;
+    const Inventory_Number = req.body.Inventory_Number;
+    const sql = "UPDATE item SET image=? where Inventory_Number=?;"
+    con.query(sql,[image,Inventory_Number],function(err,result,fields){
+        if(err){
+            res.status(503).send("Server error");
+        }
+        else{
+            res.send("Edited success");
+        }
+    })
+});
+
 // Load inspected item numbers
 app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
