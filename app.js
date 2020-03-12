@@ -87,10 +87,10 @@ app.get("/page/maindataTable", function (req, res) {
 
 //================== Services (functions) ===================
 
-// Load inspected item number by the user with lost status
-app.get("/user/profile/inspectedItem/status/lost/:Email_Committee", function (req, res) {
+// Load inspected item numbers
+app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
-    const sql = "SELECT count(status) FROM item WHERE status=0 AND Email_Committee=?;"
+    const sql = "SELECT count(status) AS 'Numbers of Inspected Item' FROM item WHERE Email_Committee=?;"
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
@@ -101,40 +101,13 @@ app.get("/user/profile/inspectedItem/status/lost/:Email_Committee", function (re
     })
 });
 
-// Load inspected item number by the user with repair status
-app.get("/user/profile/inspectedItem/status/repair/:Email_Committee", function (req, res) {
+// Load inspected item numbers
+app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
-    const sql = "SELECT count(status) FROM item WHERE status=2 AND Email_Committee=?;"
+    const Status = req.params.Status;
+    const sql = "SELECT count(status) AS 'Numbers of Inspected Item' FROM item WHERE Status=? AND Email_Committee=?;"
 
-    con.query(sql, [Email_Committee], function (err, result, fields) {
-        if (err) {
-            res.status(503).send("DB error");
-        } else {
-            res.json(result).send()
-        }
-    })
-});
-
-// Load inspected item number by the user with normal status
-app.get("/user/profile/inspectedItem/status/normal/:Email_Committee", function (req, res) {
-    const Email_Committee = req.params.Email_Committee;
-    const sql = "SELECT count(status) FROM item WHERE status=1 AND Email_Committee=?;"
-
-    con.query(sql, [Email_Committee], function (err, result, fields) {
-        if (err) {
-            res.status(503).send("DB error");
-        } else {
-            res.json(result).send()
-        }
-    })
-});
-
-// Load inspected item number by the user
-app.get("/user/profile/inspectedItem/number/:Email_Committee", function (req, res) {
-    const Email_Committee = req.params.Email_Committee;
-    const sql = "SELECT count(Email_Committee) FROM `item` WHERE Email_Committee=?;"
-
-    con.query(sql, [Email_Committee], function (err, result, fields) {
+    con.query(sql, [Status,Email_Committee], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -158,7 +131,7 @@ app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
 });
 
 // Load inspected item by the user
-app.get("/user/profile/inspectedItem/info/:Email_Committee", function (req, res) {
+app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
     const sql = "select IMAGE,Inventory_Number,Asset_Description,Model,Date_Scan,Cost_center,Location,Status from item where Email_Committee=?;"
 
@@ -184,11 +157,11 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
     })
 });
 
-// Load item number with lost status
-app.get("/item/dashboard/number/status/lost", function (req, res) {
-    const sql = "SELECT count(status) FROM item WHERE status=0;"
-
-    con.query(sql,  function (err, result, fields) {
+// Load item numbers
+app.get("/item/dashboard/number/:status", function (req, res) {
+    const sql = "SELECT count(status) AS 'Numbers of item' FROM item WHERE status=?;"
+    const status = req.params.status;
+    con.query(sql,[status] , function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -197,37 +170,12 @@ app.get("/item/dashboard/number/status/lost", function (req, res) {
     })
 });
 
-// Load item number with repair status
-app.get("/item/dashboard/number/status/repair", function (req, res) {
-    const sql = "SELECT count(status) FROM item WHERE status=2;"
-
-    con.query(sql,  function (err, result, fields) {
-        if (err) {
-            res.status(503).send("DB error");
-        } else {
-            res.json(result).send()
-        }
-    })
-});
-
-// Load item number with normal status
-app.get("/item/dashboard/number/status/normal", function (req, res) {
-    const sql = "SELECT count(status) FROM item WHERE status=1;"
-
-    con.query(sql,  function (err, result, fields) {
-        if (err) {
-            res.status(503).send("DB error");
-        } else {
-            res.json(result).send()
-        }
-    })
-});
-
-// Load lost item info
-app.get("/item/lost", function (req, res) {
-    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item"
-
-    con.query(sql, function (err, result, fields) {
+// Load item info
+app.get("/item/:status/:year", function (req, res) {
+    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where status=? AND year =?"
+    const year = req.params.year;
+    const status = req.params.status;
+    con.query(sql,[status,year] , function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -301,25 +249,20 @@ app.get("/maindataTable/info", function (req, res) {
     })
 });
 
-// ================ EXAMPLE Draft of the API =================
-app.put("/item/lost/edit", function (req, res) {
-    const Email_user = req.body.Email_user;
+// Edit status of item
+app.put("/item/edit",function (req, res){
     const Status = req.body.Status;
-
-
-    const sql = "update item set Email committee = ?,Status = ? where Inventory_Number = ? and Year = ?";
-
-    con.query(sql, [Email_user, Status, inventory, year], function () {
-        if (err) {
-            console.error(err.message);
-            res.status(500).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
-            return;
+    const Inventory_Number = req.body.Inventory_Number;
+    const Email_user = req.body.Email_user;
+    const sql = "UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?;;"
+    con.query(sql,[Status,Inventory_Number,Email_user],function(err,result,fields){
+        if(err){
+            res.status(503).send("Server error");
         }
-
-        else {
-
+        else{
+            res.send("Edited success");
         }
-    });
+    })
 });
 
 // ========== Starting server ============

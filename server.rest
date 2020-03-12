@@ -1,53 +1,47 @@
-### Load lost item info
-GET  http://localhost:35000/item/lost
+### Load item info
+GET  http://localhost:35000/item/0/2020
+content-type: application/json
+
+### Edit status of item
+PUT  http://localhost:35000/item/edit
+content-type: application/json
+
+{
+    "Status": "7",
+    "Inventory_Number": "55559",
+    "Email_user": "tanapun@gmail.com"
+}
+
+### Load some info of item of landing1
+GET  http://localhost:35000/item/landing1/showSomeInfo
 content-type: application/json
 
 ### Load all info of item of landing1
 GET  http://localhost:35000/item/landing1/showAllInfo
 content-type: application/json
 
-### Load some info of item of landing1
-GET  http://localhost:35000/item/landing1/showSomeInfo
-content-type: application/json
-
 ### Load some info of item of landing2
 GET  http://localhost:35000/item/landing2/showSomeInfo
 content-type: application/json
 
-### Load item number with normal status เพิ่มคำสั่ง As
-GET  http://localhost:35000/item/dashboard/number/status/normal
-content-type: application/json
-
-### Load item number with repair status
-GET  http://localhost:35000/item/dashboard/number/status/repair
-content-type: application/json
-
-### Load item number with lost status
-GET  http://localhost:35000/item/dashboard/number/status/lost
+### Load item number
+GET  http://localhost:35000/item/dashboard/number/2
 content-type: application/json
 
 ### Load all item info
 GET  http://localhost:35000/item/dashboard/showAllInfo
 content-type: application/json
 
-### Load inspected item number by the user
-GET  http://localhost:35000/user/profile/inspectedItem/number/tanapun@gmail.com
+### Load inspected item numbers
+GET  http://localhost:35000/user/profile/inspectedItem/Total/Number/tanapun@gmail.com
 content-type: application/json
 
-### Load inspected item number by the user with normal status
-GET  http://localhost:35000/user/profile/inspectedItem/status/normal/tanapun@gmail.com
-content-type: application/json
-
-### Load inspected item number by the user with repair status
-GET  http://localhost:35000/user/profile/inspectedItem/status/repair/tanapun@gmail.com
-content-type: application/json
-
-### Load inspected item number by the user with lost status
-GET  http://localhost:35000/user/profile/inspectedItem/status/lost/tanapun@gmail.com
+### Load inspected item numbers
+GET  http://localhost:35000/user/profile/inspectedItem/0/tanapun@gmail.com
 content-type: application/json
 
 ### Load inspected item by the user
-GET  http://localhost:35000/user/profile/inspectedItem/info/tanapun@gmail.com
+GET  http://localhost:35000/user/profile/inspectedInfoItem/tanapun@gmail.com
 content-type: application/json
 
 ### Load email of user
