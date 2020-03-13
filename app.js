@@ -204,7 +204,7 @@ app.get("/item/:status/:year", function (req, res) {
 });
 
 // Load some info of item of landing1
-app.get("/item/landing1/showSomeInfo", function (req, res) {
+app.get("/landing1/showSomeInfo", function (req, res) {
     const sql = "select Inventory_Number,Asset_description,Received_date,Department,Image from item"
 
     con.query(sql, function (err, result, fields) {
@@ -217,7 +217,7 @@ app.get("/item/landing1/showSomeInfo", function (req, res) {
 });
 
 // Load all info of item of landing1
-app.get("/item/landing1/showAllInfo", function (req, res) {
+app.get("/landing1/showAllInfo", function (req, res) {
     const sql = "select Inventory_Number,Status,Model,Location,Original_value,Email_Committee,Cost_center,Serial,Date_Upload,Asset_description,Received_date,Department,Image from item"
 
     con.query(sql, function (err, result, fields) {
@@ -230,7 +230,7 @@ app.get("/item/landing1/showAllInfo", function (req, res) {
 });
 
 // Load some info of item of landing2
-app.get("/item/landing2/showSomeInfo", function (req, res) {
+app.get("/landing2/showSomeInfo", function (req, res) {
     const sql = "select Inventory_Number,Status,Model,Cost_center,Received_date,Department,Image from item"
 
     con.query(sql, function (err, result, fields) {

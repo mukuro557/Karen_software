@@ -22,15 +22,15 @@ content-type: application/json
 }
 
 ### Load some info of item of landing1
-GET  http://localhost:35000/item/landing1/showSomeInfo
+GET  http://localhost:35000/landing1/showSomeInfo
 content-type: application/json
 
 ### Load all info of item of landing1
-GET  http://localhost:35000/item/landing1/showAllInfo
+GET  http://localhost:35000/landing1/showAllInfo
 content-type: application/json
 
 ### Load some info of item of landing2
-GET  http://localhost:35000/item/landing2/showSomeInfo
+GET  http://localhost:35000/landing2/showSomeInfo
 content-type: application/json
 
 ### Load item number all in database
