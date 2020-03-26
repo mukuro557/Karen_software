@@ -328,6 +328,42 @@ app.put("/item/edit",function (req, res){
     })
 });
 
+// Load info of all user of manage user page ไม่มั่นใจ
+app.get("/manageUser/showAllUser", function (req, res) {
+    const sql = "select Image,Name,Surname,Role,Email_User,Telephone from year_user"
+
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
+
+// Add info of new user in manage user page ไม่มั่นใจ
+app.post("/manageUser/add", function (req, res) {
+    const Email_user = req.params.Email_user;
+
+    const sql = "INSERT INTO year_user(Image,Name,Surname,Role,Email_User,Telephone) VALUES (?,?,?,?,?,?)";
+    con.query(sql, [Image,Name,Surname,Role,Email_User,Telephone], function (err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(503).send("DB Error");
+            return;
+        }
+        // get inserted rows
+        const numrows = result.affectedRows;
+        if (numrows != 1) {
+            console.error("Error");
+            res.status(500).send("Unsuccessful");
+        }
+        else {
+            res.send("Add success");
+        }
+
+    });
+});
 
 // ========== Starting server ============
 const PORT = 35000
