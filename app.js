@@ -12,8 +12,10 @@ const passport = require("passport");
 const cookieSession = require("cookie-session");
 const key = require("./config/key");
 
+
 //=========Put to use==========
 const app = express();
+app.set("view engine", "ejs");
 const con = mysql.createConnection(config);
 app.use("/img", express.static(path.join(__dirname, 'img')));
 app.use("/style.css", express.static(path.join(__dirname, 'style.css')));
@@ -40,9 +42,9 @@ app.use("/profile", profileRoutes);
 // =========== Services (Page loading) ===========
 
 //Root Page (landing page 1)
-app.get("/", function (req, res) {
-    // res.sendFile(path.join(__dirname, "/landing1.html"))
-    res.render("home.ejs");
+app.get("/", (req, res) => {
+    // res.sendFile(path.join(__dirname,"views/home.html"));
+    res.render("home.ejs", {user: req.user});
 });
 
 //Return login page
