@@ -6,7 +6,11 @@ const multer = require("multer");
 const mysql = require("mysql");
 const config = require("./dbConfig.js");
 const authRoutes = require("./routes/auth-routes");
+const profileRoutes = require("./routes/profile-routes");
 const passportSetup = require("./config/passport-setup");
+const passport = require("passport");
+const cookieSession = require("cookie-session");
+const key = require("./config/key");
 
 //=========Put to use==========
 const app = express();
@@ -17,7 +21,19 @@ app.use("/style.css", express.static(path.join(__dirname, 'style.css')));
 //<=========== Middleware ==========>
 app.use(body_parser.urlencoded({ extended: true })); //when you post service
 app.use(body_parser.json());
-app.use("/auth" , authRoutes);
+//cookie
+app.use(cookieSession({
+    maxAge: 1000*60*60,
+    keys: [key.cookie.secret]
+}));
+// init passport for se/derialization
+app.use(passport.initialize());
+// session
+app.use(passport.session());
+// authen
+app.use("/auth", authRoutes);
+// profle
+app.use("/profile", profileRoutes);
 // =========== Services ===========
 
 
@@ -202,6 +218,20 @@ app.get("/item/:status/:year", function (req, res) {
         }
     })
 });
+// UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?
+// For print barcode or QR code of item
+app.get("/item/forPrintQRcode_Barcode/:year/:Email_Committee", function (req, res) {
+    const sql = "select Inventory_Number, Asset_Description, Received_date, Department, year,status, image from item where year=? and Email_Committee=?;"
+    const year = req.params.year;
+    const Email_Committee = req.params.Email_Committee;
+    con.query(sql,[year,Email_Committee] , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result).send()
+        }
+    })
+});
 
 // Load some info of item of landing1
 app.get("/landing1/showSomeInfo", function (req, res) {
@@ -285,7 +315,7 @@ app.put("/item/edit",function (req, res){
     const Status = req.body.Status;
     const Inventory_Number = req.body.Inventory_Number;
     const Email_user = req.body.Email_user;
-    const sql = "UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?;;"
+    const sql = "UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?;"
     con.query(sql,[Status,Inventory_Number,Email_user],function(err,result,fields){
         if(err){
             res.status(503).send("Server error");
@@ -295,6 +325,7 @@ app.put("/item/edit",function (req, res){
         }
     })
 });
+
 
 // ========== Starting server ============
 const PORT = 35000

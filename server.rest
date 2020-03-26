@@ -11,6 +11,10 @@ content-type: application/json
 GET  http://localhost:35000/item/0/2020
 content-type: application/json
 
+### For print barcode or QR code of item
+GET  http://localhost:35000/item/forPrintQRcode_Barcode/2020/tanapun@gmail.com
+content-type: application/json
+
 ### Edit status of item
 PUT  http://localhost:35000/item/edit
 content-type: application/json
