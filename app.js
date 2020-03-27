@@ -11,6 +11,7 @@ const passportSetup = require("./config/passport-setup");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 const key = require("./config/key");
+const xlsx = require("xlsx");
 
 
 //=========Put to use==========
@@ -19,6 +20,21 @@ app.set("view engine", "ejs");
 const con = mysql.createConnection(config);
 app.use("/img", express.static(path.join(__dirname, 'img')));
 app.use("/style.css", express.static(path.join(__dirname, 'style.css')));
+
+// read excel file (import), put excel file into work folder
+var wb = xlsx.readFile("sampleData.xlsx", {cellDates:true});
+var ws = wb.Sheets["sheet1"];
+var JSONexcel = xlsx.utils.sheet_to_json(ws);
+
+// write excel file (export)
+var exportExcel = JSONexcel.map(function(record){
+    return record;
+});
+var newWB = xlsx.utils.book_new();
+var newWS = xlsx.utils.json_to_sheet(exportExcel);
+xlsx.utils.book_append_sheet(newWB,newWS,"New Data");
+// Uncomment "xlsx.writeFile(newWB,"Exported_File.xlsx");" below to export file
+// xlsx.writeFile(newWB,"Exported_File.xlsx");
 
 //<=========== Middleware ==========>
 app.use(body_parser.urlencoded({ extended: true })); //when you post service
