@@ -395,7 +395,7 @@ app.post("/manageUser/add", function (req, res) {
 });
 
 // Insert Work Time
-app.post("/inserTime/:year/:Date_start/:Date_end", function (req, res) {
+app.post("/dateTime/insertTime/:year/:Date_start/:Date_end", function (req, res) {
     const years = req.body.years;
     const Date_start = req.body.Date_start;
     const Date_end = req.body.Date_end;
