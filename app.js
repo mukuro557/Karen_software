@@ -357,9 +357,9 @@ app.put("/item/edit",function (req, res){
     })
 });
 
-// Load info of all user of manage user page ไม่มั่นใจ
+// Load info of all user of manage user page
 app.get("/manageUser/showAllUser", function (req, res) {
-    const sql = "select Image,Name,Surname,Role,Email_User,Telephone from year_user"
+    const sql = "select year,Email_user,Email_assigner,role from year_user"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -370,12 +370,15 @@ app.get("/manageUser/showAllUser", function (req, res) {
     })
 });
 
-// Add info of new user in manage user page ไม่มั่นใจ
-app.post("/manageUser/add", function (req, res) {
+// Add info of new user in manage user page
+app.post("/manageUser/add/:year/:Email_user/:Email_assigner/:role", function (req, res) {
+    const year = req.params.year;
     const Email_user = req.params.Email_user;
+    const Email_assigner = req.params.Email_assigner;
+    const role = req.params.role;
 
-    const sql = "INSERT INTO year_user(Image,Name,Surname,Role,Email_User,Telephone) VALUES (?,?,?,?,?,?)";
-    con.query(sql, [Image,Name,Surname,Role,Email_User,Telephone], function (err, result, fields) {
+    const sql = "INSERT INTO year_user(year,Email_user,Email_assigner,role) VALUES (?,?,?,?)";
+    con.query(sql, [year,Email_user,Email_assigner,role], function (err, result, fields) {
         if (err) {
             console.error(err.message);
             res.status(503).send("DB Error");
