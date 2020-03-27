@@ -36,6 +36,19 @@ xlsx.utils.book_append_sheet(newWB,newWS,"New Data");
 // Uncomment "xlsx.writeFile(newWB,"Exported_File.xlsx");" below to export file
 // xlsx.writeFile(newWB,"Exported_File.xlsx");
 
+// var myDate = new Date("2020-01-22T")
+// var myTime = ("13:00:00")
+// console.log(myDate)
+// console.log(myTime);
+// // getDateTime
+// function getDateTime(year,month,day,hour,minute){
+//     var inputDate = ("'"+year+'-'+month+'-'+day+'T'+hour+':'+minute+':00'+"'");
+//     var convertedDate = new Date(inputDate);
+//     console.log(convertedDate);
+// };
+// // getDateTime(2020,05,5,17,30)
+
+
 //<=========== Middleware ==========>
 app.use(body_parser.urlencoded({ extended: true })); //when you post service
 app.use(body_parser.json());
@@ -379,6 +392,33 @@ app.post("/manageUser/add", function (req, res) {
         }
 
     });
+});
+
+// Insert Work Time
+app.post("/inserTime/:year/:Date_start/:Date_end", function (req, res) {
+    const years = req.body.years;
+    const Date_start = req.body.Date_start;
+    const Date_end = req.body.Date_end;
+
+    const sql = "INSERT INTO date_check(years,Date_start,Date_end) VALUES (?,?,?)";
+    con.query(sql, [years,Date_start,Date_end], function (err, result, fields) {
+        if (err) {
+            console.error(err.message);
+            res.status(503).send("DB Error");
+            return;
+        }
+        // get inserted rows
+        const numrows = result.affectedRows;
+        if (numrows != 1) {
+            console.error("Error");
+            res.status(500).send("Unsuccessful");
+        }
+        else {
+            res.send("Add success");
+        }
+
+    });
+
 });
 
 // ========== Starting server ============
