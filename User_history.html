@@ -33,6 +33,220 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>นับครุภัณฑ์</title>
+    <style>
+        .card-body span1 {
+            font-size: 30px;
+            font-weight: 200;
+            color: black;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+
+            var dataSet = [
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                },
+                {
+                    "image": "1",
+                    "inventory": "563214566555",
+                    "model": "Dgh",
+                    "serial": "578925",
+                    "location": "E3",
+                    "receipt": "16/02/2554",
+                    "value": "30000",
+                    "cost": "3214548",
+                    "descrip": "เทคโนโลยีสารสนเทศ",
+                    "vendor": "สไปค์",
+                    "upload": "20/03/50",
+                    "datescan": "20/03/2563",
+                    "scanner": "รุตาทร",
+                    "status": "ปกติ"
+                }
+
+            ];
+
+            var table = $('#myTable').DataTable({
+                responsive: true,
+                deferRender: true,
+                data: dataSet,
+                columns: [
+                    { data: "image", title: "รูปภาพ" },
+                    { data: "inventory", title: "รหัสครุภัณฑ์" },
+                    { data: "model", title: "โมเดล" },
+                    { data: "receipt", title: "วันที่ได้รับ" },
+                    { data: "descrip", title: "แผนกที่ดูแล" },
+                    { data: "upload", title: "อัพโหลด" },
+                    { data: "datescan", title: "วันที่ตรวจสอบ" },
+                    { data: "scanner", title: "ผู้ตรวจ" },
+                    { data: "status", title: "สถานะ" }
+
+                ],
+                columnDefs: [
+                    // make the last column align right, also target: "_all"
+                    { "className": "dt-center", "targets": 8 }
+                ]
+            });
+        });
+    </script>
 </head>
 
 <body>
