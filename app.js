@@ -329,10 +329,11 @@ app.get("/dateTime/showDateTime", function (req, res) {
 });
 
 // Load info of main datatable page
-app.get("/maindataTable/info", function (req, res) {
-    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item"
-
-    con.query(sql, function (err, result, fields) {
+app.get("/maindataTable/info/:year/:status", function (req, res) {
+    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where year=? and status=?"
+    const year = req.params.year;
+    const status = req.params.status;
+    con.query(sql,[year,status], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
