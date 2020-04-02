@@ -424,6 +424,8 @@ app.post("/dateTime/insertTime/:year/:Date_start/:Date_end", function (req, res)
     });
 
 });
+app.use("/img", express.static(path.join(__dirname, 'img')));
+app.use("/assets", express.static(path.join(__dirname, 'assets')));
 
 // ========== Starting server ============
 const PORT = 35000
