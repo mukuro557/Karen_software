@@ -1,8 +1,17 @@
 node_modules/
+<<<<<<< HEAD
 server.rest
+=======
+>>>>>>> appJS
 public/
 uploads/
 _DS_Store
 README.md
 package.json
+<<<<<<< HEAD
 package-lock.json
+=======
+package-lock.json
+img/
+key.js
+>>>>>>> appJS

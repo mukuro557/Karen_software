@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script type="text/javascript">
+        function processData(f1,f2){
+            var v1 = document.getElementById(f1).value;
+            var v2 = document.getElementById(f2).value;
+            alert(v1+"\n"+v2);
+        };
+    </script>
+</head>
+<body>
+    Date: <input type="date" name="field1" id="field1"><br><br>
+    Time: <input type="time" name="field2" id="field2">
+    <input type="button" value="Submit" onclick="processData('field1','field2')">
+</body>
+
+</html>
