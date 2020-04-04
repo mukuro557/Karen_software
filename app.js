@@ -162,7 +162,7 @@ app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (r
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -177,7 +177,7 @@ app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, r
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -191,7 +191,7 @@ app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -205,7 +205,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -218,7 +218,7 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -231,7 +231,7 @@ app.get("/item/dashboard/number/:status", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -245,7 +245,7 @@ app.get("/item/:status/:year", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -259,7 +259,7 @@ app.get("/item/forPrintQRcode_Barcode/:year/:Email_Committee", function (req, re
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -272,7 +272,7 @@ app.get("/landing1/showSomeInfo", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -285,7 +285,7 @@ app.get("/landing1/showAllInfo", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -298,7 +298,7 @@ app.get("/landing2/showSomeInfo", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -310,7 +310,7 @@ app.get("/item/numberAll", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -323,7 +323,7 @@ app.get("/dateTime/showDateTime", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -337,7 +337,7 @@ app.get("/maindataTable/info/:year/:status", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
@@ -366,7 +366,7 @@ app.get("/manageUser/showAllUser", function (req, res) {
         if (err) {
             res.status(503).send("DB error");
         } else {
-            res.json(result).send()
+            res.json(result)
         }
     })
 });
