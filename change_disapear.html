@@ -34,52 +34,56 @@
 
     <title>นับครุภัณฑ์</title>
     <script>
+        var table
         $(document).ready(function () {
-
             
-            var table = $('#myTable').DataTable({
-                responsive: true,       
-                deferRender: true,      
-                columns: [
-                    { data: "image", title: "รูปภาพ" },
-                    { data: "inventory", title: "รหัสกิจกรรม" },
-                    { data: "model", title: "โมเดล" },
-                    { data: "serial", title: "ซีรี่" },
-                    { data: "location", title: "สถานที่" },
-                    { data: "receipt", title: "วันที่ได้รับ" },
-                    { data: "value", title: "มูลค่า" },
-                    { data: "cost", title: "รหัสแผนก" },
-                    { data: "descrip", title: "แผนกที่ดูแล" },
-                    { data: "vendor", title: "vendor" },
-                    { data: "upload", title: "อัพโหลด" },
-                    { data: "datescan", title: "วันที่ตรวจสอบ" },
-                    { data: "scanner", title: "ผู้ตรวจ" },
-                    { data: "status", title: "สถานะ" },
+            table = $('#myTable').DataTable({
+//                 responsive: true,       //for responsive column display
+//                 deferRender: true,      //if large data, use this option
+//                 // data: dataSet,
+                columns: [
+                    { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
+                    { data: "Model", title: "โมเดล" },
+                    { data: "Serial", title: "ซีรี่" },
+                    { data: "Location", title: "สถานที่" },
+                    { data: "Received_date", title: "วันที่ได้รับ" },
+                    { data: "Original_value", title: "มูลค่า" },
+                    { data: "Cost_center", title: "รหัสแผนก" },
+                    { data: "Department", title: "แผนกที่ดูแล" },
+                    { data: "Vendor_name", title: "vendor" },
+                    { data: "Date_Upload", title: "อัพโหลด" },
+                    { data: "Date_scan", title: "วันที่ตรวจสอบ" },
+                    { data: "Status", title: "สถานะ" },
                     { title: "แก้ไข",render: function (data, type, row, meta) {
                             let but = "<button class='btn my-1' style = 'background-color : orange;'>แก้ไข</button>"
                             return but;
                         }}
 
                 ],
-                columnDefs: [
-                    
-                    { "className": "dt-center", "targets": 13 }
-                ]
+//                 columnDefs: [
+//                     // make the last column align right, also target: "_all"
+//                     { "className": "dt-center", "targets": 13 }
+//                 ]
             });
             getItem();
         });
-function getItem(){
-    $.ajax({
-        method: "GET",
-        url: "/maindataTable/info/2020/0"
-    }).done(function(dataSet,state,xhr){
-       table.rows.add(dataSet).draw();
-    }).fail(function(xhr, state, error){
-        alert("ำพพนพ");
-    });
-}
+        function getItem() {
+            //get users from DB
+            $.ajax({
+                method: "GET",
+                url: "/maindataTable/info/2020/0"
+            }).done(function (dataSet, state, xhr) {
+            //    alert("ok");
+                table.clear();
+                //display modified JSON in DataTable
+                table.rows.add(dataSet).draw();
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+        }
 
-    </script>
+ </script>
 
 </head>
 
@@ -90,7 +94,7 @@ function getItem(){
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
                 <div class="col-sm-2 ml-4 ">
-                    <img src="itlogo.png" style="width: 100%;">
+                    <img src="img/itlogo.png" style="width: 100%;">
                 </div>
                 <div>
 
@@ -232,6 +236,7 @@ function getItem(){
     <!-- ============================================================== -->
     <!-- เสร็จ navbar -->
     <!-- ============================================================== -->
+
     <div class="dashboard-wrapper mt-5">
         <div class="dashboard-finance">
             <div class="container-fluid dashboard-content">
@@ -320,6 +325,8 @@ function getItem(){
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
                 <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
+                    
+                    
                 </table>
             </div>
             <!-- ============================================================== -->
@@ -330,13 +337,6 @@ function getItem(){
     </div>
     </div>
 
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <div class="" style="background-color: rgb(50, 50, 223); text-align: center; font-size:initial;">
-        <br><br><br>
-        <p style="color: rgb(250, 250, 250);">Footer</p>
-        <br><br>
-    </div>
-    <!-- เสร็จ footer -->
-    <!-- ============================================================== -->
+
+
 </body>
