@@ -101,6 +101,151 @@
     <!-- จบ navbar -->
     <!-- ============================================================== -->
     <!-- ============================================================== -->
+
+    <div class="dashboard-wrapper mt-5">
+        <div class="dashboard-finance">
+            <div class="container-fluid dashboard-content">
+                <!-- ============================================================== -->
+                <!-- หัวกระดาษ  -->
+                <!-- ============================================================== -->
+
+                <div class="page-header ml-5 mt-2">
+                    <h3 class="mb-2 ">ตารางข้อมูลครุภัณฑ์ </h3>
+                    <button class="btn" onclick="window.location.href = 'information.html';"
+                        style="background-color: #fff;">ตารางข้อมูลครุภัณฑ์ </button>
+                    <button class="btn" onclick="window.location.href = 'change_disapear.html';"
+                        style="background-color: #fff;">ตารางข้อมูลครุภัณฑ์ที่สูญหาย </button>
+                    <button class="btn" onclick="window.location.href = 'takepicture.html';"
+                        style="background-color: #fff;">ตารางข้อมูลครุภัณฑ์ที่ต้องถ่ายรูป </button>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- การ์ด  -->
+                <!-- ============================================================== -->
+                <div class="row">
+
+                    <div class="col-12">
+                        <div class="card shadow p-3 mb-5 ml-5 mr-2 bg-white rounded" style="width: 1500 px;">
+                            <div class="row mb-3 ">
+                                <div class="col-sm-5">
+                                    <img class="card-img-top mx-auto" src="Pixels.png" alt="Card image"
+                                        style="width:80%" height="70%">
+                                </div>
+                                <div class="col-sm-7 ">
+
+                                    <div class="card-body">
+                                        <div><span>
+                                                <h3>โต๊ะยาว <br>711000100142033 <br>สถานะ : ปกติ</h3>
+                                            </span></div>
+
+                                        วันที่ได้รับ : 2-20-2020 วันที่อัพโหลด : 2-20-2020<br>
+                                        คำอธิบาย : โต๊ะยาวมากๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆ <br>
+                                        ยาวจริงๆนะครับทุกคน <br>โมเดล : Gundum Expo ซีเรียล **** สถานที่ :E3 <br>
+                                        รหัสแผนก : 1234 แผนกที่จัดเก็บ : สำนักเทคโนโลยีสารสนเทศ <br>
+                                        ราคา : 500000 แหล่งที่มา : ร้านรับจ้างสารพัด ของคุณกิน <br> <br> <br> <br>
+                                        <div class="mb-5">
+                                            <button class="btn btn-primary ml-3"> พิมพ์ QR code</button>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- เสร็จการ์ด  -->
+                <!-- ============================================================== -->
+                <div class="container ml-5 " style="background-color: white;">
+                    <br>
+                    <!-- ======================================================== -->
+                    <!-- ดรอปดาว -->
+                    <!-- ======================================================== -->
+                    <div class="input-group mb-3 ml-2">
+                        <div class="input-group-append be-addon">
+                            <button type="button" data-toggle="dropdown" class="btn dropdown-toggle"
+                                style="background-color: white;">ปีตรวจ</button>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">2559</a>
+                                <a href="#" class="dropdown-item">2560</a>
+                                <a href="#" class="dropdown-item">2561</a>
+                                <a href="#" class="dropdown-item">2562</a>
+                                <a href="#" class="dropdown-item">2563</a>
+                                <div class="dropdown-divider"></div>
+                            </div>
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <button type="button" class="btn ">ค้นหารูป</button>
+                                <button type="button" class="btn ">กรองการแสดงผล</button>
+
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        รหัสครุภัณฑ์
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        สถานที่
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                    </div>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        สถานะ
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn ">มูลค่า</button>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        ผู้ตรวจสอบ
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn ">รีเซตการกรอง</button>
+
+                            </div>
+
+                            <br> <br>
+                        </div>
+                    </div>
+                    <!-- จบดรอปดาว -->
+                    <!-- ============================================================== -->
+                    <!-- แถบ -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- ตารางข้อมูล -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
+                    </table>
+                </div>
+                <!-- ============================================================== -->
+                <!-- จบตาราง -->
+            </div>
+
+        </div>
+    </div>
+    </div>
+    <!-- ============================================================== -->
     <!-- navbar ด้านข้าง -->
     <!-- ============================================================== -->
     <div class="nav-left-sidebar sidebar-light">
@@ -115,7 +260,8 @@
                     <ul class="navbar-nav flex-column">
 
                         <li class="nav-item ">
-                            <a class="nav-link" href="mainpage.html" aria-expanded="false"><i class="fa fa-home"></i>หน้าหลัก </a>
+                            <a class="nav-link" href="mainpage.html" aria-expanded="false"><i
+                                    class="fa fa-home"></i>หน้าหลัก </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
@@ -124,17 +270,8 @@
                             </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link " href="User_history.html" aria-expanded="false"><i class="fa fa-user"></i>โปรไฟล์ </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="dashboard.html" aria-expanded="false"><i class="fa fa-dashboard"></i>แดชบอร์ด </a>
+                            <a class="nav-link " href="User_history.html" aria-expanded="false"><i
+                                    class="fa fa-user"></i>โปรไฟล์ </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
@@ -144,7 +281,8 @@
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="manageuser.html" aria-expanded="false"><i class="fa fa-edit"></i>จัดการผู้ใช้ </a>
+                            <a class="nav-link " href="dashboard.html" aria-expanded="false"><i
+                                    class="fa fa-dashboard"></i>แดชบอร์ด </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
@@ -153,10 +291,22 @@
                             </div>
                         </li>
 
-                        
+                        <li class="nav-item ">
+                            <a class="nav-link " href="manageuser.html" aria-expanded="false"><i
+                                    class="fa fa-edit"></i>จัดการผู้ใช้ </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+
+
+                                </ul>
+                            </div>
+                        </li>
+
+
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="Date_manage.html" aria-expanded="false"><i class="fa fa-clock"></i>จัดการเวลา </a>
+                            <a class="nav-link " href="Date_manage.html" aria-expanded="false"><i
+                                    class="fa fa-clock"></i>จัดการเวลา </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
