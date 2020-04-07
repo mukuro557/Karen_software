@@ -33,6 +33,45 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>นับครุภัณฑ์</title>
+
+    <script>
+        var table
+        $(document).ready(function () {
+
+            table = $('#myTable').DataTable({
+
+                columns: [
+                    { data: "Image", title: "รูปภาพ" },
+                    { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
+                    { data: "Location", title: "สถานที่" },
+                    { data: "Received_date", title: "วันที่ได้รับ" },
+                    { data: "Original_value", title: "มูลค่า" },
+                    { data: "Department", title: "แผนกที่ดูแล" },
+                    { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
+                    { data: "Email_Committee", title: "ผู้ตรวจ" },
+                    { data: "Status", title: "สถานะ" },
+                ],
+            });
+            getItem();
+        });
+        function getItem() {
+            //get users from DB
+            $.ajax({
+                method: "GET",
+                url: "/item/dashboard/showAllInfo"
+            }).done(function (dataSet, state, xhr) {
+                //    alert("ok");
+                table.clear();
+                //display modified JSON in DataTable
+                table.rows.add(dataSet).draw();
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+        }
+
+    </script>
+
 </head>
 
 <body>
