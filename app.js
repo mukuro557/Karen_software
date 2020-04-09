@@ -72,75 +72,72 @@ app.use("/profile", profileRoutes);
 
 //Root Page (landing page 1)
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname,"/mainpage.html"));
+    res.sendFile(path.join(__dirname,"/landing1.html"));
     // res.render("home.ejs", {user: req.user});
 });
 
 //Return manageUser page
-app.get("/page/manageUser", function (req, res) {
+app.get("/manageUser", function (req, res) {
     res.sendFile(path.join(__dirname, "/manageUser.html"))
 });
 
 //Return home page
-app.get("/page/mainpage", function (req, res) {
+app.get("/mainpage", function (req, res) {
     res.sendFile(path.join(__dirname, "/mainpage.html"))
 });
 
 //Return User_history page
-app.get("/page/User_history", function (req, res) {
+app.get("/User_history", function (req, res) {
     res.sendFile(path.join(__dirname, "/User_history.html"))
 });
 
 //Return dashboard page
-app.get("/page/dashboard", function (req, res) {
+app.get("/dashboard", function (req, res) {
     res.sendFile(path.join(__dirname, "/dashboard.html"))
 });
 
 //Return change_disapear page
-app.get("/page/change_disapear", function (req, res) {
+app.get("/change_disapear", function (req, res) {
     res.sendFile(path.join(__dirname, "/change_disapear.html"))
 });
 
 //Return Date_manage time page
-app.get("/page/Date_manage", function (req, res) {
+app.get("/Date_manage", function (req, res) {
     res.sendFile(path.join(__dirname, "/Date_manage.html"))
 });
 
 //Return Date_managerUser page
-app.get("/page/Date_managerUser", function (req, res) {
+app.get("/Date_managerUser", function (req, res) {
     res.sendFile(path.join(__dirname, "/Date_managerUser.html"))
 });
 
 //Return landing1 page
-app.get("/page/landing1", function (req, res) {
+app.get("/landing1", function (req, res) {
     res.sendFile(path.join(__dirname, "/landing1.html"))
 });
 
 //Return landing2 page
-app.get("/page/landing2", function (req, res) {
+app.get("/landing2", function (req, res) {
     res.sendFile(path.join(__dirname, "/landing2.html"))
 });
 
 //Return single item page
-app.get("/page/singleItem", function (req, res) {
+app.get("/singleItem", function (req, res) {
     res.sendFile(path.join(__dirname, "/singleItem.html"))
 });
 
 //Return information page
-app.get("/page/singleItem", function (req, res) {
-    res.sendFile(path.join(__dirname, "/singleItem.html"))
+app.get("/information", function (req, res) {
+    res.sendFile(path.join(__dirname, "/information.html"))
 });
 
-// สองอันนี้ไม่รู้จะใช้ตรงไหน
-//Return index page
-app.get("/page/mainpageAdmin", function (req, res) {
-    res.sendFile(path.join(__dirname, "/index.html"))
+
+//Return landing1 page
+app.get("/takepicture", function (req, res) {
+    res.sendFile(path.join(__dirname, "/takepicture.html"))
 });
 
-//Return data table page
-app.get("/page/maindataTable", function (req, res) {
-    res.sendFile(path.join(__dirname, "/mainDataTable.html"))
-});
+
 
 //================== Services (functions) ===================
 
@@ -243,9 +240,9 @@ app.get("/item/dashboard/number/:status", function (req, res) {
 });
 
 // Load item info
-app.get("/item/:status/:year", function (req, res) {
+app.get("/item/:status", function (req, res) {
     const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where status=? AND year =?"
-    const year = req.params.year;
+    const year =  new Date().getFullYear();
     const status = req.params.status;
     con.query(sql,[status,year] , function (err, result, fields) {
         if (err) {
@@ -257,9 +254,9 @@ app.get("/item/:status/:year", function (req, res) {
 });
 // UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?
 // For print barcode or QR code of item
-app.get("/item/forPrintQRcode_Barcode/:year/:Email_Committee", function (req, res) {
+app.get("/item/forPrintQRcode_Barcode/:Email_Committee", function (req, res) {
     const sql = "select Inventory_Number, Asset_Description, Received_date, Department, year,status, image from item where year=? and Email_Committee=?;"
-    const year = req.params.year;
+    const year =  new Date().getFullYear();
     const Email_Committee = req.params.Email_Committee;
     con.query(sql,[year,Email_Committee] , function (err, result, fields) {
         if (err) {
@@ -335,9 +332,9 @@ app.get("/dateTime/showDateTime", function (req, res) {
 });
 
 // Load info of main datatable page
-app.get("/maindataTable/info/:year/:status", function (req, res) {
+app.get("/maindataTable/info/:status", function (req, res) {
     const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where year=? and status=?"
-    const year = req.params.year;
+    const year =  new Date().getFullYear();
     const status = req.params.status;
     con.query(sql,[year,status], function (err, result, fields) {
         if (err) {
@@ -378,8 +375,8 @@ app.get("/manageUser/showAllUser", function (req, res) {
 });
 
 // Add info of new user in manage user page
-app.post("/manageUser/add/:year/:Email_user/:Email_assigner/:role", function (req, res) {
-    const year = req.params.year;
+app.post("/manageUser/add/:Email_user/:Email_assigner/:role", function (req, res) {
+    const year =  new Date().getFullYear();
     const Email_user = req.params.Email_user;
     const Email_assigner = req.params.Email_assigner;
     const role = req.params.role;
@@ -405,8 +402,8 @@ app.post("/manageUser/add/:year/:Email_user/:Email_assigner/:role", function (re
 });
 
 // Insert Work Time
-app.post("/dateTime/insertTime/:year/:Date_start/:Date_end", function (req, res) {
-    const years = req.body.years;
+app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
+    const year =  new Date().getFullYear();
     const Date_start = req.body.Date_start;
     const Date_end = req.body.Date_end;
 
