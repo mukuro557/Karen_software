@@ -72,28 +72,23 @@ app.use("/profile", profileRoutes);
 
 //Root Page (landing page 1)
 app.get("/", (req, res) => {
-    // res.sendFile(path.join(__dirname,"views/home.html"));
-    res.render("home.ejs", {user: req.user});
+    res.sendFile(path.join(__dirname,"/mainpage.html"));
+    // res.render("home.ejs", {user: req.user});
 });
 
-//Return login page
-app.get("/page/login", function (req, res) {
-    res.sendFile(path.join(__dirname, "/login.html"))
-});
-
-//Return manage user page
+//Return manageUser page
 app.get("/page/manageUser", function (req, res) {
     res.sendFile(path.join(__dirname, "/manageUser.html"))
 });
 
 //Return home page
-app.get("/page/home", function (req, res) {
-    res.sendFile(path.join(__dirname, "/home.html"))
+app.get("/page/mainpage", function (req, res) {
+    res.sendFile(path.join(__dirname, "/mainpage.html"))
 });
 
-//Return profile page
-app.get("/page/profile", function (req, res) {
-    res.sendFile(path.join(__dirname, "/profile.html"))
+//Return User_history page
+app.get("/page/User_history", function (req, res) {
+    res.sendFile(path.join(__dirname, "/User_history.html"))
 });
 
 //Return dashboard page
@@ -101,22 +96,27 @@ app.get("/page/dashboard", function (req, res) {
     res.sendFile(path.join(__dirname, "/dashboard.html"))
 });
 
-//Return lost item page
-app.get("/page/lostItem", function (req, res) {
-    res.sendFile(path.join(__dirname, "/lostItem.htm"))
+//Return change_disapear page
+app.get("/page/change_disapear", function (req, res) {
+    res.sendFile(path.join(__dirname, "/change_disapear.html"))
 });
 
-//Return date time page
-app.get("/page/dateTime", function (req, res) {
-    res.sendFile(path.join(__dirname, "/dateTime.html"))
+//Return Date_manage time page
+app.get("/page/Date_manage", function (req, res) {
+    res.sendFile(path.join(__dirname, "/Date_manage.html"))
 });
 
-//Return date manage page
-app.get("/page/dateManage", function (req, res) {
-    res.sendFile(path.join(__dirname, "/dateManage.html"))
+//Return Date_managerUser page
+app.get("/page/Date_managerUser", function (req, res) {
+    res.sendFile(path.join(__dirname, "/Date_managerUser.html"))
 });
 
-//Return date landing2 page
+//Return landing1 page
+app.get("/page/landing1", function (req, res) {
+    res.sendFile(path.join(__dirname, "/landing1.html"))
+});
+
+//Return landing2 page
 app.get("/page/landing2", function (req, res) {
     res.sendFile(path.join(__dirname, "/landing2.html"))
 });
@@ -126,6 +126,12 @@ app.get("/page/singleItem", function (req, res) {
     res.sendFile(path.join(__dirname, "/singleItem.html"))
 });
 
+//Return information page
+app.get("/page/singleItem", function (req, res) {
+    res.sendFile(path.join(__dirname, "/singleItem.html"))
+});
+
+// สองอันนี้ไม่รู้จะใช้ตรงไหน
 //Return index page
 app.get("/page/mainpageAdmin", function (req, res) {
     res.sendFile(path.join(__dirname, "/index.html"))
