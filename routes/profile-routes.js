@@ -14,7 +14,7 @@ router.use(authCheck);
 // show profule page
 router.get("/", (req,res) => { 
     // console.log(req.user);
-    res.render("profile",{user: req.user});
+    res.render("/mainpage",{user: req.user});
 });
 
 module.exports = router;
