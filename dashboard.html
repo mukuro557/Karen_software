@@ -37,11 +37,14 @@
     <script>
         var table
         $(document).ready(function () {
+            $("#all").click(function () {
+                window.location.replace("/information");
+            });
 
             table = $('#myTable').DataTable({
 
                 columns: [
-                    { data: "Image", title: "รูปภาพ" },
+                { data: "Image", title: "รูปภาพ" },
                     { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
                     { data: "Location", title: "สถานที่" },
                     { data: "Received_date", title: "วันที่ได้รับ" },
@@ -53,6 +56,16 @@
                 ],
             });
             getItem();
+            $.ajax({
+                    method: "GET",
+                    url: "/profile/infouser"
+                }).done(function (data, state, xhr) {
+                   $("#user").html(data.name);
+                   document.getElementById('pic').src=data.photo;
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
+                });
         });
         function getItem() {
             //get users from DB
@@ -81,15 +94,17 @@
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
                 <div class="col-sm-2 ml-4 ">
-                    <img src="itlogo.png" style="width: 100%;">
+                    <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
                 </div>
                 <div>
 
-                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">
+                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
                         สำนักเทคโนโลยีสารสนเทศ</div>
 
                 </div>
             </div>
+
+
             <div class="nav-item dropdown connection ml-5">
                 <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
@@ -119,17 +134,15 @@
 
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt=""
+                        aria-haspopup="true" aria-expanded="false"><img id="pic" src="assets/images/avatar-1.jpg" alt=""
                             class="user-avatar-md rounded-circle"></a>
                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
-                            <h5 class="mb-0 text-white nav-user-name">Ruttathorn </h5>
+                            <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
                             <span class="status"></span><span class="ml-2">กรรมการ</span>
                         </div>
-
-                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>ตั้งค่า</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
+                        <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
                     </div>
                 </li>
             </ul>
@@ -154,67 +167,52 @@
                     <ul class="navbar-nav flex-column">
 
                         <li class="nav-item ">
-                            <a class="nav-link" href="mainpage.html" aria-expanded="false"><i
-                                    class="fa fa-home"></i>หน้าหลัก </a>
+                            <a class="nav-link" href="/mainpage" aria-expanded="false"><i
+                                    class="fa fa-home"></i>หน้าหลัก
+                            </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
-
 
                                 </ul>
                             </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link " href="User_history.html" aria-expanded="false"><i
+                            <a class="nav-link " href="/User_history" aria-expanded="false"><i
                                     class="fa fa-user"></i>โปรไฟล์ </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
-
                                 </ul>
                             </div>
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="dashboard.html" aria-expanded="false"><i
+                            <a class="nav-link active" href="/dashboard" aria-expanded="false"><i
                                     class="fa fa-dashboard"></i>แดชบอร์ด </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a class="nav-link " href="/manageUser" aria-expanded="false"><i
+                                    class="fa fa-edit"></i>จัดการผู้ใช้
+                            </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
 
                                 </ul>
                             </div>
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="manageuser.html" aria-expanded="false"><i
-                                    class="fa fa-edit"></i>จัดการผู้ใช้ </a>
+                            <a class="nav-link " href="/Date_manage" aria-expanded="false"><i
+                                    class="fa fa-clock"></i>จัดการเวลา
+                            </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
-
-
-                                </ul>
-                            </div>
-                        </li>
-
-
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="Date_manage.html" aria-expanded="false"><i
-                                    class="fa fa-clock"></i>จัดการเวลา </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="information.html" aria-expanded="false"><i
-                                    class="fa fa-fw fa-rocket"></i>ตารางข้อมูล</a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
                                 </ul>
                             </div>
                         </li>
@@ -274,7 +272,7 @@
                                     <h1>5000</h1>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="all.PNG " alt="" style="width:120%">
+                                    <img class="" src="img/all.PNG " alt="" style="width:120%">
                                 </div>
                             </div>
 
@@ -289,7 +287,7 @@
                                     <h1>5000</h1>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="normal.PNG " alt="" style="width:130%">
+                                    <img class="" src="img/normal.PNG " alt="" style="width:130%">
                                 </div>
                             </div>
                         </div>
@@ -302,7 +300,7 @@
                                     <h1>5000</h1>
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="fix.PNG" alt="" style="width:130%">
+                                    <img class="" src="img/fix.PNG" alt="" style="width:130%">
                                 </div>
                             </div>
                         </div>
@@ -315,7 +313,7 @@
                                     <h1>5000</h1>
                                 </div>
                                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                    <img class="" src="dis.PNG" alt="" style="width:250%">
+                                    <img class="" src="img/dis.PNG" alt="" style="width:250%">
                                 </div>
                             </div>
                         </div>
@@ -333,7 +331,7 @@
                 <!-- ============================================================== -->
                 <div class="container my-2 " style="background-color: white;">
                     <br>
-                    <button class="btn btn-primary float-right mr-3">ดูข้อมูลทั้งหมด</button> <br>
+                    <button class="btn btn-primary float-right mr-3" id="all">ดูข้อมูลทั้งหมด</button> <br>
                     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                         <button type="button" class="btn ">ค้นหารูป</button>
                         <button type="button" class="btn ">กรองการแสดงผล</button>
@@ -391,15 +389,5 @@
                 <!-- จบตาราง -->
             </div>
         </div>
-    </div>
 
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <div class="" style="background-color: rgb(50, 50, 223); text-align: center; font-size:initial;">
-        <br><br><br>
-        <p style="color: rgb(250, 250, 250);">Footer</p>
-        <br><br>
-    </div>
-    <!-- เสร็จ footer -->
-    <!-- ============================================================== -->
 </body>
