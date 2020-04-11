@@ -46,6 +46,27 @@
             color: black;
         }
     </style>
+    <script>
+        $(document).ready(function () {
+            $("#all").click(function () {
+                window.location.replace("/information");
+            });
+            getItem();
+        });
+        function getItem() {
+                //get users from DB
+                $.ajax({
+                    method: "GET",
+                    url: "/profile/infouser"
+                }).done(function (data, state, xhr) {
+                   $(".user").html(data.name);
+                   document.getElementById('pic').src=data.photo;
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
+                });
+            }
+    </script>
 </head>
 
 <body>
@@ -55,15 +76,16 @@
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
                 <div class="col-sm-2 ml-4 ">
-                    <img src="itlogo.png" style="width: 100%;">
+                    <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
                 </div>
                 <div>
-                    
-                <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">สำนักเทคโนโลยีสารสนเทศ</div>
-           
+
+                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
+                        สำนักเทคโนโลยีสารสนเทศ</div>
+
                 </div>
             </div>
-            
+
 
             <div class="nav-item dropdown connection ml-5">
                 <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -94,17 +116,15 @@
 
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt=""
+                        aria-haspopup="true" aria-expanded="false"><img id="pic" src="assets/images/avatar-1.jpg" alt=""
                             class="user-avatar-md rounded-circle"></a>
                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
-                            <h5 class="mb-0 text-white nav-user-name">Ruttathorn </h5>
+                            <h5 class="mb-0 text-white nav-user-name user" id="user">Ruttathorn </h5>
                             <span class="status"></span><span class="ml-2">กรรมการ</span>
                         </div>
-
-                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>ตั้งค่า</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
+                        <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
                     </div>
                 </li>
             </ul>
@@ -114,7 +134,7 @@
     <!-- ============================================================== -->
     <!-- จบ navbar -->
     <!-- ============================================================== -->
-    <!-- ============================================================== -->
+<!-- ============================================================== -->
     <!-- navbar ด้านข้าง -->
     <!-- ============================================================== -->
     <div class="nav-left-sidebar sidebar-light">
@@ -129,76 +149,55 @@
                     <ul class="navbar-nav flex-column">
 
                         <li class="nav-item ">
-                            <a class="nav-link active" href="mainpage.html" aria-expanded="false"><i
+                            <a class="nav-link active" href="/mainpage" aria-expanded="false"><i
                                     class="fa fa-home"></i>หน้าหลัก
                             </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
-
                                 </ul>
                             </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link " href="User_history.html" aria-expanded="false"><i
+                            <a class="nav-link " href="/User_history" aria-expanded="false"><i
                                     class="fa fa-user"></i>โปรไฟล์ </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
-
                                 </ul>
                             </div>
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="dashboard.html" aria-expanded="false"><i
+                            <a class="nav-link " href="/dashboard" aria-expanded="false"><i
                                     class="fa fa-dashboard"></i>แดชบอร์ด </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
-
                                 </ul>
                             </div>
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="manageuser.html" aria-expanded="false"><i
+                            <a class="nav-link " href="/manageUser" aria-expanded="false"><i
                                     class="fa fa-edit"></i>จัดการผู้ใช้
                             </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
-
                                 </ul>
                             </div>
                         </li>
 
-
-
                         <li class="nav-item ">
-                            <a class="nav-link " href="Date_manage.html" aria-expanded="false"><i
+                            <a class="nav-link " href="/Date_manage" aria-expanded="false"><i
                                     class="fa fa-clock"></i>จัดการเวลา
                             </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
-
-
                                 </ul>
                             </div>
                         </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="#" aria-expanded="false"><i
-                                    class="fa fa-fw fa-rocket"></i>ตารางข้อมูล</a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-
-                                </ul>
-                            </div>
-                        </li>
-
-
 
                     </ul>
                 </div>
@@ -218,18 +217,18 @@
                 <div class="row">
                     <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11">
                         <div class="page-header">
-                            <h2 class="mb-2">สวัสดี , รุตาทร วรพัทธ์ธดา </h2>
+                            <h2 class="mb-2">สวัสดี ,<h2 class="mb-2 user"></h2>  </h2>
                             <h6> แผนกรับผิดชอบ : สำนักเทคโนโลยีสารสนเทศ</h6>
 
                         </div>
                     </div>
                     <div>
-                        
+
                     </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
                             <div class=" mr-4 " style="background-color: blueviolet; height: 3px; width: 1500 px;">
-                                <br> 
+                                <br>
                             </div>
                             <h2 class="mb-2">ทางลัด </h2>
                         </div>
@@ -303,7 +302,7 @@
                                 ของมหาวิทยาลัยให้เกิดประโยชน์สูงสุดอย่างต่อเนื่องและเสริมสร้างกิจกรรมที่เป็น <br>
                                 ประโยชน์ต่อสังคม <br> <br> <br> <br>
                                 <div class="mb-5">
-                                    <button class="btn btn-primary ml-3"> ดูข้อมูลเพิ่มเติม</button>
+                                    <button class="btn btn-primary ml-3" id="all"> ดูข้อมูลเพิ่มเติม</button>
                                     <br><br>
                                 </div>
                             </div>
@@ -318,6 +317,9 @@
                 <!-- ============================================================== -->
                 <!-- เสร็จประกาศ  -->
                 <!-- ============================================================== -->
+
+
+
             </div>
         </div>
     </div>
