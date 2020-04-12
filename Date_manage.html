@@ -31,8 +31,64 @@
     <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='assets/vendor/full-calendar/css/fullcalendar.css' rel='stylesheet' />
+    <link href='assets/vendor/full-calendar/css/fullcalendar.print.css' rel='stylesheet' media='print' />
+
+    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <script src='assets/vendor/full-calendar/js/moment.min.js'></script>
+    <script src='assets/vendor/full-calendar/js/fullcalendar.js'></script>
+    <script src='assets/vendor/full-calendar/js/jquery-ui.min.js'></script>
+    <script src="assets/libs/js/main-js.js"></script>
 
     <title>นับครุภัณฑ์</title>
+    <script>
+        $(document).ready(function () {
+            // $("#all").click(function () {
+            //     window.location.replace("/information");
+            // });
+            // $.ajax({
+            //     method: "GET",
+            //     url: "/profile/infouser"
+            // }).done(function (data, state, xhr) {
+            //     $("#user").html(data.name);
+            //     document.getElementById('pic').src = data.photo;
+            // }).fail(function (xhr, state, error) {
+            //     //get data failed
+            //     alert(xhr.responseText);
+            // });
+            $.ajax({
+                method: "GET",
+                url: "/dateTime/showDateTime"
+            }).done(function (data, state, xhr) {
+                alert(data[0].Date_end);
+                $('#calendar1').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay,listWeek'
+                    },
+                    navLinks: true, // can click day/week names to navigate views
+                    editable: true,
+                    eventLimit: true, // allow "more" link when too many events
+                    events: [
+                        {
+                            title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
+                            start: data[0].Date_start,
+                            end: data[0].Date_end
+                        }
+                    ]
+                });
+
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+
+        });
+
+    </script>
 </head>
 
 <body>
@@ -42,7 +98,7 @@
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
                 <div class="col-sm-2 ml-4 ">
-                    <img src="itlogo.png" style="width: 100%;">
+                    <img src="img/itlogo.png" style="width: 100%;">
                 </div>
                 <div>
 
@@ -51,6 +107,7 @@
 
                 </div>
             </div>
+
             <div class="nav-item dropdown connection ml-5">
                 <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
@@ -80,17 +137,15 @@
 
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"><img src="assets/images/avatar-1.jpg" alt=""
+                        aria-haspopup="true" aria-expanded="false"><img id="pic" src="assets/images/avatar-1.jpg" alt=""
                             class="user-avatar-md rounded-circle"></a>
                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
-                            <h5 class="mb-0 text-white nav-user-name">Ruttathorn </h5>
+                            <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
                             <span class="status"></span><span class="ml-2">กรรมการ</span>
                         </div>
-
-                        <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>ตั้งค่า</a>
-                        <a class="dropdown-item" href="#"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
+                        <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
                     </div>
                 </li>
             </ul>
@@ -115,66 +170,66 @@
                     <ul class="navbar-nav flex-column">
 
                         <li class="nav-item ">
-                            <a class="nav-link" href="mainpage.html" aria-expanded="false"><i class="fa fa-home"></i>หน้าหลัก </a>
+                            <a class="nav-link" href="/mainpage" aria-expanded="false"><i
+                                    class="fa fa-home"></i>หน้าหลัก
+                            </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
-
 
                                 </ul>
                             </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link " href="User_history.html" aria-expanded="false"><i class="fa fa-user"></i>โปรไฟล์ </a>
+                            <a class="nav-link " href="/User_history" aria-expanded="false"><i
+                                    class="fa fa-user"></i>โปรไฟล์ </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
-
-
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="dashboard.html" aria-expanded="false"><i class="fa fa-dashboard"></i>แดชบอร์ด </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
 
                                 </ul>
                             </div>
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="manageuser.html" aria-expanded="false"><i class="fa fa-edit"></i>จัดการผู้ใช้ </a>
+                            <a class="nav-link " href="/dashboard" aria-expanded="false"><i
+                                    class="fa fa-dashboard"></i>แดชบอร์ด </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
-
-
-                                </ul>
-                            </div>
-                        </li>
-
-                        
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="Date_manage.html" aria-expanded="false"><i class="fa fa-clock"></i>จัดการเวลา </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
 
                                 </ul>
                             </div>
                         </li>
 
                         <li class="nav-item ">
-                            <a class="nav-link " href="information.html" aria-expanded="false"><i
+                            <a class="nav-link " href="/manageUser" aria-expanded="false"><i
+                                    class="fa fa-edit"></i>จัดการผู้ใช้
+                            </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a class="nav-link active" href="/Date_manage" aria-expanded="false"><i
+                                    class="fa fa-clock"></i>จัดการเวลา
+                            </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a class="nav-link " href="/information" aria-expanded="false"><i
                                     class="fa fa-fw fa-rocket"></i>ตารางข้อมูล</a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
+
                                 </ul>
                             </div>
                         </li>
-
                     </ul>
                 </div>
             </nav>
@@ -193,8 +248,9 @@
                 <div class="row">
                     <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
                         <div class="page-header">
-                            <h2 class="mb-2">ระยะเวลาการตรวจนับ <div class="btn" onclick="window.location.href = 'Date_manage.html';" style="background-color: #fff;">ระยะเวลาการตรวจนับ</div>
-                                <div class="btn" onclick="window.location.href = 'Date_manageUser.html';" style="background-color: #fff;">ระยะเวลาแก้ไขผู้ใช้</div>
+                            <h2 class="mb-2">ระยะเวลาการตรวจนับ
+                                <div class="btn" onclick="window.location.href = '/Date_manage';"
+                                    style="background-color: #fff;">ระยะเวลาการตรวจนับ</div>
                             </h2>
 
                         </div>
@@ -215,30 +271,27 @@
                 </div>
                 <!-- ============================================================== -->
                 <!-- เสร็จหัวกระดาษ  -->
+                <!-- ============================================================== -->
+                <!-- ปฏิทิน  -->
+                <!-- ============================================================== -->
 
-                <div class="card col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
-                    <div class="card-body" style="height: 10cm; width: 10cm;">
-                        00:00
-                        <h3>2.20.2020</h3>
-                        จนถึง <br>
-                        23:59
-                        <h3>3.20.2020</h3>
-                        <div class="switch-button switch-button-xs">
-                            <input type="checkbox" checked="" name="switch12" id="switch12"><span>
-                                <label for="switch12"></label></span>
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id='calendar1'></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- ============================================================== -->
+                <!-- เสร็จปฏิทิน  -->
+                <!-- ============================================================== -->
             </div>
         </div>
     </div>
-    <!-- footer -->
-    <!-- ============================================================== -->
-    <div class="" style="background-color: rgb(50, 50, 223); text-align: center; font-size:initial;">
-        <br><br><br>
-        <p style="color: rgb(250, 250, 250);">Footer</p>
-        <br><br>
     </div>
-    <!-- เสร็จ footer -->
-    <!-- ============================================================== -->
 </body>
+
+</html>
