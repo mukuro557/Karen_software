@@ -49,7 +49,7 @@
     <script>
         $(document).ready(function () {
             $("#all").click(function () {
-                window.location.replace("/information");
+                window.location.replace("/dashboard");
             });
             getItem();
         });
@@ -134,7 +134,8 @@
     <!-- ============================================================== -->
     <!-- จบ navbar -->
     <!-- ============================================================== -->
-<!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
     <!-- navbar ด้านข้าง -->
     <!-- ============================================================== -->
     <div class="nav-left-sidebar sidebar-light">
@@ -198,7 +199,6 @@
                                 </ul>
                             </div>
                         </li>
-
                     </ul>
                 </div>
             </nav>
@@ -243,38 +243,47 @@
                 <div class="row ml-1">
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" style="width: 80%;">
                         <div class="row card" style="width: 6cm;height: 2cm;">
-                            <div class="col-sm-9 ">
+                            <a href="/User_history">
+                            <div class="col-sm-9 class-body">
                                 <div class="mt-1"><img src="img/profile.JPG " alt="" style="width:50%">
-                                    โปรไฟส์
+                                    โปรไฟล์
+                                 
                                 </div>
                             </div>
+                        </a>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                         <div class="row card" style="width: 6cm;height: 2cm;">
-                            <div class="col-sm-9 ">
+                            <a href="/dashboard">
+                            <div class="col-sm-9 class-body">
                                 <div class="mt-1"><img src="img/แดชบอร์ด.JPG " alt="" style="width:48%">
                                     แดชบอร์ด
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                         <div class="row card" style="width: 6cm;height: 2cm;">
-                            <div class="col-sm-9 ">
+                            <a href="/manageuser">
+                            <div class="col-sm-9 class-body">
                                 <div class="mt-1"><img src="img/edit.JPG " alt="" style="width:48%">
                                     จัดการผู้ใช้
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                         <div class="row card" style="width: 6cm;height: 2cm;">
-                            <div class="col-sm-9 ">
+                            <a href="/Date_manage">
+                            <div class="col-sm-9 class-body">
                                 <div class="mt-1"><img src="img/table.JPG " alt="" style="width:50%">
-                                    โปรไฟส์
+                                    จัดการเวลา
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                 </div>
