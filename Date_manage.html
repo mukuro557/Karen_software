@@ -62,7 +62,6 @@
                 method: "GET",
                 url: "/dateTime/showDateTime"
             }).done(function (data, state, xhr) {
-                alert(data[0].Date_end);
                 $('#calendar1').fullCalendar({
                     header: {
                         left: 'prev,next today',
@@ -219,17 +218,6 @@
                                 </ul>
                             </div>
                         </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="/information" aria-expanded="false"><i
-                                    class="fa fa-fw fa-rocket"></i>ตารางข้อมูล</a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-
-                                </ul>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </nav>
@@ -246,52 +234,122 @@
                 <!-- หัวกระดาษ  -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
                         <div class="page-header">
                             <h2 class="mb-2">ระยะเวลาการตรวจนับ
-                                <div class="btn" onclick="window.location.href = '/Date_manage';"
-                                    style="background-color: #fff;">ระยะเวลาการตรวจนับ</div>
                             </h2>
 
                         </div>
                     </div>
-                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
-                        <div class="btn btn-warning">
-                            แก้ไข
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                        data-target=".bd-example-modal-lg"> แก้ไขเวลา</button>
 
-                        </div>
-                        <div class="btn btn-primary">
-                            เพิ่มเวลา
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target=".bd-example-modal-sm"> เพิ่มเวลา</button>
 
-                        </div>
-                    </div>
-
-                    <div>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- เสร็จหัวกระดาษ  -->
-                <!-- ============================================================== -->
-                <!-- ปฏิทิน  -->
-                <!-- ============================================================== -->
 
+                <div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- เสร็จหัวกระดาษ  -->
+            <!-- ============================================================== -->
+            <!-- ปฏิทิน  -->
+            <!-- ============================================================== -->
 
-                <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div id='calendar1'></div>
-                            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id='calendar1'></div>
                         </div>
                     </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- เสร็จปฏิทิน  -->
-                <!-- ============================================================== -->
+            </div>
+
+
+        </div>
+
+    </div>
+    </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- modal  -->
+    <!-- ============================================================== -->
+
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มเวลาในการตรวจเช็ค</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
+                            <input type="date" class="form-control" id="Date_start">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
+                            <input type="date" class="form-control" id="Date_end">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary">ยืนยัน</button>
+                </div>
             </div>
         </div>
     </div>
+    <!-- ============================================================== -->
+    <!-- เสร็จ modal  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- modal2  -->
+    <!-- ============================================================== -->
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขในการตรวจเช็ค</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
+                            <input type="date" class="form-control" id="Date_start">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
+                            <input type="date" class="form-control" id="Date_end">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- ============================================================== -->
+    <!-- เสร็จ modal2  -->
+    <!-- ============================================================== -->
+
 </body>
 
 </html>
