@@ -54,7 +54,8 @@ app.use(body_parser.urlencoded({ extended: true })); //when you post service
 app.use(body_parser.json());
 //cookie
 app.use(cookieSession({
-    maxAge: 1000*60*60,
+    // maxAge: 1000*60*60,
+     maxAge: 1000*60*60,
     keys: [key.cookie.secret]
 }));
 // init passport for se/derialization
@@ -107,8 +108,8 @@ app.get("/Date_manage", function (req, res) {
 });
 
 //Return Date_managerUser page
-app.get("/Date_managerUser", function (req, res) {
-    res.sendFile(path.join(__dirname, "/Date_managerUser.html"))
+app.get("/Date_manageUser", function (req, res) {
+    res.sendFile(path.join(__dirname, "/Date_manageUser.html"))
 });
 
 //Return landing1 page
@@ -140,6 +141,7 @@ app.get("/takepicture", function (req, res) {
 
 
 //================== Services (functions) ===================
+
 
 // Add image to an item
 app.put("/item/addImage",function (req, res){
@@ -202,7 +204,7 @@ app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
 // Load inspected item by the user
 app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
-    const sql = "select IMAGE,Inventory_Number,Asset_Description,Model,Date_Scan,Cost_center,Location,Status from item where Email_Committee=?;"
+    const sql = "select Image,Inventory_Number,Received_date,Date_scan,Model,Date_Scan,Department,Date_Upload,Status,Email_Committee from item where Email_Committee=?;"
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
@@ -215,7 +217,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
 
 // Load all item info
 app.get("/item/dashboard/showAllInfo", function (req, res) {
-    const sql = "select IMAGE,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status from item"
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -320,9 +322,10 @@ app.get("/item/numberAll", function (req, res) {
 
 // Load date and time of job
 app.get("/dateTime/showDateTime", function (req, res) {
-    const sql = "select Date_start,Date_end from date_check"
+    const year =  new Date().getFullYear();
+    const sql = "select * from date_check where years = ?"
 
-    con.query(sql, function (err, result, fields) {
+    con.query(sql,[year], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -333,7 +336,7 @@ app.get("/dateTime/showDateTime", function (req, res) {
 
 // Load info of main datatable page
 app.get("/maindataTable/info/:status", function (req, res) {
-    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where year=? and status=?"
+    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan from item where year=? and status=?"
     const year =  new Date().getFullYear();
     const status = req.params.status;
     con.query(sql,[year,status], function (err, result, fields) {
