@@ -161,7 +161,7 @@ app.put("/item/addImage",function (req, res){
 // Load inspected total item numbers by a user
 app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
-    const sql = "SELECT count(status) AS 'Numbers of Inspected Item' FROM item WHERE Email_Committee=?;"
+    const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Email_Committee=?;"
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
@@ -176,7 +176,7 @@ app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (r
 app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
     const Status = req.params.Status;
-    const sql = "SELECT count(status) AS 'Numbers of Inspected Item' FROM item WHERE Status=? AND Email_Committee=?;"
+    const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Status=? AND Email_Committee=?;"
 
     con.query(sql, [Status,Email_Committee], function (err, result, fields) {
         if (err) {
