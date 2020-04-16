@@ -54,7 +54,30 @@
 
                 ],
             });
+            
             getItem();
+            $('#myTable tbody').on('click', 'tr', function () {
+        var data = table.row( this ).data();
+        var inven = data.Inventory_Number
+        $.ajax({
+                method: "GET",
+                url: "/item5/"+inven
+            }).done(function (dataSet, state, xhr) {
+                document.getElementById('pic').src=dataSet[0].Image;
+                $(".date").html("วันที่ได้รับ : "+dataSet[0].Received_date+" วันที่อัพโหลด :"+dataSet[0].Date_Upload)
+                $("#inventory").html(dataSet[0].Inventory_Number)
+                $("#des").html("คำอธิบาย : "+dataSet[0].Asset_Description)
+                $("#mod").html("โมเดล : "+dataSet[0].Model+"  ซีเรียล : "+ dataSet[0].Serial +"  สถานที่ : "+ dataSet[0].Location+" "+dataSet[0].Room)
+                $("#cos").html("รหัสแผนก : "+dataSet[0].Cost_center+"   แผนกที่จัดเก็บ : "+ dataSet[0].Department)
+                $("#value").html("ราคา : "+dataSet[0].Original_value+"   แหล่งที่มา : "+ dataSet[0].Vendor_name)
+                 
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+        
+        
+    } );
         });
         function getItem() {
             //get users from DB
@@ -62,10 +85,15 @@
                 method: "GET",
                 url: "/maindataTable/info/1"
             }).done(function (dataSet, state, xhr) {
-                //    alert("ok");
                 table.clear();
-                //display modified JSON in DataTable
                 table.rows.add(dataSet).draw();
+                document.getElementById('pic').src=dataSet[0].Image;
+                $(".date").html("วันที่ได้รับ : "+dataSet[0].Received_date+" วันที่อัพโหลด :"+dataSet[0].Date_Upload)
+                $("#inventory").html(dataSet[0].Inventory_Number)
+                $("#des").html("คำอธิบาย : "+dataSet[0].Asset_Description)
+                $("#mod").html("โมเดล : "+dataSet[0].Model+"  ซีเรียล : "+ dataSet[0].Serial +"  สถานที่ : "+ dataSet[0].Location+" "+dataSet[0].Room)
+                $("#cos").html("รหัสแผนก : "+dataSet[0].Cost_center+"   แผนกที่จัดเก็บ : "+ dataSet[0].Department)
+                $("#value").html("ราคา : "+dataSet[0].Original_value+"   แหล่งที่มา : "+ dataSet[0].Vendor_name)
             }).fail(function (xhr, state, error) {
                 //get data failed
                 alert(xhr.responseText);
@@ -166,25 +194,21 @@
                 <div class="card shadow p-3 mb-5 ml-4 bg-white rounded" style="width:1150px">
                     <div class="row mb-3">
                         <div class="col-sm-5">
-                            <img class="card-img-top mx-auto" src="img/Pixels.png" alt="Card image" style="width:80%"
+                            <img class="card-img-top mx-auto " id="pic" src="img/Pixels.png" alt="Card image" style="width:80%"
                                 height="70%">
                         </div>
                         <div class="col-sm-7 mt-5">
 
                             <div class="card-body">
                                 <div><span>
-                                        <h3>โต๊ะยาว <br>711000100142033 <br>สถานะ : ปกติ</h3>
+                                        <h3><p id="inventory">711000100142033</p> <p >สถานะ : ปกติ</p> </h3>
                                     </span></div>
 
-                                วันที่ได้รับ : 2-20-2020 วันที่อัพโหลด : 2-20-2020<br>
-                                คำอธิบาย : โต๊ะยาวมากๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆ <br>
-                                ยาวจริงๆนะครับทุกคน <br>โมเดล : Gundum Expo ซีเรียล **** สถานที่ :E3 <br>
-                                รหัสแผนก : 1234 แผนกที่จัดเก็บ : สำนักเทคโนโลยีสารสนเทศ <br>
-                                ราคา : 500000 แหล่งที่มา : ร้านรับจ้างสารพัด ของคุณกิน <br> <br> <br> <br>
-                                <div class="mb-5">
-                                    <button class="btn btn-primary ml-3"> พิมพ์ QR code</button>
-                                    <br>
-                                </div>
+                                <p class="date">วันที่ได้รับ : 2-20-2020 วันที่อัพโหลด : 2-20-2020</p> 
+                                <p id="des">คำอธิบาย : โต๊ะยาวมากๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆ</p>
+                                <p id="mod">โมเดล : Gundum Expo ซีเรียล **** สถานที่ :E3</p>
+                                <p id="cos">รหัสแผนก : 1234 แผนกที่จัดเก็บ : สำนักเทคโนโลยีสารสนเทศ </p> 
+                                <p id="value">ราคา : 500000 แหล่งที่มา : ร้านรับจ้างสารพัด ของคุณกิน</p>  <br> <br> <br> <br>
                             </div>
                         </div>
 
@@ -198,22 +222,9 @@
                     <br>
                     <div class="ml-3">
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                            <button type="button" class="btn ">ค้นหารูป</button>
-                            <button type="button" class="btn ">กรองการแสดงผล</button>
-
                             <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    ผู้ตรวจ
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
                                     สถานที่
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -222,16 +233,26 @@
                                 </div>
                             </div>
                             <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
                                     สถานะ
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                     <a class="dropdown-item" href="#">Dropdown link</a>
                                     <a class="dropdown-item" href="#">Dropdown link</a>
                                 </div>
+                            </div> 
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    ผู้ตรวจสอบ
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item" href="#">Dropdown link</a>
+                                    <a class="dropdown-item" href="#">Dropdown link</a>
+                                </div>
                             </div>
-                            <button type="button" class="btn ">รีเซตการกรอง</button>
+                            <button type="button" class="btn ">รีเซตการกรอง</button><br><br>
 
                         </div>
 

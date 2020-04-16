@@ -12,9 +12,13 @@ const authCheck = (req,res,next) => {
 
 router.use(authCheck);
 // show profule page
-router.get("/", (req,res) => { 
-    // console.log(req.user);
-    res.render("/mainpage",{user: req.user});
+// router.get("/info", (req,res) => { 
+//     // console.log(req.user);
+//     res.send({user: req.user});
+// });
+router.get("/infouser", function (req, res) {
+            // console.log(req.user);
+            res.send(req.user);
 });
 
 module.exports = router;

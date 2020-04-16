@@ -336,7 +336,7 @@ app.get("/dateTime/showDateTime", function (req, res) {
 
 // Load info of main datatable page
 app.get("/maindataTable/info/:status", function (req, res) {
-    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan from item where year=? and status=?"
+    const sql = "select Image,Asset_Description,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Room,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan from item where year=? and status=?"
     const year =  new Date().getFullYear();
     const status = req.params.status;
     con.query(sql,[year,status], function (err, result, fields) {
@@ -402,6 +402,20 @@ app.post("/manageUser/add/:Email_user/:Email_assigner/:role", function (req, res
         }
 
     });
+});
+
+// Load item info landing 2
+app.get("/item5/:inventory", function (req, res) {
+    const sql = "SELECT Image,Inventory_Number,Model,Serial,Location,Received_date,Asset_Description,Room,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan FROM `item` WHERE `Inventory_Number` =? AND year =?"
+    const year =  new Date().getFullYear();
+    const inventory = req.params.inventory;
+    con.query(sql,[inventory,year] , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
 });
 
 // Insert Work Time
