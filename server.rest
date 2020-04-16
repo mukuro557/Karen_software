@@ -72,3 +72,7 @@ content-type: application/json
 ### Get information of main datatable page
 GET  http://localhost:35000/maindataTable/info
 content-type: application/json
+
+### Load info of all user of manage user page
+GET  http://localhost:35000/manageUser/showAllUser
+content-type: application/json
