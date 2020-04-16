@@ -345,7 +345,6 @@ app.get("/manageUser/showAllUser", function (req, res) {
 app.post("/manageUser/add", function (req, res) {
     const Email_user = req.params.Email_user;
 
-    const sql = "INSERT INTO year_user(Image,Name,Surname,Role,Email_User,Telephone) VALUES (?,?,?,?,?,?)";
     const sql = "INSERT INTO year_user(Image,Name,Surname,Role,Email_User,Telephone) VALUES (?,?)";
     con.query(sql, [Image,Name,Surname,Role,Email_User,Telephone], function (err, result, fields) {
         if (err) {
