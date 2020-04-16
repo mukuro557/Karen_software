@@ -377,13 +377,8 @@ app.post("/manageUser/add/:year/:Email_user/:Email_assigner/:role", function (re
     const Email_assigner = req.params.Email_assigner;
     const role = req.params.role;
 
-<<<<<<< HEAD
-    const sql = "INSERT INTO year_user(Image,Name,Surname,Role,Email_User,Telephone) VALUES (?,?)";
-    con.query(sql, [Image,Name,Surname,Role,Email_User,Telephone], function (err, result, fields) {
-=======
     const sql = "INSERT INTO year_user(year,Email_user,Email_assigner,role) VALUES (?,?,?,?)";
     con.query(sql, [year,Email_user,Email_assigner,role], function (err, result, fields) {
->>>>>>> 499dcc59cce4479633beeb45b8463715652d7e65
         if (err) {
             console.error(err.message);
             res.status(503).send("DB Error");
