@@ -2,381 +2,455 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.2/bootbox.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
-    <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/libs/css/style.css">
-    <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
-    <link rel="stylesheet" href="assets/vendor/vector-map/jqvmap.css">
-    <link href="assets/vendor/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/vendor/charts/chartist-bundle/chartist.css">
-    <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
-    <link rel="stylesheet" href="assets/vendor/charts/morris-bundle/morris.css">
-    <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.2/bootbox.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+  <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
+  <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/libs/css/style.css">
+  <link rel="stylesheet" href="assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
+  <link rel="stylesheet" href="assets/vendor/vector-map/jqvmap.css">
+  <link href="assets/vendor/jvectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/vendor/charts/chartist-bundle/chartist.css">
+  <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
+  <link rel="stylesheet" href="assets/vendor/charts/morris-bundle/morris.css">
+  <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://www.cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+  <meta charset=utf-8 />
 
-    <title>นับครุภัณฑ์</title>
+  <title>นับครุภัณฑ์</title>
 
-    <script>
-        var table
-        $(document).ready(function () {
-            $("#all").click(function () {
-                window.location.replace("/information");
-            });
+  <script>
+    $(document).ready(function () {
+      barChart();
 
-            table = $('#myTable').DataTable({
+      $(window).resize(function () {
+        window.barChart.redraw();
+      });
+    });
 
-                columns: [
-                { data: "Image", title: "รูปภาพ" },
-                    { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
-                    { data: "Location", title: "สถานที่" },
-                    { data: "Received_date", title: "วันที่ได้รับ" },
-                    { data: "Original_value", title: "มูลค่า" },
-                    { data: "Department", title: "แผนกที่ดูแล" },
-                    { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
-                    { data: "Email_Committee", title: "ผู้ตรวจ" },
-                    { data: "Status", title: "สถานะ" },
-                ],
-            });
-            getItem();
-            $.ajax({
-                    method: "GET",
-                    url: "/profile/infouser"
-                }).done(function (data, state, xhr) {
-                   $("#user").html(data.name);
-                   document.getElementById('pic').src=data.photo;
-                }).fail(function (xhr, state, error) {
-                    //get data failed
-                    alert(xhr.responseText);
-                });
-        });
-        function getItem() {
-            //get users from DB
-            $.ajax({
-                method: "GET",
-                url: "/item/dashboard/showAllInfo"
-            }).done(function (dataSet, state, xhr) {
-                //    alert("ok");
-                table.clear();
-                //display modified JSON in DataTable
-                table.rows.add(dataSet).draw();
-            }).fail(function (xhr, state, error) {
-                //get data failed
-                alert(xhr.responseText);
-            });
-        }
+    function barChart() {
+      window.barChart = Morris.Bar({
+        element: 'bar-chart',
+        data: [
+          { y: '2559', a: 2500, b: 1000, c: 500 },
+          { y: '2560', a: 5000, b: 2500, c: 1000 },
+          { y: '2561', a: 5000, b: 500, c: 2500 },
+          { y: '2562', a: 500, b: 5000, c: 1000 },
+          { y: '2563', a: 5000, b: 1000, c: 2500 },
+          { y: '2564', a: 1000, b: 2500, c: 5000 }
+        ],
+        xkey: 'y',
+        ykeys: ['a', 'b', 'c'],
+        labels: ['ปกติ', 'ซ่อม', 'หาย'],
+        lineColors: ['#5DD325', '#EAEA25', '#5DD325'],
+        lineWidth: '3px',
+        resize: true,
+        redraw: true
+      });
+    }
 
-    </script>
+    var table
+    $(document).ready(function () {
+      $("#all").click(function () {
+        window.location.replace("/information");
+      });
+
+      table = $('#myTable').DataTable({
+
+        columns: [
+          { data: "Image", title: "รูปภาพ" },
+          { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
+          { data: "Location", title: "สถานที่" },
+          { data: "Received_date", title: "วันที่ได้รับ" },
+          { data: "Original_value", title: "มูลค่า" },
+          { data: "Department", title: "แผนกที่ดูแล" },
+          { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
+          { data: "Email_Committee", title: "ผู้ตรวจ" },
+          { data: "Status", title: "สถานะ" },
+        ],
+      });
+      getItem();
+      $.ajax({
+        method: "GET",
+        url: "/profile/infouser"
+      }).done(function (data, state, xhr) {
+        $("#user").html(data.name);
+        document.getElementById('pic').src = data.photo;
+      }).fail(function (xhr, state, error) {
+        //get data failed
+        alert(xhr.responseText);
+      });
+    });
+    function getItem() {
+      //get users from DB
+      $.ajax({
+        method: "GET",
+        url: "/item/dashboard/showAllInfo"
+      }).done(function (dataSet, state, xhr) {
+        //    alert("ok");
+        table.clear();
+        //display modified JSON in DataTable
+        table.rows.add(dataSet).draw();
+      }).fail(function (xhr, state, error) {
+        //get data failed
+        alert(xhr.responseText);
+      });
+    }
+
+  </script>
+
+  <style>
+    .morris-hover {
+      position: absolute;
+      z-index: 1000;
+    }
+
+    .morris-hover.morris-default-style {
+      border-radius: 10px;
+      padding: 6px;
+      color: #ffffff;
+      background: rgb(255, 255, 255);
+      border: solid 2px rgb(230, 230, 230);
+      font-family: sans-serif;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .morris-hover.morris-default-style .morris-hover-row-label {
+      font-weight: bold;
+      margin: 0.25em 0;
+    }
+
+    .morris-hover.morris-default-style .morris-hover-point {
+      white-space: nowrap;
+      margin: 0.1em 0;
+    }
+
+    svg {
+      width: 100%;
+    }
+  </style>
 
 </head>
 
+
 <body>
-    <!-- navbar -->
-    <!-- ============================================================== -->
-    <div class="dashboard-header">
-        <nav class="navbar navbar-expand-lg bg-white fixed-top">
-            <div class="row">
-                <div class="col-sm-2 ml-4 ">
-                    <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
-                </div>
-                <div>
+  <!-- navbar -->
+  <!-- ============================================================== -->
+  <div class="dashboard-header">
+    <nav class="navbar navbar-expand-lg bg-white fixed-top">
+      <div class="row">
+        <div class="col-sm-2 ml-4 ">
+          <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
+        </div>
+        <div>
 
-                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
-                        สำนักเทคโนโลยีสารสนเทศ</div>
+          <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
+            สำนักเทคโนโลยีสารสนเทศ</div>
 
-                </div>
+        </div>
+      </div>
+
+
+      <div class="nav-item dropdown connection ml-5">
+        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
+
+      </div>
+
+      <div class="nav-item ">
+        <input class="" type="text" placeholder="ค้นหา..">
+      </div>
+
+
+
+
+      <ul class="navbar-nav ml-auto navbar-right-top">
+
+        <li class="nav-item dropdown notification">
+          <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span
+              class="indicator"></span></a>
+          <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
+
+            <li>
+              <div class="list-footer"> <a href="#">การแจ้งเตือนทั้งหมด</a></div>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown nav-user">
+          <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false"><img id="pic" src="assets/images/avatar-1.jpg" alt=""
+              class="user-avatar-md rounded-circle"></a>
+          <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" aria-labelledby="navbarDropdownMenuLink2">
+            <div class="nav-user-info">
+              <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
+              <span class="status"></span><span class="ml-2">กรรมการ</span>
             </div>
+            <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
+          </div>
+        </li>
+      </ul>
 
+    </nav>
+  </div>
+  <!-- ============================================================== -->
+  <!-- จบ navbar -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
+  <!-- navbar ด้านข้าง -->
+  <!-- ============================================================== -->
+  <div class="nav-left-sidebar sidebar-light">
+    <div class="menu-list">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav flex-column">
 
-            <div class="nav-item dropdown connection ml-5">
-                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
+            <li class="nav-item ">
+              <a class="nav-link" href="/mainpage" aria-expanded="false"><i class="fa fa-home"></i>หน้าหลัก
+              </a>
+              <div id="submenu-1" class="collapse submenu">
+                <ul class="nav flex-column">
 
-            </div>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link " href="/User_history" aria-expanded="false"><i class="fa fa-user"></i>โปรไฟล์ </a>
+              <div id="submenu-1" class="collapse submenu">
+                <ul class="nav flex-column">
 
-            <div class="nav-item ">
-                <input class="" type="text" placeholder="ค้นหา..">
-            </div>
+                </ul>
+              </div>
+            </li>
 
+            <li class="nav-item ">
+              <a class="nav-link active" href="/dashboard" aria-expanded="false"><i class="fa fa-dashboard"></i>แดชบอร์ด
+              </a>
+              <div id="submenu-1" class="collapse submenu">
+                <ul class="nav flex-column">
 
+                </ul>
+              </div>
+            </li>
 
+            <li class="nav-item ">
+              <a class="nav-link " href="/manageUser" aria-expanded="false"><i class="fa fa-edit"></i>จัดการผู้ใช้
+              </a>
+              <div id="submenu-1" class="collapse submenu">
+                <ul class="nav flex-column">
 
-            <ul class="navbar-nav ml-auto navbar-right-top">
+                </ul>
+              </div>
+            </li>
 
-                <li class="nav-item dropdown notification">
-                    <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span
-                            class="indicator"></span></a>
-                    <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
-
-                        <li>
-                            <div class="list-footer"> <a href="#">การแจ้งเตือนทั้งหมด</a></div>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown nav-user">
-                    <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false"><img id="pic" src="assets/images/avatar-1.jpg" alt=""
-                            class="user-avatar-md rounded-circle"></a>
-                    <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
-                        aria-labelledby="navbarDropdownMenuLink2">
-                        <div class="nav-user-info">
-                            <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
-                            <span class="status"></span><span class="ml-2">กรรมการ</span>
-                        </div>
-                        <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
-                    </div>
-                </li>
-            </ul>
-
-        </nav>
+            <li class="nav-item ">
+              <a class="nav-link " href="/Date_manage" aria-expanded="false"><i class="fa fa-clock"></i>จัดการเวลา
+              </a>
+              <div id="submenu-1" class="collapse submenu">
+                <ul class="nav flex-column">
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
     </div>
-    <!-- ============================================================== -->
-    <!-- จบ navbar -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- navbar ด้านข้าง -->
-    <!-- ============================================================== -->
-    <div class="nav-left-sidebar sidebar-light">
-        <div class="menu-list">
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+
+  </div>
+  <!-- ============================================================== -->
+  <!-- เสร็จ navbar -->
+  <!-- ============================================================== -->
+
+  <div class="dashboard-wrapper mt-5">
+    <div class="dashboard-finance">
+      <div class="container-fluid dashboard-content">
+        <!-- ============================================================== -->
+        <!-- หัวกระดาษ  -->
+        <!-- ============================================================== -->
+        <div class="row">
+          <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+            <div class="page-header ml-5 mt-2">
+              <h3 class="mb-2 ">แดชบอร์ด </h3>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+            <!-- ======================================================== -->
+            <!-- ดรอปดาว -->
+            <!-- ======================================================== -->
+            <div class="input-group mb-3">
+              <div class="input-group-append be-addon">
+                <button type="button" data-toggle="dropdown" class="btn dropdown-toggle"
+                  style="background-color: white;">ปีตรวจ</button>
+                <div class="dropdown-menu">
+                  <a href="#" class="dropdown-item">2559</a>
+                  <a href="#" class="dropdown-item">2560</a>
+                  <a href="#" class="dropdown-item">2561</a>
+                  <a href="#" class="dropdown-item">2562</a>
+                  <a href="#" class="dropdown-item">2563</a>
+                  <div class="dropdown-divider"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row mt-3">
+          <div class=" col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1" style="background-color: rgb(239,239,246);">
+
+          </div>
+          <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ml-3 ">
+            <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+              <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                  ครุภัณฑ์ทั้งหมด
+                  <h1>5000</h1>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                  <img class="" src="img/all.PNG " alt="" style="width:120%">
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
+            <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+              <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                  ครุภัณฑ์ปกติ
+                  <h1>5000</h1>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                  <img class="" src="img/normal.PNG " alt="" style="width:130%">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
+            <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+              <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                  ครุภัณฑ์ส่งซ่อม
+                  <h1>5000</h1>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                  <img class="" src="img/fix.PNG" alt="" style="width:130%">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5">
+            <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+              <div class="row">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                  ครุภัณฑ์สูญหาย
+                  <h1>5000</h1>
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                  <img class="" src="img/dis.PNG" alt="" style="width:250%">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- เสร็จหัวกระดาษ  -->
+        <!-- ============================================================== -->
+        <!-- แถบ -->
+        <!-- ============================================================== -->
+
+       
+       
+        <div class="col">
+          <div class="row ">
+          <div class=" col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="background-color: white">
+            <div id="bar-chart"></div>
+          </div></div>
+        
+
+
+          <!-- ============================================================== -->
+          <!-- ตารางข้อมูล -->
+          <!-- ============================================================== -->
+          <!-- ============================================================== -->
+          <div class="container my-2 " style="background-color: white;">
+            <br>
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  สถานที่
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav flex-column">
-
-                        <li class="nav-item ">
-                            <a class="nav-link" href="/mainpage" aria-expanded="false"><i
-                                    class="fa fa-home"></i>หน้าหลัก
-                            </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="/User_history" aria-expanded="false"><i
-                                    class="fa fa-user"></i>โปรไฟล์ </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link active" href="/dashboard" aria-expanded="false"><i
-                                    class="fa fa-dashboard"></i>แดชบอร์ด </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="/manageUser" aria-expanded="false"><i
-                                    class="fa fa-edit"></i>จัดการผู้ใช้
-                            </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-
-                                </ul>
-                            </div>
-                        </li>
-
-                        <li class="nav-item ">
-                            <a class="nav-link " href="/Date_manage" aria-expanded="false"><i
-                                    class="fa fa-clock"></i>จัดการเวลา
-                            </a>
-                            <div id="submenu-1" class="collapse submenu">
-                                <ul class="nav flex-column">
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                  <a class="dropdown-item" href="#">Dropdown link</a>
                 </div>
-            </nav>
-        </div>
-
-    </div>
-    <!-- ============================================================== -->
-    <!-- เสร็จ navbar -->
-    <!-- ============================================================== -->
-
-    <div class="dashboard-wrapper mt-5">
-        <div class="dashboard-finance">
-            <div class="container-fluid dashboard-content">
-                <!-- ============================================================== -->
-                <!-- หัวกระดาษ  -->
-                <!-- ============================================================== -->
-                <div class="row">
-                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
-                        <div class="page-header ml-5 mt-2">
-                            <h3 class="mb-2 ">แดชบอร์ด </h3>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                        <!-- ======================================================== -->
-                        <!-- ดรอปดาว -->
-                        <!-- ======================================================== -->
-                        <div class="input-group mb-3">
-                            <div class="input-group-append be-addon">
-                                <button type="button" data-toggle="dropdown" class="btn dropdown-toggle"
-                                    style="background-color: white;">ปีตรวจ</button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">2559</a>
-                                    <a href="#" class="dropdown-item">2560</a>
-                                    <a href="#" class="dropdown-item">2561</a>
-                                    <a href="#" class="dropdown-item">2562</a>
-                                    <a href="#" class="dropdown-item">2563</a>
-                                    <div class="dropdown-divider"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+              </div>
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  สถานะ
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                  <a class="dropdown-item" href="#">Dropdown link</a>
                 </div>
-                <div class="row mt-3">
-                    <div class=" col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1" style="background-color: rgb(239,239,246);">
-
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ml-3 ">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
-                                    ครุภัณฑ์ทั้งหมด
-                                    <h1>5000</h1>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="img/all.PNG " alt="" style="width:120%">
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
-                                    ครุภัณฑ์ปกติ
-                                    <h1>5000</h1>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="img/normal.PNG " alt="" style="width:130%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
-                                    ครุภัณฑ์ส่งซ่อม
-                                    <h1>5000</h1>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="img/fix.PNG" alt="" style="width:130%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                    ครุภัณฑ์สูญหาย
-                                    <h1>5000</h1>
-                                </div>
-                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                    <img class="" src="img/dis.PNG" alt="" style="width:250%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+              </div>
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  ผู้ตรวจสอบ
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                  <a class="dropdown-item" href="#">Dropdown link</a>
                 </div>
-                <!-- ============================================================== -->
-                <!-- เสร็จหัวกระดาษ  -->
-                <!-- ============================================================== -->
-                <!-- แถบ -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- ตารางข้อมูล -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <div class="container my-2 " style="background-color: white;">
-                    <br>
-                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                        
+              </div>
+              <button type="button" class="btn ">รีเซตการกรอง</button><br><br>
 
-                        <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                สถานที่
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                            </div>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                สถานะ
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                            </div>
-                        </div> 
-                        <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                ผู้ตรวจสอบ
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                            </div>
-                        </div>
-                        <button type="button" class="btn ">รีเซตการกรอง</button><br><br>
-
-                    </div>
-                    <button class="btn">Export to excel</button>
-                    <button class="btn">Export to PDF</button>
-                    <button class="btn">Qrcode</button>
-                    <br> <br><br><br>
-                    <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
-                    </table>
-                </div>
-               
-                <!-- ============================================================== -->
-                <!-- จบตาราง -->
             </div>
+            <button class="btn">Export to excel</button>
+            <button class="btn">Export to PDF</button>
+            <button class="btn">Qrcode</button>
+            <br> <br><br><br>
+            <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
+            </table>
+          </div>
+
+          <!-- ============================================================== -->
+          <!-- จบตาราง -->
         </div>
+      </div>
 
 </body>
