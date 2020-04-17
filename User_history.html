@@ -54,7 +54,6 @@
 
                 ],
             });
-            getItem();
 
             $.ajax({
                 method: "GET",
@@ -95,19 +94,9 @@
                     $("#fix").html(dataSet[0].Numbers_of_Inspected_Item);
                 })
 
-            }).fail(function (xhr, state, error) {
-                //get data failed
-                alert(xhr.responseText);
-            });
-
-
-
-        });
-        function getItem() {
-            //get users from DB
-            $.ajax({
+                $.ajax({
                 method: "GET",
-                url: "/user/profile/inspectedInfoItem/tanapun@gmail.com"
+                url: "/user/profile/inspectedInfoItem/"+data.email
             }).done(function (dataSet, state, xhr) {
                 //    alert("ok");
                 table.clear();
@@ -117,7 +106,16 @@
                 //get data failed
                 alert(xhr.responseText);
             });
-        }
+
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+
+
+
+        });
+        
     </script>
 </head>
 

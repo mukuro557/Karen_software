@@ -45,23 +45,24 @@
     <title>นับครุภัณฑ์</title>
     <script>
         $(document).ready(function () {
-            // $("#all").click(function () {
-            //     window.location.replace("/information");
-            // });
-            // $.ajax({
-            //     method: "GET",
-            //     url: "/profile/infouser"
-            // }).done(function (data, state, xhr) {
-            //     $("#user").html(data.name);
-            //     document.getElementById('pic').src = data.photo;
-            // }).fail(function (xhr, state, error) {
-            //     //get data failed
-            //     alert(xhr.responseText);
-            // });
+            $("#all").click(function () {
+                window.location.replace("/information");
+            });
+            $.ajax({
+                method: "GET",
+                url: "/profile/infouser"
+            }).done(function (data, state, xhr) {
+                $("#user").html(data.name);
+                document.getElementById('pic').src = data.photo;
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
             $.ajax({
                 method: "GET",
                 url: "/dateTime/showDateTime"
             }).done(function (data, state, xhr) {
+                alert(data[0].Date_end)
                 $('#calendar1').fullCalendar({
                     header: {
                         left: 'prev,next today',
@@ -97,15 +98,16 @@
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
                 <div class="col-sm-2 ml-4 ">
-                    <img src="img/itlogo.png" style="width: 100%;">
+                    <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
                 </div>
                 <div>
 
-                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">
+                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
                         สำนักเทคโนโลยีสารสนเทศ</div>
 
                 </div>
             </div>
+
 
             <div class="nav-item dropdown connection ml-5">
                 <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -141,7 +143,7 @@
                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
-                            <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
+                            <h5 class="mb-0 text-white nav-user-name user" id="user">Ruttathorn </h5>
                             <span class="status"></span><span class="ml-2">กรรมการ</span>
                         </div>
                         <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
