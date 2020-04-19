@@ -48,6 +48,8 @@
             $("#all").click(function () {
                 window.location.replace("/information");
             });
+
+
             $.ajax({
                 method: "GET",
                 url: "/profile/infouser"
@@ -58,6 +60,8 @@
                 //get data failed
                 alert(xhr.responseText);
             });
+
+
             $.ajax({
                 method: "GET",
                 url: "/dateTime/showDateTime"
@@ -85,9 +89,7 @@
                 //get data failed
                 alert(xhr.responseText);
             });
-
         });
-
     </script>
 </head>
 
@@ -245,7 +247,7 @@
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                         <button type="button" class="btn btn-warning" data-toggle="modal"
-                        data-target=".bd-example-modal-lg"> แก้ไขเวลา</button>
+                            data-target=".bd-example-modal-lg"> แก้ไขเวลา</button>
 
                         <button type="button" class="btn btn-primary" data-toggle="modal"
                             data-target=".bd-example-modal-sm"> เพิ่มเวลา</button>
