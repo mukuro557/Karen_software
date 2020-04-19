@@ -89,6 +89,43 @@
                 //get data failed
                 alert(xhr.responseText);
             });
+
+            // ยังไม่เสร็จ
+            $("#bt_AddNewDate").submit(function (e) {
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+
+                var form = $(this);
+                var url = form.attr('action');
+
+                $.ajax({
+                    type: "POST",
+                    url: ("/dateTime/insertTime /:Date_start  /:Date_end"),
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        alert(data); // show response from the php script.
+                    }
+                });
+            });
+
+            // ยังไม่เสร็จ
+            $("#bt_UpdateDate").submit(function (e) {
+
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+
+                var form = $(this);
+                var url = form.attr('action');
+
+                $.ajax({
+                    type: "PUT",
+                    url: ("/dateTime/updateTime/:Date_start/:Date_end"),
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        alert(data); // show response from the php script.
+                    }
+                });
+            });
+
         });
     </script>
 </head>
@@ -309,7 +346,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-primary">ยืนยัน</button>
+                    <button type="button" class="btn btn-primary" id="bt_AddNewDate">ยืนยัน</button>
                 </div>
             </div>
         </div>
@@ -345,7 +382,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="button" class="btn btn-primary">ยืนยัน</button>
+                    <button type="button" class="btn btn-primary" id="bt_UpdateDate">ยืนยัน</button>
                 </div>
             </div>
         </div>

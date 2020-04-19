@@ -459,6 +459,24 @@ app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
     });
 
 });
+
+// Update date // ยังไม่เสร็จ
+app.put("/dateTime/updateTime/:Date_start/:Date_end",function (req, res){
+    const years = req.body.years;
+    const Date_start = req.body.Date_start;
+    const Date_end = req.body.Date_end;
+    const sql = "UPDATE date_check SET Date_start=?, Date_end=? where years=?;"
+    con.query(sql,[years,Date_start,Date_end],function(err,result,fields){
+        if(err){
+            res.status(503).send("Server error");
+        }
+        else{
+            res.send("Edited success");
+        }
+    })
+});
+
+
 app.use("/img", express.static(path.join(__dirname, 'img')));
 app.use("/assets", express.static(path.join(__dirname, 'assets')));
 
