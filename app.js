@@ -190,6 +190,7 @@ app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, r
 app.get("/year/user", function (req, res) {
     const sql = "SELECT DISTINCT Year FROM year_user"
  
+
     con.query(sql , function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
@@ -285,6 +286,21 @@ app.get("/item/dashboard/number", function (req, res) {
         }
     })
 });
+
+// // Load location
+app.get("/item/Location", function (req, res) {
+    const sql = "SELECT DISTINCT Location FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 
 // Load item info
 app.get("/item/:status", function (req, res) {
