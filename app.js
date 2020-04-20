@@ -186,6 +186,37 @@ app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, r
         }
     })
 });
+// Load year
+app.get("/year/user", function (req, res) {
+    const sql = "SELECT DISTINCT Year FROM year_user"
+ 
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Add info of new user in manage user page
+app.put("/manageUser/update/:Email_user/:Email_assigner/:role/:Email_useru", function (req, res) {
+    const year =  new Date().getFullYear();
+    const Email_user = req.params.Email_user;
+    const Email_assigner = req.params.Email_assigner;
+    const role = req.params.role;
+    const Email_useru = req.params.Email_useru;
+
+    const sql = "UPDATE year_user SET year = ?,Email_user = ?,Email_assigner = ?,role = ? WHERE Email_user = ?;";
+    con.query(sql, [year,Email_user,Email_assigner,role,Email_useru], function (err, result, fields) {
+        if(err){
+            res.status(503).send("Server error");
+        }
+        else{
+            res.send("Edited success");
+        }
+    })
+});
 
 // Load email of user
 app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
