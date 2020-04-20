@@ -92,13 +92,9 @@
 
 
             // ยังไม่เสร็จ
-            $("#bt_UpdateDate").click(function (e) {
-                var date_start = $("#Date_start").val();
-                var date_end = $("#Date_end").val();
-                $.ajax({
-                    method: "GET",
-                    url: "/dateTime/showDateTime"
-                }).done(function (data, state, xhr) {
+            $("#bt_UpdateDate").click(function () {
+                var date_start = document.getElementById("Date_start").value;
+                var date_end = document.getElementById("Date_end").value;
                     $.ajax({
                         method: "PUT",
                         url: "/dateTime/updateTime/" + date_start + "/" + date_end
@@ -108,10 +104,6 @@
                         //get data failed
                         alert(xhr.responseText);
                     });
-                }).fail(function (xhr, state, error) {
-                    //get data failed
-                    alert(xhr.responseText);
-                });
                 $(".modal").modal("hide");
                 location.reload();
             });
