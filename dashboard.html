@@ -56,19 +56,32 @@
                 .append(
                     $(document.createElement('select')).prop({
                         style:'border-color: white',
-                        class:'mt-3 ml-3',
+                        class:'mt-3 ml-3 location',
                         id: 'Location',
                         name: 'Location'
                     })
                 )
 
             //drop down status
-            for (const val of values) {
+            for (let i =values.length-1;i>=0;i--) {
                 $('#Location').append($(document.createElement('option')).prop({
-                    value: val,
-                    text: val
+                    value: values[i],
+                    text: values[i]
                 }))
             }
+
+            $('select.location').change(function(){
+                var selected = $(this).children("option:selected").val();
+                $.ajax({
+                method: "GET",
+                url: "/item/dashboard/showAllInfo/"+selected
+            }).done(function (dataSet, state, xhr) {
+                //    alert("ok");
+                table.clear();
+                //display modified JSON in DataTable
+                table.rows.add(dataSet).draw();
+            })
+            })
             })
 
 

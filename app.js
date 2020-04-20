@@ -260,6 +260,20 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
     })
 });
 
+// Load all item info with location
+app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
+    const location = req.params.location;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Location = ?"
+
+    con.query(sql,[location], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 // Load item numbers
 app.get("/item/dashboard/number/:status", function (req, res) {
     const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=? AND Year =?;"
