@@ -93,19 +93,23 @@
 
             // ยังไม่เสร็จ
             $("#bt_UpdateDate").click(function () {
-                var date_start = document.getElementById("Date_start").value;
-                var date_end = document.getElementById("Date_end").value;
-                    $.ajax({
-                        method: "PUT",
-                        url: "/dateTime/updateTime/" + date_start + "/" + date_end
-                    }).done(function (data, state, xhr) {
-                        alert(data);
-                    }).fail(function (xhr, state, error) {
-                        //get data failed
-                        alert(xhr.responseText);
-                    });
-                $(".modal").modal("hide");
-                location.reload();
+                let date = $("#Date_start").data();
+                // month = $('#Date_start').getMonth();
+                // year = $('#Date_start').getFullYear();
+                // let date_start = day+"/"+month+"/"+year;
+                // let date_end = day+"/"+month+"/"+year;
+                // $.ajax({
+                //     method: "PUT",
+                //     url: "/dateTime/updateTime/" + date_start + "/" + date_end
+                // }).done(function (data, state, xhr) {
+                //     alert(data);
+                // }).fail(function (xhr, state, error) {
+                //     //get data failed
+                //     alert(xhr.responseText);
+                // });
+                alert(date[0]);
+                //     $(".modal").modal("hide");
+                //     location.reload();
             });
         });
     </script>
