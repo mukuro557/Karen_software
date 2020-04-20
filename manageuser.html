@@ -53,20 +53,48 @@
                 )
                 .append(
                     $(document.createElement('select')).prop({
-                        id: 'year',
+                        
+                        class: 'year',
                         name: 'year'
                     })
                 )
 
-            for (const val of values) {
-                $('#year').append($(document.createElement('option')).prop({
-                    value: val,
-                    text: val
+            for (let i =values.length-1;i>=0;i--) {
+                $('.year').append($(document.createElement('option')).prop({
+                    value: values[i],
+                    text: values[i]
                 }))
             }
+            
+            $('select.year').change(function(){
+                var selected = $(this).children("option:selected").val();
+                $.ajax({
+                method: "GET",
+                url: "/manageUser/showAllUser/"+selected
+            }).done(function (dataSet, state, xhr) {
+                //    alert("ok");
+                table.clear();
+                //display modified JSON in DataTable
+                table.rows.add(dataSet).draw();
+            })
+            })
+            $.ajax({
+                method: "GET",
+                url: "/manageUser/showAllUser/"+data[data.length-1].Year
+            }).done(function (dataSet, state, xhr) {
+                //    alert("ok");
+                table.clear();
+                //display modified JSON in DataTable
+                table.rows.add(dataSet).draw();
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+           
 
 
             })
+            
             
 
             $("#save").click(function () {
@@ -159,24 +187,17 @@
                 $(".bd-example-modal-sm").modal();
 
             });
-            getItem();
+            
 
         });
-        function getItem() {
-            //get users from DB
-            $.ajax({
-                method: "GET",
-                url: "/manageUser/showAllUser"
-            }).done(function (dataSet, state, xhr) {
-                //    alert("ok");
-                table.clear();
-                //display modified JSON in DataTable
-                table.rows.add(dataSet).draw();
-            }).fail(function (xhr, state, error) {
-                //get data failed
-                alert(xhr.responseText);
-            });
-        }
+       
+
+        function GetSelectedValue(){
+				var e = document.getElementById("year");
+				var result = e.options[e.selectedIndex].value;
+				
+				alert(result)
+			}
     </script>
 </head>
 

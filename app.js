@@ -427,10 +427,11 @@ app.put("/item/edit",function (req, res){
 });
 
 // Load info of all user of manage user page
-app.get("/manageUser/showAllUser", function (req, res) {
-    const sql = "select year,Email_user,Email_assigner,role from year_user"
+app.get("/manageUser/showAllUser/:year", function (req, res) {
+    const year = req.params.year;
+    const sql = "select year,Email_user,Email_assigner,role from year_user WHERE year=?"
 
-    con.query(sql, function (err, result, fields) {
+    con.query(sql,[year], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
