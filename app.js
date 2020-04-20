@@ -436,8 +436,8 @@ app.get("/item5/:inventory", function (req, res) {
 // Insert Work Time
 app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
     const year =  new Date().getFullYear();
-    const Date_start = req.body.Date_start;
-    const Date_end = req.body.Date_end;
+    const Date_start = req.params.Date_start;
+    const Date_end = req.params.Date_end;
 
     const sql = "INSERT INTO date_check(years,Date_start,Date_end) VALUES (?,?,?)";
     con.query(sql, [years,Date_start,Date_end], function (err, result, fields) {
@@ -462,11 +462,11 @@ app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
 
 // Update date // ยังไม่เสร็จ
 app.put("/dateTime/updateTime/:Date_start/:Date_end",function (req, res){
-    const years = req.body.years;
-    const Date_start = req.body.Date_start;
-    const Date_end = req.body.Date_end;
+    const years = new Date().getFullYear();
+    const Date_start = req.params.Date_start;
+    const Date_end = req.params.Date_end;
     const sql = "UPDATE date_check SET Date_start=?, Date_end=? where years=?;"
-    con.query(sql,[years,Date_start,Date_end],function(err,result,fields){
+    con.query(sql,[Date_start,Date_end,years],function(err,result,fields){
         if(err){
             res.status(503).send("Server error");
         }

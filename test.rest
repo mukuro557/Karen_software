@@ -82,7 +82,7 @@ PUT  http://localhost:35000/dateTime/updateTime/:Date_start/:Date_end
 content-type: application/json
 
 {
-    "Date_start": "2020-05-1",
-    "Date_end": "2020-05-30"
+    "Date_start" : "2020-05-01",
+    "Date_end" : "2020-05-30"
     where years = 2020
 }

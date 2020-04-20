@@ -90,42 +90,31 @@
                 alert(xhr.responseText);
             });
 
-            // ยังไม่เสร็จ
-            $("#bt_AddNewDate").submit(function (e) {
-
-                e.preventDefault(); // avoid to execute the actual submit of the form.
-
-                var form = $(this);
-                var url = form.attr('action');
-
-                $.ajax({
-                    type: "POST",
-                    url: ("/dateTime/insertTime /:Date_start  /:Date_end"),
-                    data: form.serialize(), // serializes the form's elements.
-                    success: function (data) {
-                        alert(data); // show response from the php script.
-                    }
-                });
-            });
 
             // ยังไม่เสร็จ
-            $("#bt_UpdateDate").submit(function (e) {
-
-                e.preventDefault(); // avoid to execute the actual submit of the form.
-
-                var form = $(this);
-                var url = form.attr('action');
-
+            $("#bt_UpdateDate").click(function (e) {
+                var date_start = $("#Date_start").val();
+                var date_end = $("#Date_end").val();
                 $.ajax({
-                    type: "PUT",
-                    url: ("/dateTime/updateTime/:Date_start/:Date_end"),
-                    data: form.serialize(), // serializes the form's elements.
-                    success: function (data) {
-                        alert(data); // show response from the php script.
-                    }
+                    method: "GET",
+                    url: "/dateTime/showDateTime"
+                }).done(function (data, state, xhr) {
+                    $.ajax({
+                        method: "PUT",
+                        url: "/dateTime/updateTime/" + date_start + "/" + date_end
+                    }).done(function (data, state, xhr) {
+                        alert(data);
+                    }).fail(function (xhr, state, error) {
+                        //get data failed
+                        alert(xhr.responseText);
+                    });
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
                 });
+                $(".modal").modal("hide");
+                location.reload();
             });
-
         });
     </script>
 </head>
