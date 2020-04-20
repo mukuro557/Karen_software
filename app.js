@@ -315,6 +315,34 @@ app.get("/item/Location", function (req, res) {
     })
 });
 
+// // Load Status
+app.get("/item/Status", function (req, res) {
+    const sql = "SELECT DISTINCT Status FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load all item info with Status
+app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
+    const status = req.params.status;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Status = ?"
+
+    con.query(sql,[status], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 
 // Load item info
 app.get("/item/:status", function (req, res) {
