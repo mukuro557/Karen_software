@@ -525,7 +525,8 @@ app.get("/item5/:inventory", function (req, res) {
 
 // Insert Work Time
 app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
-    const year =  new Date().getFullYear();
+    // ฟิค years ไว้ใน database ทำให้ไม่สามารถใส่ปีซ้ำได้
+    const years =  new Date().getFullYear();
     const Date_start = req.params.Date_start;
     const Date_end = req.params.Date_end;
 
@@ -550,7 +551,7 @@ app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
 
 });
 
-// Update date // ยังไม่เสร็จ
+// Update date
 app.put("/dateTime/updateTime/:Date_start/:Date_end",function (req, res){
     const years = new Date().getFullYear();
     const Date_start = req.params.Date_start;
@@ -561,7 +562,7 @@ app.put("/dateTime/updateTime/:Date_start/:Date_end",function (req, res){
             res.status(503).send("Server error");
         }
         else{
-            res.send("Edited success");
+            res.send("Edit success");
         }
     })
 });

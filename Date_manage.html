@@ -91,25 +91,42 @@
             });
 
 
-            // ยังไม่เสร็จ
+            // Click for update date in database
             $("#bt_UpdateDate").click(function () {
-                let date = $("#Date_start").data();
-                // month = $('#Date_start').getMonth();
-                // year = $('#Date_start').getFullYear();
-                // let date_start = day+"/"+month+"/"+year;
-                // let date_end = day+"/"+month+"/"+year;
-                // $.ajax({
-                //     method: "PUT",
-                //     url: "/dateTime/updateTime/" + date_start + "/" + date_end
-                // }).done(function (data, state, xhr) {
-                //     alert(data);
-                // }).fail(function (xhr, state, error) {
-                //     //get data failed
-                //     alert(xhr.responseText);
-                // });
-                alert(date[0]);
-                //     $(".modal").modal("hide");
-                //     location.reload();
+               let date_start_update = $( "input[type=date][name=Date_start_update]" ).val();
+               let date_end_update = $( "input[type=date][name=Date_end_update]" ).val();
+                $.ajax({
+                    method: "PUT",
+                    url: "/dateTime/updateTime/" + date_start_update + "/" + date_end_update
+                }).done(function (data, state, xhr) {
+                    alert(data);
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
+                });
+                alert(date);
+                    $(".modal").modal("hide");
+                    location.reload();
+            });
+
+
+            // Click for add new date in database
+            // ฟิค years ไว้ใน database ทำให้ไม่สามารถใส่ปีซ้ำได้
+            $("#bt_AddNewDate").click(function () {
+               let date_start_add = $( "input[type=date][name=Date_start_add]" ).val();
+               let date_end_add = $( "input[type=date][name=Date_end_add]" ).val();
+                $.ajax({
+                    method: "POST",
+                    url: "/dateTime/insertTime/" + date_start_add + "/" + date_end_add
+                }).done(function (data, state, xhr) {
+                    alert(data);
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
+                });
+                alert(date);
+                    $(".modal").modal("hide");
+                    location.reload();
             });
         });
     </script>
@@ -321,11 +338,11 @@
                     <form>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
-                            <input type="date" class="form-control" id="Date_start">
+                            <input type="date" class="form-control" name="Date_start_add">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
-                            <input type="date" class="form-control" id="Date_end">
+                            <label for="recipient-name" class="col-form-label">วันที่สิ้นสุด</label>
+                            <input type="date" class="form-control" name="Date_end_add">
                         </div>
                     </form>
                 </div>
@@ -357,11 +374,11 @@
                     <form>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
-                            <input type="date" class="form-control" id="Date_start">
+                            <input type="date" class="form-control" name="Date_start_update">
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
-                            <input type="date" class="form-control" id="Date_end">
+                            <label for="recipient-name" class="col-form-label">วันที่สื้นสุด</label>
+                            <input type="date" class="form-control" name="Date_end_update">
                         </div>
                     </form>
                 </div>
