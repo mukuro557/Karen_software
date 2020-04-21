@@ -359,10 +359,10 @@ app.get("/item/Year", function (req, res) {
 
 // Load all item info with year
 app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
-    const year1 = req.params.year1;
+    const year = req.params.Year;
     const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Year = ?"
 
-    con.query(sql,[year1], function (err, result, fields) {
+    con.query(sql,[year], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -387,7 +387,7 @@ app.get("/item/Email_Committee", function (req, res) {
 
 // Load all item info with commitee
 app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
-    const thecommittee = req.params.thecommittee;
+    const thecommittee = req.params.Email_Committee;
     const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Email_Committee  = ?"
 
     con.query(sql,[thecommittee], function (err, result, fields) {

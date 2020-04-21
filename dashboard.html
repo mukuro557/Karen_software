@@ -82,7 +82,6 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo4/" + selected
                     }).done(function (dataSet, state, xhr) {
-                        
                         //    alert("ok");
                         table.clear();
                         //display modified JSON in DataTable
@@ -208,7 +207,7 @@
                     })) 
                 }
 
-                $('select.thecommittee').change(function () {
+                $('select.commitee').change(function () {
                     var selected = $(this).children("option:selected").val();
                    
                     $.ajax({
@@ -497,7 +496,9 @@
                         <div class="input-group mb-3">
                             <div class="input-group-append be-addon">
                                     <div class="btn-group" role="group">
-                                        <div class="year"></div>
+                                        <div class="year">
+
+                                        </div>
                                     </div>
         
                                 </div>
