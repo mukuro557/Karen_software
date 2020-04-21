@@ -343,6 +343,62 @@ app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
     })
 });
 
+// // Load year
+app.get("/item/Year", function (req, res) {
+    const sql = "SELECT DISTINCT Year FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load all item info with year
+app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
+    const year1 = req.params.year1;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Year = ?"
+
+    con.query(sql,[year1], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// // Load commitee
+app.get("/item/Email_Committee", function (req, res) {
+    const sql = "SELECT DISTINCT Email_Committee FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load all item info with commitee
+app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
+    const thecommittee = req.params.thecommittee;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Email_Committee  = ?"
+
+    con.query(sql,[thecommittee], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 
 // Load item info
 app.get("/item/:status", function (req, res) {
