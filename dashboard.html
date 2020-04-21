@@ -100,6 +100,7 @@
                 for (let i = 0; i < data.length; i++) {
                     values[i] = [data[i].Location]
                 }
+                values[data.length] = 'สถานที่'
                 $('.btnGroupDrop1')
                     .append(
                         $(document.createElement('select')).prop({
@@ -114,9 +115,11 @@
                 for (let i = values.length - 1; i >= 0; i--) {
                     $('#Location').append($(document.createElement('option')).prop({
                         value: values[i],
-                        text: values[i]
+                        text: values[i],
+                        class: values[i]
                     }))
-                }
+                }          
+                $('.สถานที่').hide()
 
                 $('select.location').change(function () {
                     var selected = $(this).children("option:selected").val();
@@ -142,7 +145,7 @@
                 for (let i = 0; i < data.length; i++) {
                     values[i] = [data[i].Status]
                    
-                }
+                }values[data.length] = 'สถานะ'
                 $('.btnGroupDrop2')
                 
                     .append(
@@ -158,9 +161,11 @@
                 for (let i = values.length - 1; i >= 0; i--) {
                     $('#Status').append($(document.createElement('option')).prop({
                         value: values[i],
-                        text: values[i]
+                        text: values[i],
+                        class: values[i]
                     }))
-                }
+                }          
+                $('.สถานะ').hide()
 
                 $('select.status').change(function () {
                     var selected = $(this).children("option:selected").val();
@@ -187,7 +192,7 @@
                 for (let i = 0; i < data.length; i++) {
                     values[i] = [data[i].Email_Committee]
                    
-                }
+                }values[data.length] = 'คณะกรรมการผู้ตรวจสอบ'
                 $('.commitee')
                     .append(
                         $(document.createElement('select')).prop({
@@ -202,10 +207,11 @@
                 for (let i = values.length - 1; i >= 0; i--) {
                     $('#Email_Committee').append($(document.createElement('option')).prop({
                         value: values[i],
-                        text: values[i]
-                        
-                    })) 
-                }
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }          
+                $('.คณะกรรมการผู้ตรวจสอบ').hide()
 
                 $('select.commitee').change(function () {
                     var selected = $(this).children("option:selected").val();
