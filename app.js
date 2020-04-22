@@ -200,6 +200,20 @@ app.get("/year/user", function (req, res) {
     })
 });
 
+// Load year
+app.get("/year/iteem", function (req, res) {
+    const sql = "SELECT DISTINCT Year FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 // Add info of new user in manage user page
 app.put("/manageUser/update/:Email_user/:Email_assigner/:role/:Email_useru", function (req, res) {
     const year =  new Date().getFullYear();
@@ -249,7 +263,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
 
 // Load all item info
 app.get("/item/dashboard/showAllInfo", function (req, res) {
-    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
+    const sql = "select Year,Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
