@@ -288,9 +288,11 @@ app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
     })
 });
 
+
+
 // Load item numbers
 app.get("/item/dashboard/number/:status", function (req, res) {
-    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=? AND Year =?;"
+    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=?;"
     const year =  new Date().getFullYear();
     const status = req.params.status;
     con.query(sql,[status,year] , function (err, result, fields) {
@@ -304,8 +306,35 @@ app.get("/item/dashboard/number/:status", function (req, res) {
 
 // Load item numbers
 app.get("/item/dashboard/number", function (req, res) {
-    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE  Year =?;"
+    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item ;"
     const year =  new Date().getFullYear();
+    con.query(sql,[year] , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load item numbers with year
+app.get("/item/dashboard/number2/:status/:year", function (req, res) {
+    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=? AND year = ?;"
+    const year =  req.params.year;
+    const status = req.params.status;
+    con.query(sql,[status,year] , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load item numbers year
+app.get("/item/dashboard/number1/:year", function (req, res) {
+    const sql = "SELECT count(Status) AS 'Numbers_of_item' FROM item WHERE year = ?;"
+    const year = req.params.year;
     con.query(sql,[year] , function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
