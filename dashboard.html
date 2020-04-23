@@ -289,6 +289,22 @@
             }).done(function (data, state, xhr) {
                 $("#user").html(data.name);
                 document.getElementById('pic').src = data.photo;
+                if (data.email === undefined) {
+                    window.location.replace("/checkpage")
+                } else {
+                    $.ajax({
+                        method: "GET",
+                        url: "/manageUser/showAllUsers/" + data.email
+                    }).done(function (dataSet, state, xhr) {
+                        if (dataSet[0] === undefined) {
+                            window.location.replace("/checkpage")
+                        }
+
+                    }).fail(function (xhr, state, error) {
+                        //get data failed
+                        alert(xhr.responseText);
+                    });
+                }
             }).fail(function (xhr, state, error) {
                 //get data failed
                 alert(xhr.responseText);
