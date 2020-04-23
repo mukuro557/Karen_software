@@ -40,6 +40,144 @@
     <script>
         var table;
         $(document).ready(function () {
+             //====================================== drop down location ======================================
+             $.ajax({
+                method: "GET",
+                url: "/item/Location"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Location]
+                }
+                values[data.length] = 'สถานที่'
+                $('.btnGroupDrop1')
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 location',
+                            id: 'Location',
+                            name: 'Location'
+                        })
+                    )
+
+                //drop down status Location
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Location').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.สถานที่').hide()
+
+                $('select.location').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+            //====================================== drop down status ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Status"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Status]
+
+                } values[data.length] = 'สถานะ'
+                $('.btnGroupDrop2')
+
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 status',
+                            id: 'Status',
+                            name: 'Status'
+                        })
+                    )
+
+                //drop down status Location
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Status').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.สถานะ').hide()
+
+                $('select.status').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo1/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+
+            //====================================== drop down commitee ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Email_Committee"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Email_Committee]
+
+                } values[data.length] = 'คณะกรรมการผู้ตรวจสอบ'
+                $('.commitee')
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 commitee',
+                            id: 'Email_Committee',
+                            name: 'Email_Committee'
+                        })
+                    )
+
+                //drop down status Location
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Email_Committee').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.คณะกรรมการผู้ตรวจสอบ').hide()
+
+                $('select.commitee').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo3/" + selected
+                    }).done(function (dataSet, state, xhr) {
+
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
             table = $('#myTable').DataTable({
 
                 columns: [
@@ -266,9 +404,10 @@
                         <div class="card-body mt-5" style=" background-color: #fff; height: 13cm;">
                             <img class="card-img-top img-fluid" id="pic1" src="img/Pixels.png" alt="Card image cap"
                                 width="250" height="236">
-                            <div class="card-body ml-7">
-                                <h3 class="card-title" id="name">รุตาทร วรพัทธ์ธดา</h3>
-                                <p class="card-text">Admin <p id="mail">บลาๆๆๆ@gmail.com</p> 
+                            <div class="card-body ">
+                                <h3 class="card-title" id="name" style="text-align: center;">รุตาทร วรพัทธ์ธดา</h3>
+                                <p class="card-text" style="text-align: center;">Admin 
+                                    <h6 class="card-text" id="mail" style="text-align: left;">บลาๆๆๆ@gmail.com</h6>
                             </div>
 
                         </div>
@@ -330,52 +469,26 @@
                             <div class="container my-2 " style="background-color: white;">
                                 <br>
                                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                    <button type="button" class="btn ">ค้นหารูป</button>
-                                    <button type="button" class="btn ">กรองการแสดงผล</button>
-
+                                    
+                                 
                                     <div class="btn-group" role="group">
-                                        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            รหัสครุภัณฑ์
-                                        </button>
+                                        <div class="btnGroupDrop1"></div>
+            
                                     </div>
+            
+            
                                     <div class="btn-group" role="group">
-                                        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            สถานที่
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            <a class="dropdown-item" href="#">Dropdown link</a>
-                                            <a class="dropdown-item" href="#">Dropdown link</a>
-                                        </div>
+                                        <div class="btnGroupDrop2"></div>
                                     </div>
+            
                                     <div class="btn-group" role="group">
-                                        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            สถานะ
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            <a class="dropdown-item" href="#">Dropdown link</a>
-                                            <a class="dropdown-item" href="#">Dropdown link</a>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn ">มูลค่า</button>
-                                    <div class="btn-group" role="group">
-                                        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            ผู้ตรวจสอบ
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            <a class="dropdown-item" href="#">Dropdown link</a>
-                                            <a class="dropdown-item" href="#">Dropdown link</a>
-                                        </div>
+                                        <div class="commitee"></div>
                                     </div>
                                     <button type="button" class="btn " style="color: red;">รีเซตการกรอง</button>
-
                                 </div>
 
                                 <br> <br><br><br>
-                                <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
+                                <table id="myTable" class="table table-striped table-bordered ml-4 " style="width:95%">
                                 </table>
                             </div>
                             <!-- เสร็จตารางข้อมูล -->
