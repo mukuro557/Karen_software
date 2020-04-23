@@ -51,12 +51,10 @@
 
             table = $('#myTable').DataTable({
                 columns: [
-                    {
+                {
                         "mData": "Image", title: "รูปภาพ",
                         "render": function (data) {
-
                             return '<img class="pic" src="' + data + '"style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
-
                         }
                     },
                     { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
