@@ -31,11 +31,12 @@
     <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <link href='assets/vendor/full-calendar/css/fullcalendar.css' rel='stylesheet' />
     <link href='assets/vendor/full-calendar/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
     <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script> -->
     <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
     <script src='assets/vendor/full-calendar/js/moment.min.js'></script>
     <script src='assets/vendor/full-calendar/js/fullcalendar.js'></script>
@@ -155,17 +156,15 @@
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
                 <div class="col-sm-2 ml-4 ">
-                    <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
+                    <img src="img/itlogo.png" style="width: 100%;">
                 </div>
                 <div>
 
-                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
+                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">
                         สำนักเทคโนโลยีสารสนเทศ</div>
 
                 </div>
             </div>
-
-
             <div class="nav-item dropdown connection ml-5">
                 <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false"> <i class="fas fa-fw fa-th"></i> </a>
@@ -175,9 +174,6 @@
             <div class="nav-item ">
                 <input class="" type="text" placeholder="ค้นหา..">
             </div>
-
-
-
 
             <ul class="navbar-nav ml-auto navbar-right-top">
 
@@ -201,7 +197,7 @@
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
                             <h5 class="mb-0 text-white nav-user-name user" id="user">Ruttathorn </h5>
-                            <span class="status"></span><span class="ml-2">กรรมการ</span>
+                            <span class="status"></span><span class="ml-2" id="rol2">กรรมการ</span>
                         </div>
                         <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
                     </div>
