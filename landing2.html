@@ -44,6 +44,146 @@
     <script>
         var table;
         $(document).ready(function () {
+            //====================================== drop down location ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Location"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Location]
+                }
+                values[data.length] = 'สถานที่'
+                $('.btnGroupDrop1')
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 location',
+                            id: 'Location',
+                            name: 'Location'
+                        })
+                    )
+
+                //drop down status Location
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Location').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.สถานที่').hide()
+
+                $('select.location').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+            //====================================== drop down status ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Status"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Status]
+
+                } values[data.length] = 'สถานะ'
+                $('.btnGroupDrop2')
+
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 status',
+                            id: 'Status',
+                            name: 'Status'
+                        })
+                    )
+
+                //drop down status 
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Status').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.สถานะ').hide()
+
+                $('select.status').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo1/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+
+            //====================================== drop down commitee ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Email_Committee"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Email_Committee]
+
+                } values[data.length] = 'คณะกรรมการผู้ตรวจสอบ'
+                $('.commitee')
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 commitee',
+                            id: 'Email_Committee',
+                            name: 'Email_Committee'
+                        })
+                    )
+
+                //drop down commitee
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Email_Committee').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.คณะกรรมการผู้ตรวจสอบ').hide()
+
+                $('select.commitee').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo3/" + selected
+                    }).done(function (dataSet, state, xhr) {
+
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+
+
             $("#login").click(function () {
                 window.location.replace("/auth/google");
             });
@@ -256,36 +396,16 @@
                     <br>
                     <div class="ml-3">
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    สถานที่
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
+                           
+                                <div class="btn-group" role="group">
+                                    <div class="btnGroupDrop1"></div>        
+                                </div>                
+                                <div class="btn-group" role="group">
+                                    <div class="btnGroupDrop2"></div>
+                                </div>       
+                                <div class="btn-group" role="group">
+                                    <div class="commitee"></div>
                                 </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    สถานะ
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                </div>
-                            </div>
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    ผู้ตรวจสอบ
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                    <a class="dropdown-item" href="#">Dropdown link</a>
-                                </div>
-                            </div>
                             <button type="button" class="btn ">รีเซตการกรอง</button><br><br>
 
                         </div>
