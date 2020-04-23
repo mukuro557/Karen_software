@@ -243,6 +243,17 @@
 
                             window.location.replace("/checkpage")
                         }
+                        
+                    for (let i = 0; i < dataSet.length; i++) {
+                        if (dataSet[i].role == 2) {
+                            dataSet[i].role = "commitee"
+                        } else if (dataSet[i].role == 1) {
+                            dataSet[i].role = "admin"
+                        } 
+                    }
+                        $("#rol").html(dataSet[0].role)
+                        $("#rol2").html(dataSet[0].role)
+
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
@@ -364,7 +375,7 @@
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
                             <h5 class="mb-0 text-white nav-user-name user" id="user">Ruttathorn </h5>
-                            <span class="status"></span><span class="ml-2">กรรมการ</span>
+                            <span class="status"></span><span class="ml-2" id="rol2">กรรมการ</span>
                         </div>
                         <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
                     </div>
@@ -465,7 +476,7 @@
                                 width="250" height="236">
                             <div class="card-body ">
                                 <h3 class="card-title" id="name" style="text-align: center;">รุตาทร วรพัทธ์ธดา</h3>
-                                <p class="card-text" style="text-align: center;">Admin
+                                <p class="card-text" style="text-align: center;" id="rol">Admin
                                     <h6 class="card-text" id="mail" style="text-align: left;">บลาๆๆๆ@gmail.com</h6>
                             </div>
 
