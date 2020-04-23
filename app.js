@@ -78,6 +78,9 @@ app.get("/", (req, res) => {
 });
 
 //Return manageUser page
+app.get("/checkpage", function (req, res) {
+    res.sendFile(path.join(__dirname, "/checkpage.html"))
+});
 app.get("/manageUser", function (req, res) {
     res.sendFile(path.join(__dirname, "/manageUser.html"))
 });
@@ -154,6 +157,21 @@ app.put("/item/addImage",function (req, res){
         }
         else{
             res.send("Edited success");
+        }
+    })
+});
+
+// Load info of all user 
+app.get("/manageUser/showAllUsers/:Email_user", function (req, res) {
+    const Email_user = req.params.Email_user;
+    // const year =  new Date().getFullYear();
+    const sql = "select year,Email_user,Email_assigner,role from year_user WHERE Email_user = ?"
+
+    con.query(sql,[Email_user], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
         }
     })
 });

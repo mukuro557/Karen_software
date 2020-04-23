@@ -12,7 +12,7 @@ router.get("/google", passport.authenticate("google", {scope:["profile","email"]
 router.get("/google/redirect",passport.authenticate("google"), (req,res) => {
     // res.send("Login OK, show profile");
     // res.send(req.user);
-    res.redirect("/mainpage");
+    res.redirect("/checkpage");
 }),
 
 // logout
