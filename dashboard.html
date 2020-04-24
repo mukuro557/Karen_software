@@ -190,8 +190,14 @@
 
                 var values = [];
                 for (let i = 0; i < data.length; i++) {
-                    values[i] = [data[i].Status]
-
+                    if (data[i].Status == 0) {
+                        values[i] = "สูญหาย"
+                    } else if (data[i].Status == 1) {
+                        values[i] = "ปกติ"
+                    } else if (data[i].Status == 2) {
+                        values[i] = "ส่งซ่อม"
+                    }
+                    
                 } values[data.length] = 'สถานะ'
                 $('.btnGroupDrop2')
 
@@ -335,14 +341,14 @@
                             window.location.replace("/checkpage")
                         }
                         for (let i = 0; i < dataSet.length; i++) {
-                        if (dataSet[i].role == 2) {
-                            dataSet[i].role = "กรรมการ"
-                        } else if (dataSet[i].role == 1) {
-                            dataSet[i].role = "admin"
-                        } 
-                    }
+                            if (dataSet[i].role == 2) {
+                                dataSet[i].role = "กรรมการ"
+                            } else if (dataSet[i].role == 1) {
+                                dataSet[i].role = "admin"
+                            }
+                        }
                         $("#rol2").html(dataSet[0].role)
-                        
+
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
@@ -423,11 +429,12 @@
                         for (let j = 0; j < dataSet.length; j++) {
 
                             if (dataSet[j].Year == year[i]) {
-                                if (dataSet[j].Status == 1) {
+                                if (dataSet[j].Status == 'ปกติ') {
+
                                     normalna++;
-                                } else if (dataSet[j].Status == 0) {
+                                } else if (dataSet[j].Status == 'สูญหาย') {
                                     fixna++;
-                                } else if (dataSet[j].Status == 2) {
+                                } else if (dataSet[j].Status == 'ส่งซ่อม') {
                                     disna++;
                                 }
                             }
@@ -447,6 +454,7 @@
                         if (count == year.length) {
                             datas = [{ y: year[i], a: normal[i], b: dis[i], c: fix[i] }]
                             count--;
+
                         } else {
                             datas.push({ y: year[i], a: normal[i], b: dis[i], c: fix[i] })
 
