@@ -76,3 +76,13 @@ content-type: application/json
 ### Load info of all user of manage user page
 GET  http://localhost:35000/manageUser/showAllUser
 content-type: application/json
+
+### Edit date // ยังไม่เสร็จ
+PUT  http://localhost:35000/dateTime/updateTime/:Date_start/:Date_end
+content-type: application/json
+
+{
+    "Date_start" : "2020-05-01",
+    "Date_end" : "2020-05-30"
+    where years = 2020
+}

@@ -186,6 +186,52 @@ app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, r
         }
     })
 });
+// Load year
+app.get("/year/user", function (req, res) {
+    const sql = "SELECT DISTINCT Year FROM year_user"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load year
+app.get("/year/iteem", function (req, res) {
+    const sql = "SELECT DISTINCT Year FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Add info of new user in manage user page
+app.put("/manageUser/update/:Email_user/:Email_assigner/:role/:Email_useru", function (req, res) {
+    const year =  new Date().getFullYear();
+    const Email_user = req.params.Email_user;
+    const Email_assigner = req.params.Email_assigner;
+    const role = req.params.role;
+    const Email_useru = req.params.Email_useru;
+
+    const sql = "UPDATE year_user SET year = ?,Email_user = ?,Email_assigner = ?,role = ? WHERE Email_user = ?;";
+    con.query(sql, [year,Email_user,Email_assigner,role,Email_useru], function (err, result, fields) {
+        if(err){
+            res.status(503).send("Server error");
+        }
+        else{
+            res.send("Edited success");
+        }
+    })
+});
 
 // Load email of user
 app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
@@ -217,7 +263,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
 
 // Load all item info
 app.get("/item/dashboard/showAllInfo", function (req, res) {
-    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
+    const sql = "select Year,Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -228,9 +274,25 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
     })
 });
 
+// Load all item info with location
+app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
+    const location = req.params.location;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Location = ?"
+
+    con.query(sql,[location], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+
+
 // Load item numbers
 app.get("/item/dashboard/number/:status", function (req, res) {
-    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=? AND Year =?;"
+    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=?;"
     const year =  new Date().getFullYear();
     const status = req.params.status;
     con.query(sql,[status,year] , function (err, result, fields) {
@@ -244,7 +306,7 @@ app.get("/item/dashboard/number/:status", function (req, res) {
 
 // Load item numbers
 app.get("/item/dashboard/number", function (req, res) {
-    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE  Year =?;"
+    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item ;"
     const year =  new Date().getFullYear();
     con.query(sql,[year] , function (err, result, fields) {
         if (err) {
@@ -254,6 +316,132 @@ app.get("/item/dashboard/number", function (req, res) {
         }
     })
 });
+
+// Load item numbers with year
+app.get("/item/dashboard/number2/:status/:year", function (req, res) {
+    const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=? AND year = ?;"
+    const year =  req.params.year;
+    const status = req.params.status;
+    con.query(sql,[status,year] , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load item numbers year
+app.get("/item/dashboard/number1/:year", function (req, res) {
+    const sql = "SELECT count(Status) AS 'Numbers_of_item' FROM item WHERE year = ?;"
+    const year = req.params.year;
+    con.query(sql,[year] , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// // Load location
+app.get("/item/Location", function (req, res) {
+    const sql = "SELECT DISTINCT Location FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// // Load Status
+app.get("/item/Status", function (req, res) {
+    const sql = "SELECT DISTINCT Status FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load all item info with Status
+app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
+    const status = req.params.status;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Status = ?"
+
+    con.query(sql,[status], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// // Load year
+app.get("/item/Year", function (req, res) {
+    const sql = "SELECT DISTINCT Year FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load all item info with year
+app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
+    const year = req.params.Year;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Year = ?"
+
+    con.query(sql,[year], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// // Load commitee
+app.get("/item/Email_Committee", function (req, res) {
+    const sql = "SELECT DISTINCT Email_Committee FROM item"
+ 
+
+    con.query(sql , function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load all item info with commitee
+app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
+    const thecommittee = req.params.Email_Committee;
+    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Email_Committee  = ?"
+
+    con.query(sql,[thecommittee], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 
 // Load item info
 app.get("/item/:status", function (req, res) {
@@ -380,10 +568,11 @@ app.put("/item/edit",function (req, res){
 });
 
 // Load info of all user of manage user page
-app.get("/manageUser/showAllUser", function (req, res) {
-    const sql = "select year,Email_user,Email_assigner,role from year_user"
+app.get("/manageUser/showAllUser/:year", function (req, res) {
+    const year = req.params.year;
+    const sql = "select year,Email_user,Email_assigner,role from year_user WHERE year=?"
 
-    con.query(sql, function (err, result, fields) {
+    con.query(sql,[year], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {
@@ -435,9 +624,10 @@ app.get("/item5/:inventory", function (req, res) {
 
 // Insert Work Time
 app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
-    const year =  new Date().getFullYear();
-    const Date_start = req.body.Date_start;
-    const Date_end = req.body.Date_end;
+    // ฟิค years ไว้ใน database ทำให้ไม่สามารถใส่ปีซ้ำได้
+    const years =  new Date().getFullYear();
+    const Date_start = req.params.Date_start;
+    const Date_end = req.params.Date_end;
 
     const sql = "INSERT INTO date_check(years,Date_start,Date_end) VALUES (?,?,?)";
     con.query(sql, [years,Date_start,Date_end], function (err, result, fields) {
@@ -459,6 +649,24 @@ app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
     });
 
 });
+
+// Update date
+app.put("/dateTime/updateTime/:Date_start/:Date_end",function (req, res){
+    const years = new Date().getFullYear();
+    const Date_start = req.params.Date_start;
+    const Date_end = req.params.Date_end;
+    const sql = "UPDATE date_check SET Date_start=?, Date_end=? where years=?;"
+    con.query(sql,[Date_start,Date_end,years],function(err,result,fields){
+        if(err){
+            res.status(503).send("Server error");
+        }
+        else{
+            res.send("Edit success");
+        }
+    })
+});
+
+
 app.use("/img", express.static(path.join(__dirname, 'img')));
 app.use("/assets", express.static(path.join(__dirname, 'assets')));
 

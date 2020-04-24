@@ -32,18 +32,172 @@
 
     <title>นับครุภัณฑ์</title>
     <script>
-        $(document).ready(function(){
+        var table;
+        var Email_user;
+        var rol;
+        $(document).ready(function () {
             $.ajax({
+                method: "GET",
+                url: "/year/user"
+            }).done(function (data, state, xhr) {
+                
+                var values = [];
+                for(let i =0;i<data.length;i++){
+                values[i] = [data[i].Year]
+                }
+            $('#container2')
+                .append(
+                    $(document.createElement('label')).prop({
+                        for: 'year'
+                    }).html('ปีที่ได้รับแต่งตั้ง : ')
+                )
+                .append(
+                    $(document.createElement('select')).prop({
+                        
+                        class: 'year',
+                        name: 'year'
+                    })
+                )
+
+            for (let i =values.length-1;i>=0;i--) {
+                $('.year').append($(document.createElement('option')).prop({
+                    value: values[i],
+                    text: values[i]
+                }))
+            }
+            
+            $('select.year').change(function(){
+                var selected = $(this).children("option:selected").val();
+                $.ajax({
+                method: "GET",
+                url: "/manageUser/showAllUser/"+selected
+            }).done(function (dataSet, state, xhr) {
+                //    alert("ok");
+                table.clear();
+                //display modified JSON in DataTable
+                table.rows.add(dataSet).draw();
+            })
+            })
+            $.ajax({
+                method: "GET",
+                url: "/manageUser/showAllUser/"+data[data.length-1].Year
+            }).done(function (dataSet, state, xhr) {
+                //    alert("ok");
+                table.clear();
+                //display modified JSON in DataTable
+                table.rows.add(dataSet).draw();
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+           
+
+
+            })
+            
+            
+
+            $("#save").click(function () {
+                let newmail = $("#editMail").val();
+                $.ajax({
                     method: "GET",
                     url: "/profile/infouser"
-                }).done(function (data, state, xhr) {
-                   $("#user").html(data.name);
-                   document.getElementById('pic').src=data.photo;
+                }).done(function (dataSet, state, xhr) {
+                    $.ajax({
+                        method: "PUT",
+                        url: "/manageUser/update/" + newmail + "/" + dataSet.email + "/" + rol + "/" + Email_user
+                    }).done(function (data, state, xhr) {
+                        alert(data)
+                    }).fail(function (xhr, state, error) {
+                        //get data failed
+                        alert(xhr.responseText);
+                    });
                 }).fail(function (xhr, state, error) {
                     //get data failed
                     alert(xhr.responseText);
                 });
+                $(".modal").modal("hide");
+                location.reload()
+            });
+
+            $("#save2").click(function () {
+                let newmail = $("#editMail2").val();
+                let role;
+                var x = document.getElementById("admin").checked;
+                if (x) {
+                    role = 1;
+                } else {
+                    role = 2
+                }
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "/profile/infouser"
+                }).done(function (dataSet, state, xhr) {
+                    $.ajax({
+                        method: "POST",
+                        url: "/manageUser/add/" + newmail + "/" + dataSet.email + "/" + role
+                    }).done(function (data, state, xhr) {
+                        alert(data)
+                    }).fail(function (xhr, state, error) {
+                        //get data failed
+                        alert(xhr.responseText);
+                    });
+                    location.reload()
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
+                });
+                $(".modal").modal("hide");
+                location.reload()
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "/profile/infouser"
+            }).done(function (data, state, xhr) {
+                $("#user").html(data.name);
+                document.getElementById('pic').src = data.photo;
+            }).fail(function (xhr, state, error) {
+                //get data failed
+                alert(xhr.responseText);
+            });
+            table = $('#myTable').DataTable({
+                columns: [
+                    { data: "Email_user", title: "ผู้ใช้" },
+                    { data: "Email_assigner", title: "ผู้แต่งตั้ง" },
+                    { data: "role", title: "หน้าที่" },
+                    {
+                        "targets": -1,
+                        "data": null,
+                        "defaultContent": "<button class='btn btn-warning'>แก้ไข</button>"
+                    }
+                ],
+            });
+            $('#adduser').on('click', function () {
+                $(".bd-example-modal-lg").modal();
+
+            });
+            $('#myTable tbody').on('click', 'button', function () {
+                var data = table.row($(this).parents('tr')).data();
+                Email_user = data.Email_user;
+                rol = data.role;
+                $("#editMail").val(Email_user)
+                $(".bd-example-modal-sm").modal();
+
+            });
+            
+
         });
+       
+
+        function GetSelectedValue(){
+				var e = document.getElementById("year");
+				var result = e.options[e.selectedIndex].value;
+				
+				alert(result)
+			}
     </script>
 </head>
 
@@ -57,9 +211,10 @@
                     <img src="img/itlogo.png" style="width: 100%;">
                 </div>
                 <div>
-                    
-                <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">สำนักเทคโนโลยีสารสนเทศ</div>
-           
+
+                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">
+                        สำนักเทคโนโลยีสารสนเทศ</div>
+
                 </div>
             </div>
 
@@ -105,7 +260,7 @@
     <!-- ============================================================== -->
     <!-- จบ navbar -->
     <!-- ============================================================== -->
- <!-- ============================================================== -->
+    <!-- ============================================================== -->
     <!-- navbar ด้านข้าง -->
     <!-- ============================================================== -->
     <div class="nav-left-sidebar sidebar-light">
@@ -189,30 +344,11 @@
                         <div class="page-header">
                             <h2 class="mb-2">จัดการผู้ใช้</h2>
                         </div>
-                        <div class="input-group mb-3">
-                    <div class="input-group-append be-addon">
-                        <button type="button" data-toggle="dropdown" class="btn dropdown-toggle"
-                            style="background-color: white;">ปีตรวจ</button>
-                        <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">2559</a>
-                            <a href="#" class="dropdown-item">2560</a>
-                            <a href="#" class="dropdown-item">2561</a>
-                            <a href="#" class="dropdown-item">2562</a>
-                            <a href="#" class="dropdown-item">2563</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </div>
-                </div>
+
                     </div>
                     <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
-                        <div class="btn btn-warning">
-                        แก้ไข
 
-                        </div>
-                        <div class="btn btn-primary">
-                            เพิ่มผู้ใช้
 
-                        </div>
                     </div>
 
                     <div>
@@ -222,120 +358,108 @@
                 <!-- เสร็จหัวกระดาษ  -->
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
-                <!-- การ์ด  -->
                 <!-- ============================================================== -->
+                <!-- ตารางข้อมูล -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <div class="container my-2 " style="background-color: white;">
 
-                <div class="row ">
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                           
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">ADMIN <br>desuka_b@outlook.com 
-                                </p>
+                    <div class="row ">
+                        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 mt-3 mb-3">
+                            <div class="input-group mb-3">
+                                <div id="container2"></div>
+                                <div>
+
+                                </div>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                            
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">Commitee <br>desuka_b@outlook.com 
-                                </p>
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mt-3 mb-3">
+                            <div class="btn btn-primary " id="adduser">
+                                เพิ่มผู้ใช้
 
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                            
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">Commitee <br>desuka_b@outlook.com 
-                                </p>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                            
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">Commitee <br>desuka_b@outlook.com 
-                                </p>
-
-                            </div>
                         </div>
 
                     </div>
 
+                    <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
+                    </table>
                 </div>
-                <div class="row mt-5">
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                            
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">Commitee <br>desuka_b@outlook.com 
-                                </p>
 
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                            
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">Commitee <br>desuka_b@outlook.com 
-                                </p>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                            
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">Commitee <br>desuka_b@outlook.com 
-                                </p>
-
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 ">
-                        <div class="card mr-5 shadow p-3 mb-1 bg-white rounded" style="width:250px">
-                            
-                            <div class="card-body">
-                                <h5 class="card-title ">รุตาทร วรพัทธ์ธดา</h5>
-                                <p class="card-text">Commitee <br>desuka_b@outlook.com 
-                                </p>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
                 <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- เสร็จการ์ด  -->
-                <!-- ============================================================== -->
+                <!-- จบตาราง -->
                 <!-- ============================================================== -->
             </div>
         </div>
     </div>
     </div>
+    <!-- ============================================================== -->
+    <!-- modal  -->
+    <!-- ============================================================== -->
 
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขผู้ใช้</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="email-edit" class="col-form-label">Email ผู้ที่จะแก้ไข : </label>
+                            <input type="email" class="form-control" id="editMail">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary" id="save">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- เสร็จ modal  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- modal2  -->
+    <!-- ============================================================== -->
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขผู้ใช้</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="email-edit" class="col-form-label">Email ผู้ที่จะแก้ไข : </label>
+                            <input type="email" class="form-control" id="editMail2">
+                        </div>
+                        <input type="checkbox" id="admin" name="admin" value="admin">
+                        <label for="vehicle1"> Admin</label>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary" id="save2">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- เสร็จ modal2  -->
+    <!-- ============================================================== -->
 
 
 </body>

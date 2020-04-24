@@ -19,6 +19,15 @@
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+
     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
     <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/libs/css/style.css">
@@ -31,12 +40,234 @@
     <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
     <title>นับครุภัณฑ์</title>
 
     <script>
         var table
         $(document).ready(function () {
+
+            //====================================== drop down year ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Year"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Year]
+
+                }
+                $('.year')
+                    .append(
+                        $(document.createElement('select')).prop({
+
+                            class: 'year',
+                            name: 'year',
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 year',
+                            id: 'Year',
+                            name: 'Year'
+                        }).html('ปี ')
+                    )
+
+
+                //drop down status year
+                for (let i = 0; i < values.length; i++) {
+                    $('#Year').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.ปีตรวจ').hide()
+
+                $('select.year').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/number1/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        $("#all").html(dataSet[0].Numbers_of_item);
+                    })
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/number2/0/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        $("#dis").html(dataSet[0].Numbers_of_item);
+                    })
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/number2/1/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        $("#normal").html(dataSet[0].Numbers_of_item);
+                    })
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/number2/2/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        $("#fix").html(dataSet[0].Numbers_of_item);
+                    })
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo4/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+
+                })
+            })
+
+            //====================================== drop down location ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Location"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Location]
+                }
+                values[data.length] = 'สถานที่'
+                $('.btnGroupDrop1')
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 location',
+                            id: 'Location',
+                            name: 'Location'
+                        })
+                    )
+
+                //drop down status Location
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Location').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.สถานที่').hide()
+
+                $('select.location').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+            //====================================== drop down status ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Status"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Status]
+
+                } values[data.length] = 'สถานะ'
+                $('.btnGroupDrop2')
+
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 status',
+                            id: 'Status',
+                            name: 'Status'
+                        })
+                    )
+
+                //drop down status Location
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Status').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.สถานะ').hide()
+
+                $('select.status').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo1/" + selected
+                    }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+
+            //====================================== drop down commitee ======================================
+            $.ajax({
+                method: "GET",
+                url: "/item/Email_Committee"
+            }).done(function (data, state, xhr) {
+
+                var values = [];
+                for (let i = 0; i < data.length; i++) {
+                    values[i] = [data[i].Email_Committee]
+
+                } values[data.length] = 'คณะกรรมการผู้ตรวจสอบ'
+                $('.commitee')
+                    .append(
+                        $(document.createElement('select')).prop({
+                            style: 'border-color: white',
+                            class: 'mt-3 ml-3 commitee',
+                            id: 'Email_Committee',
+                            name: 'Email_Committee'
+                        })
+                    )
+
+                //drop down status Location
+                for (let i = values.length - 1; i >= 0; i--) {
+                    $('#Email_Committee').append($(document.createElement('option')).prop({
+                        value: values[i],
+                        text: values[i],
+                        class: values[i]
+                    }))
+                }
+                $('.คณะกรรมการผู้ตรวจสอบ').hide()
+
+                $('select.commitee').change(function () {
+                    var selected = $(this).children("option:selected").val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/item/dashboard/showAllInfo3/" + selected
+                    }).done(function (dataSet, state, xhr) {
+
+                        //    alert("ok");
+                        table.clear();
+                        //display modified JSON in DataTable
+                        table.rows.add(dataSet).draw();
+                    })
+                })
+            })
+
+
             $("#all").click(function () {
                 window.location.replace("/information");
             });
@@ -44,6 +275,7 @@
             table = $('#myTable').DataTable({
 
                 columns: [
+                    { title: "<input type='checkbox' id='allCheckbox'>",className: 'select-checkbox', orderable: false, defaultContent: "<input type='checkbox' class='singleCheckbox'>" },
                     { data: "Image", title: "รูปภาพ" },
                     { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
                     { data: "Location", title: "สถานที่" },
@@ -53,9 +285,35 @@
                     { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
                     { data: "Email_Committee", title: "ผู้ตรวจ" },
                     { data: "Status", title: "สถานะ" },
+
+                ], "columnDefs": [
+                    { "visible": true, "targets": 0 }
+                    
                 ],
+                buttons: [
+                    'btn_export_PDF',
+                    'btn_export_excel',
+                ]
             });
-            getItem();
+            
+            var Check_list = $(".singleCheckbox").change(function(){
+                if($(this).is(':checked')){
+                return value
+
+                }
+            });
+
+            $("#qrcode").click(function () {
+                var Check_list =$('.singleCheckbox').change(function(){
+                if($(this).is(':checked')){
+                    alert("555");
+                
+            }});
+            });
+
+
+
+
             $.ajax({
                 method: "GET",
                 url: "/profile/infouser"
@@ -92,7 +350,11 @@
             }).done(function (dataSet, state, xhr) {
                 $("#fix").html(dataSet[0].Numbers_of_item);
             })
+
+            getItem();
+
         });
+
         function getItem() {
             //get users from DB
             $.ajax({
@@ -100,16 +362,85 @@
                 url: "/item/dashboard/showAllInfo"
             }).done(function (dataSet, state, xhr) {
                 //    alert("ok");
+
                 table.clear();
                 //display modified JSON in DataTable
                 table.rows.add(dataSet).draw();
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "/year/iteem"
+                }).done(function (data, state, xhr) {
+
+                    let year = [];
+                    let normal = []
+                    let dis = []
+                    let fix = []
+
+                    for (let i = 0; i < data.length; i++) {
+                        let normalna = 0;
+                        let fixna = 0;
+                        let disna = 0;
+                        year[i] = data[i].Year
+                        for (let j = 0; j < dataSet.length; j++) {
+
+                            if (dataSet[j].Year == year[i]) {
+                                if (dataSet[j].Status == 1) {
+                                    normalna++;
+                                } else if (dataSet[j].Status == 0) {
+                                    fixna++;
+                                } else if (dataSet[j].Status == 2) {
+                                    disna++;
+                                }
+                            }
+                        }
+                        normal[i] = normalna;
+                        dis[i] = disna;
+                        fix[i] = fixna;
+
+
+                    }
+                    // alert(year[0]+"  "+dis[0]+"  "+fix[0])
+
+                    var datas = [];
+                    let count = year.length
+                    for (let i = 0; i < year.length; i++) {
+
+                        if (count == year.length) {
+                            datas = [{ y: year[i], a: normal[i], b: dis[i], c: fix[i] }]
+                            count--;
+                        } else {
+                            datas.push({ y: year[i], a: normal[i], b: dis[i], c: fix[i] })
+
+                        }
+
+                    }
+
+
+                    window.barChart = Morris.Bar({
+                        element: 'bar-chart',
+                        data: datas,
+                        xkey: 'y',
+                        ykeys: ['a', 'b', 'c'],
+                        labels: ['ปกติ', 'ซ่อม', 'หาย'],
+                        // lineColors: ['#5DD325', '#EAEA25', '#5DD325'],
+                        lineWidth: '3px',
+                        width: 60,
+                        height: 40,
+                        resize: true,
+                        redraw: true
+                    });
+                })
+
             }).fail(function (xhr, state, error) {
                 //get data failed
                 alert(xhr.responseText);
             });
         }
-
     </script>
+
+
 
 </head>
 
@@ -240,6 +571,7 @@
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
                                 </ul>
+
                             </div>
                         </li>
                     </ul>
@@ -270,85 +602,91 @@
                         <!-- ======================================================== -->
                         <div class="input-group mb-3">
                             <div class="input-group-append be-addon">
-                                <button type="button" data-toggle="dropdown" class="btn dropdown-toggle"
-                                    style="background-color: white;">ปีตรวจ</button>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">2559</a>
-                                    <a href="#" class="dropdown-item">2560</a>
-                                    <a href="#" class="dropdown-item">2561</a>
-                                    <a href="#" class="dropdown-item">2562</a>
-                                    <a href="#" class="dropdown-item">2563</a>
-                                    <div class="dropdown-divider"></div>
+                                <div class="btn-group" role="group">
+                                    <div class="year">
+
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+                </div>
+
+            </div>
+            <div class="row mt-3 ml-3">
+                <div class=" col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1" style="background-color: rgb(239,239,246);">
 
                 </div>
-                <div class="row mt-3">
-                    <div class=" col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1" style="background-color: rgb(239,239,246);">
-
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ml-3 ">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
-                                    ครุภัณฑ์ทั้งหมด
-                                    <h1 id="all">5000</h1>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="img/all.PNG " alt="" style="width:120%">
-                                </div>
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-1 mr-5  ">
+                    <div class="card-body " style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9 ">
+                                ครุภัณฑ์ทั้งหมด
+                                <h1 id="all">5000</h1>
                             </div>
-
-
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
-                                    ครุภัณฑ์ปกติ
-                                    <h1 id="normal">5000</h1>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="img/normal.PNG " alt="" style="width:130%">
-                                </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ">
+                                <img class="" src="img/all.PNG " alt="" style="width:0.99cm;">
                             </div>
                         </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
-                                    ครุภัณฑ์ส่งซ่อม
-                                    <h1 id="fix">5000</h1>
-                                </div>
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
-                                    <img class="" src="img/fix.PNG" alt="" style="width:130%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                    ครุภัณฑ์สูญหาย
-                                    <h1 id="dis">5000</h1>
-                                </div>
-                                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                    <img class="" src="img/dis.PNG" alt="" style="width:250%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
+
+                    </div>
                 </div>
-                <!-- ============================================================== -->
-                <!-- เสร็จหัวกระดาษ  -->
-                <!-- ============================================================== -->
-                <!-- แถบ -->
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
+                    <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                                ครุภัณฑ์ปกติ
+                                <h1 id="normal">5000</h1>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                                <img class="" src="img/normal.PNG " alt="" style="width:130%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 ">
+                    <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                                ครุภัณฑ์ส่งซ่อม
+                                <h1 id="fix">5000</h1>
+                            </div>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                                <img class="" src="img/fix.PNG" alt="" style="width:130%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5">
+                    <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                ครุภัณฑ์สูญหาย
+                                <h1 id="dis">5000</h1>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                <img class="" src="img/dis.PNG" alt="" style="width:250%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- เสร็จหัวกระดาษ  -->
+            <!-- ============================================================== -->
+            <!-- แถบ -->
+            <!-- ============================================================== -->
+            <!--กราฟ-->
+            <!-- ============================================================== -->
+            <div class="col">
+                <div class="row ">
+                    <div class=" col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 ml-5 " style="background-color: white">
+                        <div id="bar-chart"></div>
+                    </div>
+                </div>
                 <!-- ============================================================== -->
                 <!-- ============================================================== -->
                 <!-- ตารางข้อมูล -->
@@ -360,45 +698,96 @@
 
 
                         <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                สถานที่
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                            </div>
+                            <div class="btnGroupDrop1"></div>
+
                         </div>
+
+
                         <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                สถานะ
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                            </div>
+                            <div class="btnGroupDrop2"></div>
                         </div>
+
                         <div class="btn-group" role="group">
-                            <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                ผู้ตรวจสอบ
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                                <a class="dropdown-item" href="#">Dropdown link</a>
-                            </div>
+                            <div class="commitee"></div>
                         </div>
                         <button type="button" class="btn ">รีเซตการกรอง</button><br><br>
 
                     </div>
-                    <button class="btn">Export to excel</button>
-                    <button class="btn">Export to PDF</button>
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushExcel">Export
+                        to Excel</button>
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushPDF">Export
+                        to PDF</button>
                     <button class="btn">Qrcode</button>
                     <br> <br><br><br>
                     <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
                     </table>
                 </div>
+
+                
+
+                <!--Modal: Export to excel-->
+                <div class="modal fade" id="modalPushExcel" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-notify modal-info" role="document">
+                        <!--Content-->
+                        <div class="modal-content text-center">
+                            <!--Header-->
+                            <div class="modal-header d-flex justify-content-center">
+                                <p class="heading">นำออกไฟล์ Excel</p>
+                            </div>
+
+                            <!--Body-->
+                            <div class="modal-body">
+
+                                <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+
+                                <p>ต้องการจะนำออกไฟล์ Excel ใช่หรือไม่</p>
+
+                            </div>
+
+                            <!--Footer-->
+                            <div class="modal-footer flex-center">
+                                <button class="btn btn-info" id="btn_export_excel">นำออก</button>
+                                <a type="button" class="btn btn-outline-info waves-effect"
+                                    data-dismiss="modal">ยกเลิก</a>
+                            </div>
+                        </div>
+                        <!--/.Content-->
+                    </div>
+                </div>
+                <!--Modal: Export to excel-->
+
+                <!--Modal: Export to PDF-->
+                <div class="modal fade" id="modalPushPDF" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-notify modal-info" role="document">
+                        <!--Content-->
+                        <div class="modal-content text-center">
+                            <!--Header-->
+                            <div class="modal-header d-flex justify-content-center">
+                                <p class="heading">นำออกไฟล์ PDF</p>
+                            </div>
+
+                            <!--Body-->
+                            <div class="modal-body">
+
+                                <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+
+                                <p>ต้องการจะนำออกไฟล์ PDF ใช่หรือไม่</p>
+
+                            </div>
+
+                            <!--Footer-->
+                            <div class="modal-footer flex-center">
+                                <button class="btn btn-info" id="btn_export_PDF">นำออก</button>
+                                <a type="button" class="btn btn-outline-info waves-effect"
+                                    data-dismiss="modal">ยกเลิก</a>
+                            </div>
+                        </div>
+                        <!--/.Content-->
+                    </div>
+                </div>
+                <!--Modal: Export to PDF-->
 
                 <!-- ============================================================== -->
                 <!-- จบตาราง -->
