@@ -170,6 +170,16 @@
                             
                             window.location.replace("/checkpage")
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                        if (dataSet[i].role == 2) {
+                            dataSet[i].role = "กรรมการ"
+                        } else if (dataSet[i].role == 1) {
+                            dataSet[i].role = "admin"
+                        } 
+                    }
+                        $("#rol2").html(dataSet[0].role)
+                        
+
 
                     }).fail(function (xhr, state, error) {
                         //get data failed

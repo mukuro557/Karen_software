@@ -34,7 +34,7 @@
     <link href='assets/vendor/full-calendar/css/fullcalendar.css' rel='stylesheet' />
     <link href='assets/vendor/full-calendar/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
-    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
+    <!-- <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script> -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
     <script src='assets/vendor/full-calendar/js/moment.min.js'></script>
@@ -67,6 +67,16 @@
                             
                             window.location.replace("/checkpage")
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                        if (dataSet[i].role == 2) {
+                            dataSet[i].role = "กรรมการ"
+                        } else if (dataSet[i].role == 1) {
+                            dataSet[i].role = "admin"
+                        } 
+                    }
+                        $("#rol2").html(dataSet[0].role)
+                        
+
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
@@ -201,7 +211,7 @@
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
                             <h5 class="mb-0 text-white nav-user-name user" id="user">Ruttathorn </h5>
-                            <span class="status"></span><span class="ml-2">กรรมการ</span>
+                            <span class="status"></span><span class="ml-2" id="rol2">กรรมการ</span>
                         </div>
                         <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
                     </div>

@@ -211,7 +211,12 @@
             table = $('#myTable').DataTable({
 
                 columns: [
-                    { data: "Image", title: "รูปภาพ" },
+                {
+                        "mData": "Image", title: "รูปภาพ",
+                        "render": function (data) {
+                            return '<img class="pic" src="' + data + '"style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
+                        }
+                    },
                     { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
                     { data: "Model", title: "โมเดล" },
                     { data: "Received_date", title: "วันที่ได้รับ" },
@@ -246,7 +251,7 @@
                         
                     for (let i = 0; i < dataSet.length; i++) {
                         if (dataSet[i].role == 2) {
-                            dataSet[i].role = "commitee"
+                            dataSet[i].role = "กรรมการ"
                         } else if (dataSet[i].role == 1) {
                             dataSet[i].role = "admin"
                         } 

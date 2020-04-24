@@ -79,7 +79,7 @@
 
                 $('select.year').change(function () {
                     var selected = $(this).children("option:selected").val();
-                    
+
                     $.ajax({
                         method: "GET",
                         url: "/item/dashboard/number1/" + selected
@@ -111,6 +111,15 @@
                         url: "/item/dashboard/showAllInfo4/" + selected
                     }).done(function (dataSet, state, xhr) {
                         //    alert("ok");
+                        for (let i = 0; i < dataSet.length; i++) {
+                            if (dataSet[i].Status == 0) {
+                                dataSet[i].Status = "สูญหาย"
+                            } else if (dataSet[i].Status == 1) {
+                                dataSet[i].Status = "ปกติ"
+                            } else if (dataSet[i].Status == 2) {
+                                dataSet[i].Status = "ส่งซ่อม"
+                            }
+                        }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -158,6 +167,15 @@
                         url: "/item/dashboard/showAllInfo/" + selected
                     }).done(function (dataSet, state, xhr) {
                         //    alert("ok");
+                        for (let i = 0; i < dataSet.length; i++) {
+                            if (dataSet[i].Status == 0) {
+                                dataSet[i].Status = "สูญหาย"
+                            } else if (dataSet[i].Status == 1) {
+                                dataSet[i].Status = "ปกติ"
+                            } else if (dataSet[i].Status == 2) {
+                                dataSet[i].Status = "ส่งซ่อม"
+                            }
+                        }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -204,6 +222,15 @@
                         url: "/item/dashboard/showAllInfo1/" + selected
                     }).done(function (dataSet, state, xhr) {
                         //    alert("ok");
+                        for (let i = 0; i < dataSet.length; i++) {
+                            if (dataSet[i].Status == 0) {
+                                dataSet[i].Status = "สูญหาย"
+                            } else if (dataSet[i].Status == 1) {
+                                dataSet[i].Status = "ปกติ"
+                            } else if (dataSet[i].Status == 2) {
+                                dataSet[i].Status = "ส่งซ่อม"
+                            }
+                        }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -249,7 +276,15 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo3/" + selected
                     }).done(function (dataSet, state, xhr) {
-
+                        for (let i = 0; i < dataSet.length; i++) {
+                            if (dataSet[i].Status == 0) {
+                                dataSet[i].Status = "สูญหาย"
+                            } else if (dataSet[i].Status == 1) {
+                                dataSet[i].Status = "ปกติ"
+                            } else if (dataSet[i].Status == 2) {
+                                dataSet[i].Status = "ส่งซ่อม"
+                            }
+                        }
                         //    alert("ok");
                         table.clear();
                         //display modified JSON in DataTable
@@ -266,7 +301,7 @@
             table = $('#myTable').DataTable({
 
                 columns: [
-                {
+                    {
                         "mData": "Image", title: "รูปภาพ",
                         "render": function (data) {
                             return '<img class="pic" src="' + data + '"style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
@@ -299,6 +334,15 @@
                         if (dataSet[0] === undefined) {
                             window.location.replace("/checkpage")
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                        if (dataSet[i].role == 2) {
+                            dataSet[i].role = "กรรมการ"
+                        } else if (dataSet[i].role == 1) {
+                            dataSet[i].role = "admin"
+                        } 
+                    }
+                        $("#rol2").html(dataSet[0].role)
+                        
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
@@ -347,7 +391,15 @@
                 url: "/item/dashboard/showAllInfo"
             }).done(function (dataSet, state, xhr) {
                 //    alert("ok");
-
+                for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].Status == 0) {
+                        dataSet[i].Status = "สูญหาย"
+                    } else if (dataSet[i].Status == 1) {
+                        dataSet[i].Status = "ปกติ"
+                    } else if (dataSet[i].Status == 2) {
+                        dataSet[i].Status = "ส่งซ่อม"
+                    }
+                }
                 table.clear();
                 //display modified JSON in DataTable
                 table.rows.add(dataSet).draw();
@@ -482,7 +534,7 @@
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
                             <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
-                            <span class="status"></span><span class="ml-2">กรรมการ</span>
+                            <span class="status"></span><span class="ml-2" id="rol2">กรรมการ</span>
                         </div>
                         <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
                     </div>
@@ -695,8 +747,9 @@
                         <div class="btn-group" role="group">
                             <div class="commitee"></div>
                         </div>
-                        <a href="/dashboard"> 
-                            <button type="button" href="#" class="btn " style="color: red;">รีเซตการกรอง</button></a><br><br>
+                        <a href="/dashboard">
+                            <button type="button" href="#" class="btn "
+                                style="color: red;">รีเซตการกรอง</button></a><br><br>
 
                     </div>
                     <button class="btn">Export to excel</button>
@@ -729,7 +782,9 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-4 mt-5">
                         <div class="copyright">
-                            <h4 class="header-footer"style="color: azure;">ติดต่อ <br><div style="border: 1px solid red; width: 7cm;"></div></h4>
+                            <h4 class="header-footer" style="color: azure;">ติดต่อ <br>
+                                <div style="border: 1px solid red; width: 7cm;"></div>
+                            </h4>
                             <p style="color: azure; font-size: 14px; font-weight: 200;">
                                 สำนักวิชาเทคโนโลยีสารสนเทศ
                                 <br>
@@ -745,18 +800,18 @@
                             </p>
                             <p></p>
                             <ul class="mfu-social">
-                                
-                                    <a href="https://www.facebook.com/itschool.mfu.page/" target="_blank"
-                                        class="facebook-icon mr-3">
-                                        <i class="fab fa-facebook">
-                                            
-                                        </i>
-                                    </a>
-                            
-                                <a href="https://www.youtube.com/channel/UCbvvlT0UyZHCYdPTXL7vHXQ/featured" target="_blank"
-                                    class="youtube-icon">
+
+                                <a href="https://www.facebook.com/itschool.mfu.page/" target="_blank"
+                                    class="facebook-icon mr-3">
+                                    <i class="fab fa-facebook">
+
+                                    </i>
+                                </a>
+
+                                <a href="https://www.youtube.com/channel/UCbvvlT0UyZHCYdPTXL7vHXQ/featured"
+                                    target="_blank" class="youtube-icon">
                                     <i class="fab fa-youtube">
-                                       
+
                                     </i>
                                 </a>
                             </ul>
@@ -767,25 +822,25 @@
                             src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fitschool.mfu.page%2F&amp;tabs=timeline&amp;width=340&amp;height=250&amp;small_header=true&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=true&amp;appId"
                             width="100%" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
                             allowtransparency="true" allow="encrypted-media"></iframe>
-                        
-                        
+
+
                     </div>
-                    
+
                 </div>
                 <a class="scroll-to-top" style="display: none;">
                     <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                  </a>
-                  <script>
+                </a>
+                <script>
                     window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
+                    function gtag() { dataLayer.push(arguments); }
                     gtag('js', new Date());
-                  
+
                     gtag('config', 'UA-148131712-1');
-                  </script>
+                </script>
             </div>
-    <!-- ============================================================== -->
-    <!-- ======================== เสร็จ footer ========================= -->
-    <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- ======================== เสร็จ footer ========================= -->
+            <!-- ============================================================== -->
         </div>
 
 </body>
