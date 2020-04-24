@@ -197,7 +197,7 @@
                     } else if (data[i].Status == 2) {
                         values[i] = "ส่งซ่อม"
                     }
-                    
+
                 } values[data.length] = 'สถานะ'
                 $('.btnGroupDrop2')
 
@@ -307,6 +307,7 @@
             table = $('#myTable').DataTable({
 
                 columns: [
+                    { title: "<input type='checkbox' id='allCheckbox'>", className: 'select-checkbox', orderable: false, defaultContent: "<input type='checkbox' class='singleCheckbox'>" },
                     {
                         "mData": "Image", title: "รูปภาพ",
                         "render": function (data) {
@@ -321,8 +322,32 @@
                     { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
                     { data: "Email_Committee", title: "ผู้ตรวจ" },
                     { data: "Status", title: "สถานะ" },
+                ], "columnDefs": [
+                    { "visible": true, "targets": 0 }
+
                 ],
+                buttons: [
+                    'btn_export_PDF',
+                    'btn_export_excel',
+                ]
             });
+
+            var Check_list = $(".singleCheckbox").change(function () {
+                if ($(this).is(':checked')) {
+                    return value
+
+                }
+            });
+
+            $("#qrcode").click(function () {
+                var Check_list = $('.singleCheckbox').change(function () {
+                    if ($(this).is(':checked')) {
+                        alert("555");
+
+                    }
+                });
+            });
+
 
             $.ajax({
                 method: "GET",
@@ -760,8 +785,10 @@
                                 style="color: red;">รีเซตการกรอง</button></a><br><br>
 
                     </div>
-                    <button class="btn">Export to excel</button>
-                    <button class="btn">Export to PDF</button>
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushExcel">Export
+                        to Excel</button>
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushPDF">Export
+                        to PDF</button>
                     <button class="btn">Qrcode</button>
                     <button class="btn">ถ่ายรูป</button>
                     <br> <br><br><br>
@@ -771,6 +798,69 @@
 
                 <!-- ============================================================== -->
                 <!-- จบตาราง -->
+                 <!--Modal: Export to excel-->
+                 <div class="modal fade" id="modalPushExcel" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal-dialog modal-notify modal-info" role="document">
+                     <!--Content-->
+                     <div class="modal-content text-center">
+                         <!--Header-->
+                         <div class="modal-header d-flex justify-content-center">
+                             <p class="heading">นำออกไฟล์ Excel</p>
+                         </div>
+
+                         <!--Body-->
+                         <div class="modal-body">
+
+                             <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+
+                             <p>ต้องการจะนำออกไฟล์ Excel ใช่หรือไม่</p>
+
+                         </div>
+
+                         <!--Footer-->
+                         <div class="modal-footer flex-center">
+                             <button class="btn btn-info" id="btn_export_excel">นำออก</button>
+                             <a type="button" class="btn btn-outline-info waves-effect"
+                                 data-dismiss="modal">ยกเลิก</a>
+                         </div>
+                     </div>
+                     <!--/.Content-->
+                 </div>
+             </div>
+             <!--Modal: Export to excel-->
+
+             <!--Modal: Export to PDF-->
+             <div class="modal fade" id="modalPushPDF" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal-dialog modal-notify modal-info" role="document">
+                     <!--Content-->
+                     <div class="modal-content text-center">
+                         <!--Header-->
+                         <div class="modal-header d-flex justify-content-center">
+                             <p class="heading">นำออกไฟล์ PDF</p>
+                         </div>
+
+                         <!--Body-->
+                         <div class="modal-body">
+
+                             <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+
+                             <p>ต้องการจะนำออกไฟล์ PDF ใช่หรือไม่</p>
+
+                         </div>
+
+                         <!--Footer-->
+                         <div class="modal-footer flex-center">
+                             <button class="btn btn-info" id="btn_export_PDF">นำออก</button>
+                             <a type="button" class="btn btn-outline-info waves-effect"
+                                 data-dismiss="modal">ยกเลิก</a>
+                         </div>
+                     </div>
+                     <!--/.Content-->
+                 </div>
+             </div>
+             <!--Modal: Export to PDF-->
             </div>
 
             <!-- footer  -->
