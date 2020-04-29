@@ -100,6 +100,10 @@ app.get("/manageUser", function (req, res) {
     res.sendFile(path.join(__dirname, "/manageUser.html"))
 });
 
+app.get("/printqrcode", function (req, res) {
+    res.sendFile(path.join(__dirname, "/printqrcode.html"))
+});
+
 //Return home page
 app.get("/mainpage", function (req, res) {
     res.sendFile(path.join(__dirname, "/mainpage.html"))
@@ -753,7 +757,7 @@ app.put("/dateTime/updateTime/:Date_start/:Date_end", function (req, res) {
 
 app.use("/img", express.static(path.join(__dirname, 'img')));
 app.use("/assets", express.static(path.join(__dirname, 'assets')));
-
+app.use("/JS_Files", express.static(path.join(__dirname, 'JS_Files')));
 // ========== Starting server ============
 const PORT = 35000
 app.listen(PORT, function () {

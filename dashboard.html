@@ -60,7 +60,7 @@
 
                     $.ajax({
                         method: "POST",
-                        url: "/uploading/"+data.email,
+                        url: "/uploading/" + data.email,
                         data: formData,
                         contentType: false,     //tell jQuery not to add a Content-Type header for us
                         processData: false,      //tell jQuery not to convert the formData object to a string
@@ -345,7 +345,7 @@
                     {
                         "mData": "Inventory_Number", title: "รูปภาพ",
                         "render": function (data) {
-                            return '<input type="checkbox" name="singleCheckbox" value='+ data +'>';
+                            return '<input type="checkbox" name="singleCheckbox" value=' + data + '>';
                         }
                     },
                     {
@@ -380,17 +380,14 @@
             // });
 
             $("#qrcode").click(function () {
-                var selectedItem = [];
-            $.each($("input[name='singleCheckbox']:checked"), function(){
-                selectedItem.push($(this).val());
-            });
-            alert(selectedItem.join(", "));
-                // var Check_list = $('.singleCheckbox').change(function () {
-                //     if ($(this).is(':checked')) {
-                //         alert("555");
 
-                //     }
-                // });
+                var selectedItem = [];
+                $.each($("input[name='singleCheckbox']:checked"), function () {
+                    selectedItem.push($(this).val());
+                });
+                window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
+                var storedArray = JSON.parse(sessionStorage.getItem("items"));
+                window.location.replace("printqrcode");
             });
 
 

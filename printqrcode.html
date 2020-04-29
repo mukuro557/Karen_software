@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Print QRcode</title>
+</head>
+
+<body>
+        <button class="btn btn-default" onclick="printDiv('qrcode')"><i class="fa fa-print" aria-hidden="true" style=" font-size: 17px;"> Print</i></button>
+        <br><br>
+    <div id="qrcode"></div>
+
+    <script src="/JS_Files/qrcode.min.js"></script>
+    <script>
+        Generate();
+        function Generate() {
+            var storedArray = JSON.parse(sessionStorage.getItem("items"));
+            var i;
+            const space = [" "];
+            for (i = 0; i < storedArray.length; i++) {
+                // alert(storedArray[i]);
+                var qrcode = new QRCode(document.getElementById('qrcode'), {
+                    width: 128,
+                    height: 128,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                })
+                var spacearea = document.createElement("p");
+                var text = document.createTextNode(space[0]);
+                spacearea.appendChild(text);
+                document.getElementById("qrcode").appendChild(spacearea);
+                qrcode.makeCode(storedArray[i]);
+
+            }
+
+
+
+        }
+
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+
+    </script>
+</body>
+
+</html>
