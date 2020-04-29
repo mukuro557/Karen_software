@@ -5,14 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <title>Print QRcode</title>
 </head>
 
 <body>
-    <button class="btn btn-default" onclick="printDiv('qrcode')"><i class="fa fa-print" aria-hidden="true"
+    <button class="btn btn-primary" onclick="printDiv('printHere')"><i class="fa fa-print" aria-hidden="true"
             style=" font-size: 17px;"> Print</i></button>
     <br><br>
-    <div id="qrcode"></div>
+    <div id="printHere" class="container">
+        <div class="card">
+            <div class="card-body">
+                <div id="qrcode"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-columns" id="mainColumn"></div>
+
+
+
 
     <script src="/JS_Files/qrcode.min.js"></script>
     <script>
@@ -20,7 +35,6 @@
         function Generate() {
             var storedArray = JSON.parse(sessionStorage.getItem("items"));
             var i;
-            const space = [" "];
             for (i = 0; i < storedArray.length; i++) {
                 // alert(storedArray[i]);
                 var qrcode = new QRCode(document.getElementById('qrcode'), {
@@ -30,8 +44,9 @@
                     colorLight: '#ffffff',
                     correctLevel: QRCode.CorrectLevel.H
                 })
+
                 var spacearea = document.createElement("p");
-                var text = document.createTextNode(space[0]);
+                var text = document.createTextNode(storedArray[i]);
                 spacearea.appendChild(text);
                 document.getElementById("qrcode").appendChild(spacearea);
                 qrcode.makeCode(storedArray[i]);
@@ -55,7 +70,7 @@
     </script>
 
     </script>
-    
+
 </body>
 
 </html>
