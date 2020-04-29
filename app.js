@@ -179,10 +179,10 @@ const email = req.params.email
 function importExelData2MySQL(res, filePath,email) {
     readXlsxfile(filePath).then((rows) => {
         console.log(rows);
-
+        const date = new Date();
         rows.shift();
 
-        let sql = "INSERT INTO item (`Inventory_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer) VALUES ?";
+        let sql = "INSERT INTO item (`Inventory_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer,Date_Upload) VALUES ?";
 
         for (var i = 0; i < rows.length; i++) {
             var temp = rows[i];
@@ -195,6 +195,7 @@ function importExelData2MySQL(res, filePath,email) {
             rows[i].push(d);
             rows[i].push(0);
             rows[i].push(email);
+            rows[i].push(date);
         }
 
 
@@ -234,6 +235,20 @@ app.get("/manageUser/showAllUsers/:Email_user", function (req, res) {
     const sql = "select year,Email_user,Email_assigner,role from year_user WHERE Email_user = ?"
 
     con.query(sql, [Email_user], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("DB error");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load inspected total item numbers by a user
+app.get("/user/profile/inspectedItem/Total/Number1/:Email_Committee", function (req, res) {
+    const Email_Committee = req.params.Email_Committee;
+    const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Email_Committee=? AND Year =?;"
+
+    con.query(sql, [Email_Committee,d], function (err, result, fields) {
         if (err) {
             res.status(503).send("DB error");
         } else {

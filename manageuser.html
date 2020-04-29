@@ -112,6 +112,15 @@
                         //get data failed
                         alert(xhr.responseText);
                     });
+                    $.ajax({
+                    method: "GET",
+                    url: "/user/profile/inspectedItem/Total/Number1/" + data.email
+                }).done(function (dataSet, state, xhr) {
+                    $("#all").html(dataSet[0].Numbers_of_Inspected_Item);
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
+                });
                 }).fail(function (xhr, state, error) {
                     //get data failed
                     alert(xhr.responseText);
@@ -211,7 +220,30 @@
                 Email_user = data.Email_user;
                 rol = data.role;
                 $("#editMail").val(Email_user)
-                $(".bd-example-modal-sm").modal();
+                $.ajax({
+                method: "GET",
+                url: "/profile/infouser"
+            }).done(function (data, state, xhr) {
+                $.ajax({
+                    method: "GET",
+                    url: "/user/profile/inspectedItem/Total/Number1/" + data.email
+                }).done(function (dataSet, state, xhr) {
+                    if(dataSet[0].Numbers_of_Inspected_Item == 0){
+                        $(".bd-example-modal-sm").modal();
+                    }else{
+                        alert("ผู้ใช้นี้ได้ได้เริ่มสแกนแล้ว")
+                        
+                    }
+                }).fail(function (xhr, state, error) {
+                    //get data failed
+                    alert(xhr.responseText);
+                });
+
+            }).fail(function (xhr, state, error) {
+                        //get data failed
+                        alert(xhr.responseText);
+                    });
+                
 
             });
             
