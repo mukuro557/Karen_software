@@ -343,7 +343,7 @@
 
                 columns: [
                     {
-                        "mData": "Inventory_Number", title: "รูปภาพ",
+                        "mData": "Inventory_Number", title: "<input type='checkbox' id='select-all' name='select-all'>",
                         "render": function (data) {
                             return '<input type="checkbox" name="singleCheckbox" value=' + data + '>';
                         }
@@ -372,12 +372,19 @@
                 ]
             });
 
-            // var Check_list = $(".singleCheckbox").change(function () {
-            //     if ($(this).is(':checked')) {
-            //         return value
 
-            //     }
-            // });
+            $('#select-all').click(function (event) {
+                if (this.checked) {
+                    // Iterate each checkbox
+                    $(':checkbox').each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    $(':checkbox').each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
 
             $("#qrcode").click(function () {
 
