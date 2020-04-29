@@ -342,11 +342,16 @@
             table = $('#myTable').DataTable({
 
                 columns: [
-                    { title: "<input type='checkbox' id='allCheckbox'>", className: 'select-checkbox', orderable: false, defaultContent: "<input type='checkbox' class='singleCheckbox'>" },
+                    {
+                        "mData": "Inventory_Number", title: "รูปภาพ",
+                        "render": function (data) {
+                            return '<input type="checkbox" name="singleCheckbox" value='+ data +'>';
+                        }
+                    },
                     {
                         "mData": "Image", title: "รูปภาพ",
                         "render": function (data) {
-                            return '<img class="pic" src="' + data + '"style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
+                            return '<img class="pic" src="' + data + '" style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
                         }
                     },
                     { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
@@ -367,20 +372,25 @@
                 ]
             });
 
-            var Check_list = $(".singleCheckbox").change(function () {
-                if ($(this).is(':checked')) {
-                    return value
+            // var Check_list = $(".singleCheckbox").change(function () {
+            //     if ($(this).is(':checked')) {
+            //         return value
 
-                }
-            });
+            //     }
+            // });
 
             $("#qrcode").click(function () {
-                var Check_list = $('.singleCheckbox').change(function () {
-                    if ($(this).is(':checked')) {
-                        alert("555");
+                var selectedItem = [];
+            $.each($("input[name='singleCheckbox']:checked"), function(){
+                selectedItem.push($(this).val());
+            });
+            alert(selectedItem.join(", "));
+                // var Check_list = $('.singleCheckbox').change(function () {
+                //     if ($(this).is(':checked')) {
+                //         alert("555");
 
-                    }
-                });
+                //     }
+                // });
             });
 
 
@@ -827,7 +837,7 @@
                         to Excel</button>
                     <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushPDF">Export
                         to PDF</button>
-                    <button class="btn">Qrcode</button>
+                    <button class="btn" id="qrcode">Qrcode</button>
                     <button class="btn">ถ่ายรูป</button>
                     <button class="btn" class="btn btn-primary" data-toggle="modal"
                         data-target="#upload">Import</button>
