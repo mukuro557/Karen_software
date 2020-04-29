@@ -67,7 +67,7 @@
 
                             window.location.replace("/checkpage")
                         }
-                        if(dataSet[0].role == 2){
+                        if (dataSet[0].role == 2) {
                             $("#manageu").hide();
                         }
                         for (let i = 0; i < dataSet.length; i++) {
@@ -115,7 +115,17 @@
                         }
                     ]
                 });
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
 
+                today = yyyy + '-' + mm + '-' + dd;
+               
+                if(today>data[0].Date_start){
+
+document.getElementById("date_start_update").disabled = true;
+                }
             }).fail(function (xhr, state, error) {
                 //get data failed
                 alert(xhr.responseText);
@@ -273,7 +283,7 @@
                             </div>
                         </li>
 
-                        <li class="nav-item ">
+                        <li class="nav-item " id="manageu">
                             <a class="nav-link " href="/manageUser" aria-expanded="false"><i
                                     class="fa fa-edit"></i>จัดการผู้ใช้
                             </a>
@@ -284,7 +294,7 @@
                             </div>
                         </li>
 
-                        <li class="nav-item "id="manageu">
+                        <li class="nav-item " >
                             <a class="nav-link active" href="/Date_manage" aria-expanded="false"><i
                                     class="fa fa-clock"></i>จัดการเวลา
                             </a>
@@ -481,7 +491,7 @@
                     <form>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
-                            <input type="date" class="form-control date_start_update" name="Date_start_update">
+                            <input type="date" class="form-control date_start_update" id="date_start_update" name="Date_start_update">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">วันที่สื้นสุด</label>
