@@ -60,7 +60,7 @@
 
                     $.ajax({
                         method: "POST",
-                        url: "/uploading/"+data.email,
+                        url: "/uploading/" + data.email,
                         data: formData,
                         contentType: false,     //tell jQuery not to add a Content-Type header for us
                         processData: false,      //tell jQuery not to convert the formData object to a string
@@ -342,11 +342,16 @@
             table = $('#myTable').DataTable({
 
                 columns: [
-                    { title: "<input type='checkbox' id='allCheckbox'>", className: 'select-checkbox', orderable: false, defaultContent: "<input type='checkbox' class='singleCheckbox'>" },
+                    {
+                        "mData": "Inventory_Number", title: "<input type='checkbox' id='select-all' name='select-all'>",
+                        "render": function (data) {
+                            return '<input type="checkbox" name="singleCheckbox" value=' + data + '>';
+                        }
+                    },
                     {
                         "mData": "Image", title: "รูปภาพ",
                         "render": function (data) {
-                            return '<img class="pic" src="' + data + '"style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
+                            return '<img class="pic" src="' + data + '" style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
                         }
                     },
                     { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
@@ -367,20 +372,29 @@
                 ]
             });
 
-            var Check_list = $(".singleCheckbox").change(function () {
-                if ($(this).is(':checked')) {
-                    return value
 
+            $('#select-all').click(function (event) {
+                if (this.checked) {
+                    // Iterate each checkbox
+                    $(':checkbox').each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    $(':checkbox').each(function () {
+                        this.checked = false;
+                    });
                 }
             });
 
             $("#qrcode").click(function () {
-                var Check_list = $('.singleCheckbox').change(function () {
-                    if ($(this).is(':checked')) {
-                        alert("555");
 
-                    }
+                var selectedItem = [];
+                $.each($("input[name='singleCheckbox']:checked"), function () {
+                    selectedItem.push($(this).val());
                 });
+                window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
+                var storedArray = JSON.parse(sessionStorage.getItem("items"));
+                window.location.replace("printqrcode");
             });
 
 
@@ -827,7 +841,7 @@
                         to Excel</button>
                     <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushPDF">Export
                         to PDF</button>
-                    <button class="btn">Qrcode</button>
+                    <button class="btn" id="qrcode">Qrcode</button>
                     <button class="btn">ถ่ายรูป</button>
                     <button class="btn" class="btn btn-primary" data-toggle="modal"
                         data-target="#upload">Import</button>
