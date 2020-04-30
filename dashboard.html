@@ -47,7 +47,7 @@
 
             $("form").submit(function (e) {
                 e.preventDefault();
-                
+
                 if (document.getElementById("fileUpload").files.length == 0) {
                     //or use jQuery
                     // if($('#fileUpload')[0].files.length === 0)
@@ -59,11 +59,11 @@
                     method: "GET",
                     url: "/item/dashboard/showuser"
                 }).done(function (data, state, xhr) {
-                    if (data[0].Email_Committee != null ) {
+                    if (data[0].Email_Committee != null) {
                         alert("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
                     } else {
-                         
-                         $.ajax({
+
+                        $.ajax({
                             method: "GET",
                             url: "/year/iteem"
                         }).done(function (dataSet, state, xhr) {
@@ -72,7 +72,7 @@
                             if (dataSet[dataSet.length - 1].Year == yyyy) {
                                 var r = confirm("ปีนี้ได้อัพโหลดแล้ว ถ้าอัพโหลดซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
                                 if (r) {
-                                    
+
                                     $.ajax({
                                         method: "GET",
                                         url: "/profile/infouser"
@@ -85,7 +85,7 @@
                                             processData: false,
                                             success: function (data, state, xhr) {
                                                 alert(data)
-                                                
+
                                             },
                                             error: function (xhr, state, err) {
                                                 alert(xhr.responseText);
@@ -96,7 +96,7 @@
                                         alert(xhr.responseText);
 
                                     });
-                                } 
+                                }
 
                             } else {
 
@@ -133,7 +133,7 @@
 
                 });
                 $("#upload").modal("hide");
-                                                window.location.reload();
+                window.location.reload();
 
             });
 
@@ -471,10 +471,15 @@
                 $.each($("input[name='singleCheckbox']:checked"), function () {
                     selectedItem.push($(this).val());
                 });
+                if (selectedItem[0] === undefined) {
+                    alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
+                } else {
+                    window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
+                    var storedArray = JSON.parse(sessionStorage.getItem("items"));
+                    window.location.href="/printqrcode";
+                }
 
-                window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
-                var storedArray = JSON.parse(sessionStorage.getItem("items"));
-                window.location.replace("/printqrcode");
+
             });
 
 
