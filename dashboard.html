@@ -19,6 +19,19 @@
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+
     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
     <link href="assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/libs/css/style.css">
@@ -306,6 +319,7 @@
 
             table = $('#myTable').DataTable({
 
+
                 columns: [
                     { title: "<input type='checkbox' id='allCheckbox'>", className: 'select-checkbox', orderable: false, defaultContent: "<input type='checkbox' class='singleCheckbox'>" },
                     {
@@ -322,14 +336,16 @@
                     { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
                     { data: "Email_Committee", title: "ผู้ตรวจ" },
                     { data: "Status", title: "สถานะ" },
-                ], "columnDefs": [
-                    { "visible": true, "targets": 0 }
-
                 ],
+                dom: 'Bfrtip',
                 buttons: [
-                    'btn_export_PDF',
-                    'btn_export_excel',
-                ]
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdf',
+                    'print',
+                    // 'colvis'
+                ],
             });
 
             var Check_list = $(".singleCheckbox").change(function () {
@@ -785,7 +801,7 @@
                                 style="color: red;">รีเซตการกรอง</button></a><br><br>
 
                     </div>
-                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushExcel">Export
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushExcel" id="#">Export
                         to Excel</button>
                     <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushPDF">Export
                         to PDF</button>
@@ -798,69 +814,69 @@
 
                 <!-- ============================================================== -->
                 <!-- จบตาราง -->
-                 <!--Modal: Export to excel-->
-                 <div class="modal fade" id="modalPushExcel" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                 <div class="modal-dialog modal-notify modal-info" role="document">
-                     <!--Content-->
-                     <div class="modal-content text-center">
-                         <!--Header-->
-                         <div class="modal-header d-flex justify-content-center">
-                             <p class="heading">นำออกไฟล์ Excel</p>
-                         </div>
+                <!--Modal: Export to excel-->
+                <div class="modal fade" id="modalPushExcel" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-notify modal-info" role="document">
+                        <!--Content-->
+                        <div class="modal-content text-center">
+                            <!--Header-->
+                            <div class="modal-header d-flex justify-content-center">
+                                <p class="heading">นำออกไฟล์ Excel</p>
+                            </div>
 
-                         <!--Body-->
-                         <div class="modal-body">
+                            <!--Body-->
+                            <div class="modal-body">
 
-                             <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+                                <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
 
-                             <p>ต้องการจะนำออกไฟล์ Excel ใช่หรือไม่</p>
+                                <p>ต้องการจะนำออกไฟล์ Excel ใช่หรือไม่</p>
 
-                         </div>
+                            </div>
 
-                         <!--Footer-->
-                         <div class="modal-footer flex-center">
-                             <button class="btn btn-info" id="btn_export_excel">นำออก</button>
-                             <a type="button" class="btn btn-outline-info waves-effect"
-                                 data-dismiss="modal">ยกเลิก</a>
-                         </div>
-                     </div>
-                     <!--/.Content-->
-                 </div>
-             </div>
-             <!--Modal: Export to excel-->
+                            <!--Footer-->
+                            <div class="modal-footer flex-center">
+                                <button class="btn btn-info" id="excelExport">นำออก</button>
+                                <a type="button" class="btn btn-outline-info waves-effect"
+                                    data-dismiss="modal">ยกเลิก</a>
+                            </div>
+                        </div>
+                        <!--/.Content-->
+                    </div>
+                </div>
+                <!--Modal: Export to excel-->
 
-             <!--Modal: Export to PDF-->
-             <div class="modal fade" id="modalPushPDF" tabindex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                 <div class="modal-dialog modal-notify modal-info" role="document">
-                     <!--Content-->
-                     <div class="modal-content text-center">
-                         <!--Header-->
-                         <div class="modal-header d-flex justify-content-center">
-                             <p class="heading">นำออกไฟล์ PDF</p>
-                         </div>
+                <!--Modal: Export to PDF-->
+                <div class="modal fade" id="modalPushPDF" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-notify modal-info" role="document">
+                        <!--Content-->
+                        <div class="modal-content text-center">
+                            <!--Header-->
+                            <div class="modal-header d-flex justify-content-center">
+                                <p class="heading">นำออกไฟล์ PDF</p>
+                            </div>
 
-                         <!--Body-->
-                         <div class="modal-body">
+                            <!--Body-->
+                            <div class="modal-body">
 
-                             <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+                                <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
 
-                             <p>ต้องการจะนำออกไฟล์ PDF ใช่หรือไม่</p>
+                                <p>ต้องการจะนำออกไฟล์ PDF ใช่หรือไม่</p>
 
-                         </div>
+                            </div>
 
-                         <!--Footer-->
-                         <div class="modal-footer flex-center">
-                             <button class="btn btn-info" id="btn_export_PDF">นำออก</button>
-                             <a type="button" class="btn btn-outline-info waves-effect"
-                                 data-dismiss="modal">ยกเลิก</a>
-                         </div>
-                     </div>
-                     <!--/.Content-->
-                 </div>
-             </div>
-             <!--Modal: Export to PDF-->
+                            <!--Footer-->
+                            <div class="modal-footer flex-center">
+                                <button class="btn btn-info" id="btn_export_PDF">นำออก</button>
+                                <a type="button" class="btn btn-outline-info waves-effect"
+                                    data-dismiss="modal">ยกเลิก</a>
+                            </div>
+                        </div>
+                        <!--/.Content-->
+                    </div>
+                </div>
+                <!--Modal: Export to PDF-->
             </div>
 
             <!-- footer  -->
@@ -935,6 +951,30 @@
 
                     gtag('config', 'UA-148131712-1');
                 </script>
+                <script type="text/javascript" src="/assets/vendor/Export/jquery.table2excel.js"> </script>
+                <script type="text/javascript" src="/assets/vendor/Export/jquery.table2excel.min.js"></script>
+              
+
+                <script type="text/javascript">
+                    $('#excelExport').click(function(){
+                        $('#myTable').table2excel({
+                            exclude:".noExl",
+                            name:"Asset",
+                            filename: "Assetdata"
+                        })
+                    });
+
+                    $('#btn_export_PDF').click(function(){
+                        $('#myTable').createPdf({
+                            content: [{
+                                        image: data,
+                                        width: 500
+                                    }]
+                        })
+                    });
+
+                </script>
+
             </div>
             <!-- ============================================================== -->
             <!-- ======================== เสร็จ footer ========================= -->
