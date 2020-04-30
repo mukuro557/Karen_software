@@ -259,39 +259,28 @@
 <body>
     <!-- navbar -->
     <!-- ============================================================== -->
-    <div class="dashboard-header">
-        <nav class="navbar navbar-expand-lg bg-white fixed-top">
-            <div class="row">
-                <div class="col-sm-2 ml-4 ">
-                    <img src="img/itlogo.png" style="width: 100%;">
+    <div class="dashboard-main-wrapper">
+        <div class="dashboard-header">
+            <nav class="navbar navbar-expand-lg bg-white fixed-top">
+                <div class="row">
+                    <div class="col-sm-2 ml-5">
+                        <img src="img/logoit.JPG" style="width: 230px;">
+                    </div>
                 </div>
-                <div>
-
-                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">
-                        สำนักเทคโนโลยีสารสนเทศ</div>
-
-                </div>
-            </div>
-           
-
-
-
-
-            <ul class="navbar-nav ml-auto navbar-right-top">
-
-
-                <button class="btn btn-primary" id="login">เข้าสู่ระบบ</button>
-            </ul>
-
-        </nav>
-    </div>
+                <ul class=" navbar-nav ml-auto navbar-right-top">
+                    <button class="btn btn-primary" id="login">เข้าสู่ระบบ</button>
+                </ul>
+            
+            </nav>
+        </div>
     <!-- ============================================================== -->
     <!-- จบ navbar -->
     <!-- ============================================================== -->
     <!-- ============================================================== -->
     <!-- navbar ด้านข้าง -->
     <!-- ============================================================== -->
-    <div class="nav-left-sidebar sidebar-light">
+   
+    <!-- <div class="nav-left-sidebar sidebar-light">
         <div class="menu-list">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
@@ -319,21 +308,49 @@
                 </div>
             </nav>
         </div>
-    </div>
+    </div> -->
+    <div class="nav-left-sidebar sidebar-light">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+    
+                            <li class="nav-item ">
+                                <a class="nav-link active" href="/landing1" aria-expanded="false"><i class="fa fa-home"></i>หน้าหลัก
+                                </a>
+                                <div id="submenu-1" class="collapse submenu">
+                                    <ul class="nav flex-column">
+    
+    
+                                    </ul>
+                                </div>
+                            </li>
+    
+    
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
     <!-- ============================================================== -->
     <!-- เสร็จ navbar -->
     <!-- ============================================================== -->
 
-    <div class="dashboard-wrapper mt-5">
+    <!-- <div class="dashboard-wrapper mt-5">
         <div class="dashboard-finance">
-            <div class="container-fluid dashboard-content">
+            <div class="container-fluid dashboard-content"> -->
                 <!-- ============================================================== -->
                 <!-- หัวกระดาษ  -->
                 <!-- ============================================================== -->
 
-                <div class="page-header ml-5 mt-2">
+                <!-- <div class="page-header ml-5 mt-2">
                     <h3 class="mb-2 ">รายละเอียดครุภัณฑ์ </h3>
-                </div>
+                </div> -->
 
                 <!-- ============================================================== -->
                 <!-- การ์ด  -->
@@ -365,6 +382,18 @@
 
                     </div>
                 </div> -->
+
+                <div class="dashboard-wrapper">
+                    <div class="container-fluid dashboard-content">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="ml-3 mr-4 mt-5" style="background-color: blueviolet; height: 3px; width: 1215 px;">
+                                </div>
+                                <div class="mt-5 ml-3">
+                                    <h2>รายละเอียดครุภัณฑ์</h2> <br>
+                                </div>
+                                <div class="ml-3">
+                                </div>
                 <!-- ============================================================== -->
                 <!-- เสร็จการ์ด  -->
                 <!-- ============================================================== -->
@@ -402,6 +431,7 @@
                 <!-- ============================================================== -->
             </div>
         </div>
+                    </div>
 
         <!-- ============================================================== -->
         <!-- modal  -->
@@ -522,6 +552,8 @@
         <!-- ============================================================== -->
         <!-- ======================== เสร็จ footer ========================= -->
         <!-- ============================================================== -->
+    </div>
+    </div>
     </div>
 </body>
 
