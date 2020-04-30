@@ -49,8 +49,9 @@
                 e.preventDefault();
                 
                 if (document.getElementById("fileUpload").files.length == 0) {
-
-                    alert("no files selected");
+                    //or use jQuery
+                    // if($('#fileUpload')[0].files.length === 0)
+                    alert("กรุณาเลือกไฟล์");
                     return;
                 }
                 const formData = new FormData(this);
