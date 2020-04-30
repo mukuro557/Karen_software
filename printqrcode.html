@@ -4,57 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script text="script" src="qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <title>Print QRcode</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <title>Document</title>
 </head>
+<style>
+    #qr {
+        width: 180px;
+        height: 180px;
+    }
+
+    img {
+        display: inline-block;
+    }
+
+    @media print {
+        .myDivToPrint {
+            background-color: white;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 15px;
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+</style>
 
 <body>
     <button class="btn btn-primary" onclick="printDiv('printHere')"><i class="fa fa-print" aria-hidden="true"
-            style=" font-size: 17px;"> Print</i></button>
+           > Print</i></button>
     <br><br>
         
-    <div id="printHere" class="container">
-        
-        <div class="card-columns">           
-            <div class="card-body">             
-                <div id="qrcode"></div>          
-            </div>
-        </div>
+    <div id="printHere" class="container-fluid my-4 ml-5">
+            <div id="qrcode" class="my-2"></div>
     </div>
 
-
-
+    
     <script src="/JS_Files/qrcode.min.js"></script>
     <script>
-        Generate();
-        function Generate() {
-            var storedArray = JSON.parse(sessionStorage.getItem("items"));
-            var i;
-            for (i = 0; i < storedArray.length; i++) {
-                // alert(storedArray[i]);
-                var qrcode = new QRCode(document.getElementById('qrcode'), {
-                    width: 128,
-                    height: 128,
-                    colorDark: '#000000',
-                    colorLight: '#ffffff',
-                    correctLevel: QRCode.CorrectLevel.H
-                })
+ $(document).ready(function () {
 
-                var spacearea = document.createElement("p");
-                var text = document.createTextNode(storedArray[i]);
-                spacearea.appendChild(text);
-                document.getElementById("qrcode").appendChild(spacearea);
-                qrcode.makeCode(storedArray[i]);
 
+       
+        let data = JSON.parse(sessionStorage.getItem("items"));
+        var k = 0;
+        for (var i = 0; i < Math.ceil(data.length / 12); i++) {
+            $("#qrcode").append("<div class='row' id='aa" + [i] + "' ></div>")
+            for (let j = 0; j < 12; j++) {
+                $("#aa" + [i] + "").append("<div class='col-md-2 col-sm-2 col-lg-1 my-2' id='bb" + [j] + "' ></div>")
+                var dataqr = new QRCode(document.querySelector("#aa" + [i] + " #bb" + [j] + ""), {
+                    width: 100,
+                    height: 100,
+                });
+                dataqr.makeCode(data[k])
+                $("#aa" + [i] + " #bb" + [j] + "").append("<div>" + data[k] + "</div>")
+                k++
             }
 
-
-
         }
+        printDiv("printHere");
+    
+ });
 
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;
@@ -68,7 +84,7 @@
         }
     </script>
 
-    </script>
+    
 
 </body>
 
