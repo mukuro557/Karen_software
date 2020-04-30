@@ -170,7 +170,7 @@ const email = req.params.email
     upload(req, res, function (err) {
         if (err) {
             // An unknown error occurred when uploading.
-            res.status(500).send("Upload failed");
+            res.status(500).send("ไม่สามารถอัพโหลดไฟล์นี้ได้");
             return;
         }
         // Everything went fine.
@@ -221,16 +221,14 @@ app.put("/item/take", function (req, res) {
 
     const image = req.body.take;
     
-
-    const sql = "UPDATE item SET takepicture = 1 where Inventory_Number = ?;"
-   
-
+    const sql = "UPDATE item SET takepicture = 1 where Inventory_Number IN(?) ;"
     con.query(sql, [image], function (err, result, fields) {
         if (err) {
-            res.status(503).send("Server error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+            console.log(err)
         }
         else {
-            res.send("Edited success");
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -244,10 +242,10 @@ app.put("/item/addImage", function (req, res) {
     const sql = "UPDATE item SET image=? where Inventory_Number=?;"
     con.query(sql, [image, Inventory_Number], function (err, result, fields) {
         if (err) {
-            res.status(503).send("Server error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
         else {
-            res.send("Edited success");
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -260,7 +258,7 @@ app.get("/manageUser/showAllUsers/:Email_user", function (req, res) {
 
     con.query(sql, [Email_user], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -274,7 +272,7 @@ app.get("/user/profile/inspectedItem/Total/Number1/:Email_Committee", function (
 
     con.query(sql, [Email_Committee,d], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -288,7 +286,7 @@ app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (r
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -303,7 +301,7 @@ app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, r
 
     con.query(sql, [Status, Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -316,7 +314,7 @@ app.get("/year/user", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -330,7 +328,7 @@ app.get("/year/iteem", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -348,10 +346,10 @@ app.put("/manageUser/update/:Email_user/:Email_assigner/:role/:Email_useru", fun
     const sql = "UPDATE year_user SET year = ?,Email_user = ?,Email_assigner = ?,role = ? WHERE Email_user = ?;";
     con.query(sql, [year, Email_user, Email_assigner, role, Email_useru], function (err, result, fields) {
         if (err) {
-            res.status(503).send("Server error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
         else {
-            res.send("Edited success");
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -363,7 +361,7 @@ app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
 
     con.query(sql, [Email_user], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -377,7 +375,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -390,7 +388,7 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -404,7 +402,7 @@ app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
 
     con.query(sql, [location], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -420,7 +418,7 @@ app.get("/item/dashboard/number/:status", function (req, res) {
     const status = req.params.status;
     con.query(sql, [status, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -433,7 +431,7 @@ app.get("/item/dashboard/number", function (req, res) {
     const year = new Date().getFullYear();
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -447,7 +445,7 @@ app.get("/item/dashboard/number2/:status/:year", function (req, res) {
     const status = req.params.status;
     con.query(sql, [status, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -460,7 +458,7 @@ app.get("/item/dashboard/number1/:year", function (req, res) {
     const year = req.params.year;
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -474,7 +472,7 @@ app.get("/item/Location", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -488,7 +486,7 @@ app.get("/item/Status", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -502,7 +500,7 @@ app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
 
     con.query(sql, [status], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -516,7 +514,7 @@ app.get("/item/Year", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -530,7 +528,7 @@ app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
 
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -544,7 +542,7 @@ app.get("/item/Email_Committee", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -558,7 +556,7 @@ app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
 
     con.query(sql, [thecommittee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -573,7 +571,7 @@ app.get("/item/:status", function (req, res) {
     const status = req.params.status;
     con.query(sql, [status, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -587,7 +585,7 @@ app.get("/item/forPrintQRcode_Barcode/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
     con.query(sql, [year, Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -600,7 +598,7 @@ app.get("/landing1/showSomeInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -613,7 +611,7 @@ app.get("/landing1/showAllInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -626,7 +624,7 @@ app.get("/landing2/showSomeInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -639,7 +637,7 @@ app.get("/item/numberAll", function (req, res) {
     const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Year = ?"
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.send(result)
         }
@@ -653,7 +651,7 @@ app.get("/dateTime/showDateTime", function (req, res) {
 
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -667,7 +665,7 @@ app.get("/maindataTable/info/:status", function (req, res) {
     const status = req.params.status;
     con.query(sql, [year, status], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -682,10 +680,10 @@ app.put("/item/edit", function (req, res) {
     const sql = "UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?;"
     con.query(sql, [Status, Inventory_Number, Email_user], function (err, result, fields) {
         if (err) {
-            res.status(503).send("Server error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
         else {
-            res.send("Edited success");
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -697,7 +695,7 @@ app.get("/manageUser/showAllUser/:year", function (req, res) {
 
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -715,17 +713,17 @@ app.post("/manageUser/add/:Email_user/:Email_assigner/:role", function (req, res
     con.query(sql, [year, Email_user, Email_assigner, role], function (err, result, fields) {
         if (err) {
             console.error(err.message);
-            res.status(503).send("DB Error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
             return;
         }
         // get inserted rows
         const numrows = result.affectedRows;
         if (numrows != 1) {
             console.error("Error");
-            res.status(500).send("Unsuccessful");
+            res.status(500).send("ไม่สามารถเพิ่มข้อมูลได้");
         }
         else {
-            res.send("Add success");
+            res.send("เพิ่มข้อมูลเรียบร้อย");
         }
 
     });
@@ -738,7 +736,7 @@ app.get("/item5/:inventory", function (req, res) {
     const inventory = req.params.inventory;
     con.query(sql, [inventory, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -756,17 +754,17 @@ app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
     con.query(sql, [years, Date_start, Date_end], function (err, result, fields) {
         if (err) {
             console.error(err.message);
-            res.status(503).send("DB Error");
+            res.status(503).send("ไม่สามารถเพิ่มข้อมูลได้ เนื่องจากมีข้อมูลของปีนี้อยู่ในระบบแล้ว");
             return;
         }
         // get inserted rows
         const numrows = result.affectedRows;
         if (numrows != 1) {
             console.error("Error");
-            res.status(500).send("Unsuccessful");
+            res.status(500).send("ไม่สามารถเพิ่มข้อมูลได้");
         }
         else {
-            res.send("Add success");
+            res.send("เพิ่มข้อมููลเรียบร้อย");
         }
 
     });
@@ -781,10 +779,10 @@ app.put("/dateTime/updateTime/:Date_start/:Date_end", function (req, res) {
     const sql = "UPDATE date_check SET Date_start=?, Date_end=? where years=?;"
     con.query(sql, [Date_start, Date_end, years], function (err, result, fields) {
         if (err) {
-            res.status(503).send("Server error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
         else {
-            res.send("Edit success");
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
