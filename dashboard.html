@@ -86,11 +86,9 @@
                 var values = [];
                 for (let i = 0; i < data.length; i++) {
                     values[i] = [data[i].Year]
-
                 }
-                $('.year')
-                    .append(
-                        $(document.createElement('select')).prop({
+                values[data.length] = 'ปีตรวจ'
+                $('.year').append($(document.createElement('select')).prop({
 
                             class: 'year',
                             name: 'year',
@@ -98,12 +96,12 @@
                             class: 'mt-3 ml-3 year',
                             id: 'Year',
                             name: 'Year'
-                        }).html('ปี ')
+                        })
                     )
 
 
                 //drop down status year
-                for (let i = 0; i < values.length; i++) {
+                for (let i = values.length - 1; i >= 0; i--) {
                     $('#Year').append($(document.createElement('option')).prop({
                         value: values[i],
                         text: values[i],
