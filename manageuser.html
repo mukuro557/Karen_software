@@ -72,7 +72,16 @@
                 method: "GET",
                 url: "/manageUser/showAllUser/"+selected
             }).done(function (dataSet, state, xhr) {
-                //    alert("ok");
+                
+                for (let i = 0; i < dataSet.length; i++) {
+                        if (dataSet[i].role == 2) {
+                            dataSet[i].role = "กรรมการ"
+                        } else if (dataSet[i].role == 1) {
+                            dataSet[i].role = "admin"
+                        } 
+                        
+                    }
+
                 table.clear();
                 //display modified JSON in DataTable
                 table.rows.add(dataSet).draw();
@@ -82,7 +91,15 @@
                 method: "GET",
                 url: "/manageUser/showAllUser/"+data[data.length-1].Year
             }).done(function (dataSet, state, xhr) {
-                //    alert("ok");
+
+                for (let i = 0; i < dataSet.length; i++) {
+                        if (dataSet[i].role == 2) {
+                            dataSet[i].role = "กรรมการ"
+                        } else if (dataSet[i].role == 1) {
+                            dataSet[i].role = "admin"
+                        } 
+                        
+                    }
                 table.clear();
                 //display modified JSON in DataTable
                 table.rows.add(dataSet).draw();
