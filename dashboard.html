@@ -172,8 +172,7 @@
                     values[i] = [data[i].Location]
                 }
                 values[data.length] = 'สถานที่'
-                $('.btnGroupDrop1')
-                    .append(
+                $('.btnGroupDrop1').append(
                         $(document.createElement('select')).prop({
                             style: 'border-color: white',
                             class: 'mt-3 ml-3 location',
@@ -384,15 +383,34 @@
                 }
             });
 
+            $("#take").click(function () {
+                var selectedItem = [];
+                $.each($("input[name='singleCheckbox']:checked"), function () {
+                    selectedItem.push($(this).val());
+                });
+                alert(selectedItem[0])
+
+                $.ajax({
+                method: "PUT",
+                url: "/item/take",
+                data: {take : selectedItem},
+                
+            }).done(function (dataSet, state, xhr) {
+              alert("สำเร็จ")
+            })
+               
+            });
+
             $("#qrcode").click(function () {
 
                 var selectedItem = [];
                 $.each($("input[name='singleCheckbox']:checked"), function () {
                     selectedItem.push($(this).val());
                 });
+                
                 window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
                 var storedArray = JSON.parse(sessionStorage.getItem("items"));
-                window.location.replace("printqrcode");
+                window.location.replace("/printqrcode");
             });
 
 
@@ -840,7 +858,7 @@
                     <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushPDF">Export
                         to PDF</button>
                     <button class="btn" id="qrcode">Qrcode</button>
-                    <button class="btn">ถ่ายรูป</button>
+                    <button class="btn" id ="take">ถ่ายรูป</button>
                     <button class="btn" class="btn btn-primary" data-toggle="modal"
                         data-target="#upload">Import</button>
                     <br> <br><br><br>

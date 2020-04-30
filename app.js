@@ -216,6 +216,26 @@ function importExelData2MySQL(res, filePath,email) {
 }
 
 
+// บังคับถ่ายรูป
+app.put("/item/take", function (req, res) {
+
+    const image = req.body.take;
+    
+
+    const sql = "UPDATE item SET takepicture = 1 where Inventory_Number = ?;"
+   
+
+    con.query(sql, [image], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("Server error");
+        }
+        else {
+            res.send("Edited success");
+        }
+    })
+});
+
+
 
 // Add image to an item
 app.put("/item/addImage", function (req, res) {
