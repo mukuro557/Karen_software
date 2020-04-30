@@ -412,8 +412,12 @@
                 data: {take : selectedItem},
                 
             }).done(function (dataSet, state, xhr) {
-              alert("สำเร็จ")
-            })
+              alert("บันทึกสำเร็จ")
+
+            }).fail(function (xhr, state, error) {
+                alert(xhr.responseText);
+                
+             });
                
             });
 

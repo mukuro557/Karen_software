@@ -221,13 +221,11 @@ app.put("/item/take", function (req, res) {
 
     const image = req.body.take;
     
-
-    const sql = "UPDATE item SET takepicture = 1 where Inventory_Number = ?;"
-   
-
+    const sql = "UPDATE item SET takepicture = 1 where Inventory_Number IN(?) ;"
     con.query(sql, [image], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+            console.log(err)
         }
         else {
             res.send("แก้ไขข้อมูลเรียบร้อย");
