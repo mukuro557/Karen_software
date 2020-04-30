@@ -72,6 +72,9 @@
                             
                             window.location.replace("/checkpage")
                         }
+                        if(dataSet[0].role == 2){
+                            $("#manageu").hide();
+                        }
                         for (let i = 0; i < dataSet.length; i++) {
                         if (dataSet[i].role == 2) {
                             dataSet[i].role = "กรรมการ"
@@ -206,9 +209,9 @@
                             </div>
                         </li>
 
-                        <li class="nav-item ">
+                        <li class="nav-item "id="manageu">
                             <a class="nav-link " href="/manageUser" aria-expanded="false"><i
-                                    class="fa fa-edit"></i>จัดการผู้ใช้
+                                    class="fa fa-edit" ></i>จัดการผู้ใช้
                             </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
