@@ -12,9 +12,22 @@ const passport = require("passport");
 const cookieSession = require("cookie-session");
 const key = require("./config/key");
 const xlsx = require("xlsx");
-
+const d = new Date().getFullYear().toString();
+const readXlsxfile = require("read-excel-file/node")
 
 //=========Put to use==========
+const storageOption = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'upload/')
+    },
+    filename: function (req, file, cb) {
+
+        cb(null, d + "_" + file.originalname);
+
+    }
+});
+
+
 const app = express();
 app.set("view engine", "ejs");
 const con = mysql.createConnection(config);
@@ -22,17 +35,19 @@ app.use("/img", express.static(path.join(__dirname, 'img')));
 app.use("/style.css", express.static(path.join(__dirname, 'style.css')));
 
 // read excel file (import), put excel file into work folder
-var wb = xlsx.readFile("sampleData.xlsx", {cellDates:true});
+var wb = xlsx.readFile("sampleData.xlsx", { cellDates: true });
 var ws = wb.Sheets["sheet1"];
 var JSONexcel = xlsx.utils.sheet_to_json(ws);
 
 // write excel file (export)
-var exportExcel = JSONexcel.map(function(record){
+var exportExcel = JSONexcel.map(function (record) {
     return record;
 });
-var newWB = xlsx.utils.book_new();
-var newWS = xlsx.utils.json_to_sheet(exportExcel);
-xlsx.utils.book_append_sheet(newWB,newWS,"New Data");
+const upload = multer({ storage: storageOption }).single("filetoupload");
+
+// var newWB = xlsx.utils.book_new();
+// var newWS = xlsx.utils.json_to_sheet(exportExcel);
+// xlsx.utils.book_append_sheet(newWB, newWS, "New Data");
 // Uncomment "xlsx.writeFile(newWB,"Exported_File.xlsx");" below to export file
 // xlsx.writeFile(newWB,"Exported_File.xlsx");
 
@@ -55,7 +70,7 @@ app.use(body_parser.json());
 //cookie
 app.use(cookieSession({
     // maxAge: 1000*60*60,
-     maxAge: 1000*60*60,
+    maxAge: 1000 * 60 * 60,
     keys: [key.cookie.secret]
 }));
 // init passport for se/derialization
@@ -73,7 +88,7 @@ app.use("/profile", profileRoutes);
 
 //Root Page (landing page 1)
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname,"/landing1.html"));
+    res.sendFile(path.join(__dirname, "/landing1.html"));
     // res.render("home.ejs", {user: req.user});
 });
 
@@ -83,6 +98,10 @@ app.get("/checkpage", function (req, res) {
 });
 app.get("/manageUser", function (req, res) {
     res.sendFile(path.join(__dirname, "/manageUser.html"))
+});
+
+app.get("/printqrcode", function (req, res) {
+    res.sendFile(path.join(__dirname, "/printqrcode.html"))
 });
 
 //Return home page
@@ -145,18 +164,90 @@ app.get("/takepicture", function (req, res) {
 
 //================== Services (functions) ===================
 
+// ============= Upload ==============
+app.post("/uploading/:email", function (req, res) {
+const email = req.params.email
+    upload(req, res, function (err) {
+        if (err) {
+            // An unknown error occurred when uploading.
+            res.status(500).send("Upload failed");
+            return;
+        }
+        // Everything went fine.
+        console.log(email)
+        importExelData2MySQL(res, __dirname + '/upload/' + req.file.filename,email)
+        console.log(req.file.filename)
+    })
+});
+// import
+function importExelData2MySQL(res, filePath,email) {
+    readXlsxfile(filePath).then((rows) => {
+        console.log(rows);
+        const date = new Date();
+        rows.shift();
+
+        let sql = "INSERT INTO item (`Inventory_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer,Date_Upload) VALUES ?";
+
+        for (var i = 0; i < rows.length; i++) {
+            var temp = rows[i];
+            rows[i] = [];
+            
+            for (var j = 3; j < 14; j++) {
+                
+                    rows[i].push(temp[j]);
+            }
+            rows[i].push(d);
+            rows[i].push(0);
+            rows[i].push(email);
+            rows[i].push(date);
+        }
+
+
+        con.query(sql, [rows], function (err, result, fields) {
+            if (err) {
+                console.log(err);
+                res.send("มีข้อมูลนี้แล้วในระบบ")
+            }else{
+              
+               
+            }
+        })
+    });
+}
+
+
+// บังคับถ่ายรูป
+app.put("/item/take", function (req, res) {
+
+    const image = req.body.take;
+    
+
+    const sql = "UPDATE item SET takepicture = 1 where Inventory_Number = ?;"
+   
+
+    con.query(sql, [image], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("แก้ไขข้อมูลเรียบร้อย");
+        }
+    })
+});
+
+
 
 // Add image to an item
-app.put("/item/addImage",function (req, res){
+app.put("/item/addImage", function (req, res) {
     const image = req.body.image;
     const Inventory_Number = req.body.Inventory_Number;
     const sql = "UPDATE item SET image=? where Inventory_Number=?;"
-    con.query(sql,[image,Inventory_Number],function(err,result,fields){
-        if(err){
-            res.status(503).send("Server error");
+    con.query(sql, [image, Inventory_Number], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
-        else{
-            res.send("Edited success");
+        else {
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -167,9 +258,23 @@ app.get("/manageUser/showAllUsers/:Email_user", function (req, res) {
     // const year =  new Date().getFullYear();
     const sql = "select year,Email_user,Email_assigner,role from year_user WHERE Email_user = ?"
 
-    con.query(sql,[Email_user], function (err, result, fields) {
+    con.query(sql, [Email_user], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load inspected total item numbers by a user
+app.get("/user/profile/inspectedItem/Total/Number1/:Email_Committee", function (req, res) {
+    const Email_Committee = req.params.Email_Committee;
+    const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Email_Committee=? AND Year =?;"
+
+    con.query(sql, [Email_Committee,d], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -183,7 +288,7 @@ app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (r
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -196,9 +301,9 @@ app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, r
     const Status = req.params.Status;
     const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Status=? AND Email_Committee=?;"
 
-    con.query(sql, [Status,Email_Committee], function (err, result, fields) {
+    con.query(sql, [Status, Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -207,11 +312,11 @@ app.get("/user/profile/inspectedItem/:Status/:Email_Committee", function (req, r
 // Load year
 app.get("/year/user", function (req, res) {
     const sql = "SELECT DISTINCT Year FROM year_user"
- 
 
-    con.query(sql , function (err, result, fields) {
+
+    con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -221,11 +326,11 @@ app.get("/year/user", function (req, res) {
 // Load year
 app.get("/year/iteem", function (req, res) {
     const sql = "SELECT DISTINCT Year FROM item"
- 
 
-    con.query(sql , function (err, result, fields) {
+
+    con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -234,19 +339,19 @@ app.get("/year/iteem", function (req, res) {
 
 // Add info of new user in manage user page
 app.put("/manageUser/update/:Email_user/:Email_assigner/:role/:Email_useru", function (req, res) {
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const Email_user = req.params.Email_user;
     const Email_assigner = req.params.Email_assigner;
     const role = req.params.role;
     const Email_useru = req.params.Email_useru;
 
     const sql = "UPDATE year_user SET year = ?,Email_user = ?,Email_assigner = ?,role = ? WHERE Email_user = ?;";
-    con.query(sql, [year,Email_user,Email_assigner,role,Email_useru], function (err, result, fields) {
-        if(err){
-            res.status(503).send("Server error");
+    con.query(sql, [year, Email_user, Email_assigner, role, Email_useru], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
-        else{
-            res.send("Edited success");
+        else {
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -258,7 +363,7 @@ app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
 
     con.query(sql, [Email_user], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -272,7 +377,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -285,7 +390,7 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -297,9 +402,9 @@ app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
     const location = req.params.location;
     const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Location = ?"
 
-    con.query(sql,[location], function (err, result, fields) {
+    con.query(sql, [location], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -311,11 +416,11 @@ app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
 // Load item numbers
 app.get("/item/dashboard/number/:status", function (req, res) {
     const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=?;"
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const status = req.params.status;
-    con.query(sql,[status,year] , function (err, result, fields) {
+    con.query(sql, [status, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -325,10 +430,10 @@ app.get("/item/dashboard/number/:status", function (req, res) {
 // Load item numbers
 app.get("/item/dashboard/number", function (req, res) {
     const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item ;"
-    const year =  new Date().getFullYear();
-    con.query(sql,[year] , function (err, result, fields) {
+    const year = new Date().getFullYear();
+    con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -338,11 +443,11 @@ app.get("/item/dashboard/number", function (req, res) {
 // Load item numbers with year
 app.get("/item/dashboard/number2/:status/:year", function (req, res) {
     const sql = "SELECT count(status) AS 'Numbers_of_item' FROM item WHERE status=? AND year = ?;"
-    const year =  req.params.year;
+    const year = req.params.year;
     const status = req.params.status;
-    con.query(sql,[status,year] , function (err, result, fields) {
+    con.query(sql, [status, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -353,9 +458,9 @@ app.get("/item/dashboard/number2/:status/:year", function (req, res) {
 app.get("/item/dashboard/number1/:year", function (req, res) {
     const sql = "SELECT count(Status) AS 'Numbers_of_item' FROM item WHERE year = ?;"
     const year = req.params.year;
-    con.query(sql,[year] , function (err, result, fields) {
+    con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -365,11 +470,11 @@ app.get("/item/dashboard/number1/:year", function (req, res) {
 // // Load location
 app.get("/item/Location", function (req, res) {
     const sql = "SELECT DISTINCT Location FROM item"
- 
 
-    con.query(sql , function (err, result, fields) {
+
+    con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -379,11 +484,11 @@ app.get("/item/Location", function (req, res) {
 // // Load Status
 app.get("/item/Status", function (req, res) {
     const sql = "SELECT DISTINCT Status FROM item"
- 
 
-    con.query(sql , function (err, result, fields) {
+
+    con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -395,9 +500,9 @@ app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
     const status = req.params.status;
     const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Status = ?"
 
-    con.query(sql,[status], function (err, result, fields) {
+    con.query(sql, [status], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -407,11 +512,11 @@ app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
 // // Load year
 app.get("/item/Year", function (req, res) {
     const sql = "SELECT DISTINCT Year FROM item"
- 
 
-    con.query(sql , function (err, result, fields) {
+
+    con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -423,9 +528,9 @@ app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
     const year = req.params.Year;
     const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Year = ?"
 
-    con.query(sql,[year], function (err, result, fields) {
+    con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -435,11 +540,11 @@ app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
 // // Load commitee
 app.get("/item/Email_Committee", function (req, res) {
     const sql = "SELECT DISTINCT Email_Committee FROM item"
- 
 
-    con.query(sql , function (err, result, fields) {
+
+    con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -451,9 +556,9 @@ app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
     const thecommittee = req.params.Email_Committee;
     const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Email_Committee  = ?"
 
-    con.query(sql,[thecommittee], function (err, result, fields) {
+    con.query(sql, [thecommittee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -464,11 +569,11 @@ app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
 // Load item info
 app.get("/item/:status", function (req, res) {
     const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where status=? AND year =?"
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const status = req.params.status;
-    con.query(sql,[status,year] , function (err, result, fields) {
+    con.query(sql, [status, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -478,11 +583,11 @@ app.get("/item/:status", function (req, res) {
 // For print barcode or QR code of item
 app.get("/item/forPrintQRcode_Barcode/:Email_Committee", function (req, res) {
     const sql = "select Inventory_Number, Asset_Description, Received_date, Department, year,status, image from item where year=? and Email_Committee=?;"
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const Email_Committee = req.params.Email_Committee;
-    con.query(sql,[year,Email_Committee] , function (err, result, fields) {
+    con.query(sql, [year, Email_Committee], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -495,7 +600,7 @@ app.get("/landing1/showSomeInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -508,7 +613,7 @@ app.get("/landing1/showAllInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -521,7 +626,7 @@ app.get("/landing2/showSomeInfo", function (req, res) {
 
     con.query(sql, function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -530,11 +635,11 @@ app.get("/landing2/showSomeInfo", function (req, res) {
 
 // Load item number all in database
 app.get("/item/numberAll", function (req, res) {
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Year = ?"
-    con.query(sql,[year], function (err, result, fields) {
+    con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.send(result)
         }
@@ -543,12 +648,12 @@ app.get("/item/numberAll", function (req, res) {
 
 // Load date and time of job
 app.get("/dateTime/showDateTime", function (req, res) {
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const sql = "select * from date_check where years = ?"
 
-    con.query(sql,[year], function (err, result, fields) {
+    con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -558,11 +663,11 @@ app.get("/dateTime/showDateTime", function (req, res) {
 // Load info of main datatable page
 app.get("/maindataTable/info/:status", function (req, res) {
     const sql = "select Image,Asset_Description,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Room,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan from item where year=? and status=?"
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const status = req.params.status;
-    con.query(sql,[year,status], function (err, result, fields) {
+    con.query(sql, [year, status], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -570,17 +675,17 @@ app.get("/maindataTable/info/:status", function (req, res) {
 });
 
 // Edit status of item
-app.put("/item/edit",function (req, res){
+app.put("/item/edit", function (req, res) {
     const Status = req.body.Status;
     const Inventory_Number = req.body.Inventory_Number;
     const Email_user = req.body.Email_user;
     const sql = "UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?;"
-    con.query(sql,[Status,Inventory_Number,Email_user],function(err,result,fields){
-        if(err){
-            res.status(503).send("Server error");
+    con.query(sql, [Status, Inventory_Number, Email_user], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
-        else{
-            res.send("Edited success");
+        else {
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -590,9 +695,9 @@ app.get("/manageUser/showAllUser/:year", function (req, res) {
     const year = req.params.year;
     const sql = "select year,Email_user,Email_assigner,role from year_user WHERE year=?"
 
-    con.query(sql,[year], function (err, result, fields) {
+    con.query(sql, [year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -601,26 +706,26 @@ app.get("/manageUser/showAllUser/:year", function (req, res) {
 
 // Add info of new user in manage user page
 app.post("/manageUser/add/:Email_user/:Email_assigner/:role", function (req, res) {
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const Email_user = req.params.Email_user;
     const Email_assigner = req.params.Email_assigner;
     const role = req.params.role;
 
     const sql = "INSERT INTO year_user(year,Email_user,Email_assigner,role) VALUES (?,?,?,?)";
-    con.query(sql, [year,Email_user,Email_assigner,role], function (err, result, fields) {
+    con.query(sql, [year, Email_user, Email_assigner, role], function (err, result, fields) {
         if (err) {
             console.error(err.message);
-            res.status(503).send("DB Error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
             return;
         }
         // get inserted rows
         const numrows = result.affectedRows;
         if (numrows != 1) {
             console.error("Error");
-            res.status(500).send("Unsuccessful");
+            res.status(500).send("ไม่สามารถเพิ่มข้อมูลได้");
         }
         else {
-            res.send("Add success");
+            res.send("เพิ่มข้อมูลเรียบร้อย");
         }
 
     });
@@ -629,11 +734,11 @@ app.post("/manageUser/add/:Email_user/:Email_assigner/:role", function (req, res
 // Load item info landing 2
 app.get("/item5/:inventory", function (req, res) {
     const sql = "SELECT Image,Inventory_Number,Model,Serial,Location,Received_date,Asset_Description,Room,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan FROM `item` WHERE `Inventory_Number` =? AND year =?"
-    const year =  new Date().getFullYear();
+    const year = new Date().getFullYear();
     const inventory = req.params.inventory;
-    con.query(sql,[inventory,year] , function (err, result, fields) {
+    con.query(sql, [inventory, year], function (err, result, fields) {
         if (err) {
-            res.status(503).send("DB error");
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
         }
@@ -643,25 +748,25 @@ app.get("/item5/:inventory", function (req, res) {
 // Insert Work Time
 app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
     // ฟิค years ไว้ใน database ทำให้ไม่สามารถใส่ปีซ้ำได้
-    const years =  new Date().getFullYear();
+    const years = new Date().getFullYear();
     const Date_start = req.params.Date_start;
     const Date_end = req.params.Date_end;
 
     const sql = "INSERT INTO date_check(years,Date_start,Date_end) VALUES (?,?,?)";
-    con.query(sql, [years,Date_start,Date_end], function (err, result, fields) {
+    con.query(sql, [years, Date_start, Date_end], function (err, result, fields) {
         if (err) {
             console.error(err.message);
-            res.status(503).send("DB Error");
+            res.status(503).send("ไม่สามารถเพิ่มข้อมูลได้ เนื่องจากมีข้อมูลของปีนี้อยู่ในระบบแล้ว");
             return;
         }
         // get inserted rows
         const numrows = result.affectedRows;
         if (numrows != 1) {
             console.error("Error");
-            res.status(500).send("Unsuccessful");
+            res.status(500).send("ไม่สามารถเพิ่มข้อมูลได้");
         }
         else {
-            res.send("Add success");
+            res.send("เพิ่มข้อมููลเรียบร้อย");
         }
 
     });
@@ -669,17 +774,17 @@ app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
 });
 
 // Update date
-app.put("/dateTime/updateTime/:Date_start/:Date_end",function (req, res){
+app.put("/dateTime/updateTime/:Date_start/:Date_end", function (req, res) {
     const years = new Date().getFullYear();
     const Date_start = req.params.Date_start;
     const Date_end = req.params.Date_end;
     const sql = "UPDATE date_check SET Date_start=?, Date_end=? where years=?;"
-    con.query(sql,[Date_start,Date_end,years],function(err,result,fields){
-        if(err){
-            res.status(503).send("Server error");
+    con.query(sql, [Date_start, Date_end, years], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
-        else{
-            res.send("Edit success");
+        else {
+            res.send("แก้ไขข้อมูลเรียบร้อย");
         }
     })
 });
@@ -687,7 +792,7 @@ app.put("/dateTime/updateTime/:Date_start/:Date_end",function (req, res){
 
 app.use("/img", express.static(path.join(__dirname, 'img')));
 app.use("/assets", express.static(path.join(__dirname, 'assets')));
-
+app.use("/JS_Files", express.static(path.join(__dirname, 'JS_Files')));
 // ========== Starting server ============
 const PORT = 35000
 app.listen(PORT, function () {
