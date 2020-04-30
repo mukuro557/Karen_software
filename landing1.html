@@ -104,63 +104,7 @@
                     })
                 })
             })
-            //====================================== drop down status ======================================
-            $.ajax({
-                method: "GET",
-                url: "/item/Status"
-            }).done(function (data, state, xhr) {
-
-                var values = [];
-                for (let i = 0; i < data.length; i++) {
-                    values[i] = [data[i].Status]
-
-                } values[data.length] = 'สถานะ'
-                $('.btnGroupDrop2')
-
-                    .append(
-                        $(document.createElement('select')).prop({
-                            style: 'border-color: white',
-                            class: 'mt-3 ml-3 status',
-                            id: 'Status',
-                            name: 'Status'
-                        })
-                    )
-
-                //drop down status 
-                for (let i = values.length - 1; i >= 0; i--) {
-                    $('#Status').append($(document.createElement('option')).prop({
-                        value: values[i],
-                        text: values[i],
-                        class: values[i]
-                    }))
-                }
-                $('.สถานะ').hide()
-
-                $('select.status').change(function () {
-                    var selected = $(this).children("option:selected").val();
-
-                    $.ajax({
-                        method: "GET",
-                        url: "/item/dashboard/showAllInfo1/" + selected
-                    }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
-
-                        for (let i = 0; i < dataSet.length; i++) {
-                            if (dataSet[i].Status == 0) {
-                                dataSet[i].Status = "สูญหาย"
-                            } else if (dataSet[i].Status == 1) {
-                                dataSet[i].Status = "ปกติ"
-                            } else if (dataSet[i].Status == 2) {
-                                dataSet[i].Status = "ส่งซ่อม"
-                            }
-                        }
-                        table.clear();
-                        //display modified JSON in DataTable
-                        table.rows.add(dataSet).draw();
-                    })
-                })
-            })
-
+          
             //====================================== drop down commitee ======================================
             $.ajax({
                 method: "GET",
