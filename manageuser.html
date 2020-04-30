@@ -132,7 +132,10 @@
             $("#save2").click(function () {
                 let newmail = $("#editMail2").val();
                 let role;
-                var x = document.getElementById("admin").checked;
+                if (!newmail || newmail.length === 0) {
+alert("please type email")
+                }else{
+                    var x = document.getElementById("admin").checked;
                 if (x) {
                     role = 1;
                 } else {
@@ -158,6 +161,8 @@
                     //get data failed
                     alert(xhr.responseText);
                 });
+                }
+                
                 $(".modal").modal("hide");
                 location.reload()
             });
