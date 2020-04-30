@@ -537,8 +537,7 @@ app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
 
 // // Load commitee
 app.get("/item/Email_Committee", function (req, res) {
-    const sql = "SELECT DISTINCT Email_Committee FROM item"
-
+    const sql = "SELECT DISTINCT Email_Committee FROM item ORDER BY Email_Committee"
 
     con.query(sql, function (err, result, fields) {
         if (err) {

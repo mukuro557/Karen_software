@@ -284,12 +284,13 @@
                 method: "GET",
                 url: "/item/Email_Committee"
             }).done(function (data, state, xhr) {
-
                 var values = [];
                 for (let i = 0; i < data.length; i++) {
+                    if(data[i].Email_Committee !== null){
                     values[i] = [data[i].Email_Committee]
-
-                } values[data.length] = 'คณะกรรมการผู้ตรวจสอบ'
+                    }else{
+                    }
+                }values[data.length] = 'คณะกรรมการผู้ตรวจสอบ'
                 $('.commitee')
                     .append(
                         $(document.createElement('select')).prop({
@@ -386,8 +387,6 @@
                 $.each($("input[name='singleCheckbox']:checked"), function () {
                     selectedItem.push($(this).val());
                 });
-                
-
                 $.ajax({
                 method: "PUT",
                 url: "/item/take",
