@@ -166,7 +166,7 @@ app.get("/takepicture", function (req, res) {
 
 // ============= Upload ==============
 app.post("/uploading/:email", function (req, res) {
-const email = req.params.email
+    const email = req.params.email
     upload(req, res, function (err) {
         if (err) {
             // An unknown error occurred when uploading.
@@ -175,12 +175,12 @@ const email = req.params.email
         }
         // Everything went fine.
         console.log(email)
-        importExelData2MySQL(res, __dirname + '/upload/' + req.file.filename,email)
+        importExelData2MySQL(res, __dirname + '/upload/' + req.file.filename, email)
         console.log(req.file.filename)
     })
 });
 // import
-function importExelData2MySQL(res, filePath,email) {
+function importExelData2MySQL(res, filePath, email) {
     readXlsxfile(filePath).then((rows) => {
         console.log(rows);
         const date = new Date();
@@ -191,10 +191,10 @@ function importExelData2MySQL(res, filePath,email) {
         for (var i = 0; i < rows.length; i++) {
             var temp = rows[i];
             rows[i] = [];
-            
+
             for (var j = 3; j < 14; j++) {
-                
-                    rows[i].push(temp[j]);
+
+                rows[i].push(temp[j]);
             }
             rows[i].push(d);
             rows[i].push(0);
@@ -207,11 +207,73 @@ function importExelData2MySQL(res, filePath,email) {
             if (err) {
                 console.log(err);
                 res.send("มีข้อมูลนี้แล้วในระบบ")
-            }else{
-              
-               
+            } else {
+
+
             }
         })
+    });
+}
+
+// ============= Upload if already upload ==============
+app.post("/uploadif/:email", function (req, res) {
+    const email = req.params.email
+    upload(req, res, function (err) {
+        if (err) {
+            // An unknown error occurred when uploading.
+            res.status(500).send("ไม่สามารถอัพโหลดไฟล์นี้ได้");
+            return;
+        }
+        // Everything went fine.
+        console.log(email)
+        importfromexel(res, __dirname + '/upload/' + req.file.filename, email)
+        console.log(req.file.filename)
+    })
+});
+// import
+function importfromexel(res, filePath, email) {
+    readXlsxfile(filePath).then((rows) => {
+        console.log(rows);
+        const date = new Date();
+        rows.shift();
+        const year = new Date().getFullYear();
+        const sql = "DELETE FROM item WHERE Year = ? ;"
+        con.query(sql, [year], function (err, result, fields) {
+            if (err) {
+                res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+                console.log(err)
+            }
+            else {
+                let sql = "INSERT INTO item (`Inventory_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer,Date_Upload) VALUES ?";
+
+                for (var i = 0; i < rows.length; i++) {
+                    var temp = rows[i];
+                    rows[i] = [];
+
+                    for (var j = 3; j < 14; j++) {
+
+                        rows[i].push(temp[j]);
+                    }
+                    rows[i].push(d);
+                    rows[i].push(0);
+                    rows[i].push(email);
+                    rows[i].push(date);
+                }
+
+
+                con.query(sql, [rows], function (err, result, fields) {
+                    if (err) {
+                        console.log(err);
+                        res.send("มีข้อมูลนี้แล้วในระบบ")
+                    } else {
+res.send("บันทึกสำเร็จ")
+
+                    }
+                })
+            }
+        })
+
+
     });
 }
 
@@ -220,7 +282,7 @@ function importExelData2MySQL(res, filePath,email) {
 app.put("/item/take", function (req, res) {
 
     const image = req.body.take;
-    
+
     const sql = "UPDATE item SET takepicture = 1 where Inventory_Number IN(?) ;"
     con.query(sql, [image], function (err, result, fields) {
         if (err) {
@@ -270,7 +332,7 @@ app.get("/user/profile/inspectedItem/Total/Number1/:Email_Committee", function (
     const Email_Committee = req.params.Email_Committee;
     const sql = "SELECT count(status) AS 'Numbers_of_Inspected_Item' FROM item WHERE Email_Committee=? AND Year =?;"
 
-    con.query(sql, [Email_Committee,d], function (err, result, fields) {
+    con.query(sql, [Email_Committee, d], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
@@ -323,7 +385,7 @@ app.get("/year/user", function (req, res) {
 
 // Load year
 app.get("/year/iteem", function (req, res) {
-    const sql = "SELECT DISTINCT Year FROM item"
+    const sql = "SELECT DISTINCT Year FROM item ORDER BY Year"
 
 
     con.query(sql, function (err, result, fields) {
@@ -387,6 +449,21 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
     const sql = "select Year,Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
 
     con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load all item for import
+app.get("/item/dashboard/showuser", function (req, res) {
+    const year = new Date().getFullYear();
+
+    const sql = "select DISTINCT Email_Committee from item WHERE Year = ? ORDER BY Email_Committee DESC"
+
+    con.query(sql, [year], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
