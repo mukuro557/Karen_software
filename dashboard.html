@@ -404,7 +404,7 @@
                 $.each($("input[name='singleCheckbox']:checked"), function () {
                     selectedItem.push($(this).val());
                 });
-                alert(selectedItem[0])
+                
 
                 $.ajax({
                 method: "PUT",
@@ -412,11 +412,16 @@
                 data: {take : selectedItem},
                 
             }).done(function (dataSet, state, xhr) {
-              alert("บันทึกสำเร็จ")
+                if(selectedItem[0]=== undefined){
+                    alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
+                }else{
+                    alert("บันทึกสำเร็จ")
+                }
+              
 
             }).fail(function (xhr, state, error) {
                 alert(xhr.responseText);
-                
+
              });
                
             });
