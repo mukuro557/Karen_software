@@ -35,9 +35,8 @@
     <link href='assets/vendor/full-calendar/css/fullcalendar.css' rel='stylesheet' />
     <link href='assets/vendor/full-calendar/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
-    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <!-- <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script> -->
-    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
+    <!-- <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script> -->
+    <!-- <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script> -->
     <script src='assets/vendor/full-calendar/js/moment.min.js'></script>
     <script src='assets/vendor/full-calendar/js/fullcalendar.js'></script>
     <script src='assets/vendor/full-calendar/js/jquery-ui.min.js'></script>
@@ -127,6 +126,11 @@
 
 document.getElementById("date_start_update").disabled = true;
                 }
+                if(!data[0]){
+
+                }else{
+$("#addtime").hide();
+                }
             }).fail(function (xhr, state, error) {
                 //get data failed
                 alert(xhr.responseText);
@@ -138,18 +142,23 @@ document.getElementById("date_start_update").disabled = true;
                 let date_start_update = $("input[type=date][name=Date_start_update]").val();
                 let date_end_update = $("input[type=date][name=Date_end_update]").val();
 
+                if(!date_start_update||date_start_update.length ===0 || !date_end_update || date_end_update.length ===0 ){
+                   alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                }else{
+                    
                 $.ajax({
                     method: "PUT",
                     url: "/dateTime/updateTime/" + date_start_update + "/" + date_end_update
                 }).done(function (data, state, xhr) {
+                   
+                    $("#modaladd").modal("hide");
                     alert(data);
-                    $(".modal").modal("hide");
                     location.reload();
                 }).fail(function (xhr, state, error) {
                     //get data failed
                     alert(xhr.responseText);
                 });
-                alert(date);
+            }
             });
 
 
@@ -158,18 +167,24 @@ document.getElementById("date_start_update").disabled = true;
             $("#bt_AddNewDate").click(function () {
                 let date_start_add = $("input[type=date][name=Date_start_add]").val();
                 let date_end_add = $("input[type=date][name=Date_end_add]").val();
-                $.ajax({
+
+                if(!date_start_add||date_start_add.length ===0 || !date_end_add || date_end_add.length ===0 ){
+                   alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                }else{
+                     $.ajax({
                     method: "POST",
                     url: "/dateTime/insertTime/" + date_start_add + "/" + date_end_add
                 }).done(function (data, state, xhr) {
                     alert(data);
-                    $(".modal").modal("hide");
+                    $("#modaladd").modal("hide");
                     location.reload();
                 }).fail(function (xhr, state, error) {
                     //get data failed
                     alert(xhr.responseText);
                 });
-                alert(date);
+                }
+                
+                
             });
         });
     </script>
@@ -318,7 +333,7 @@ document.getElementById("date_start_update").disabled = true;
                         <button type="button" class="btn btn-warning" data-toggle="modal"
                             data-target=".bd-example-modal-lg"> แก้ไขเวลา</button>
 
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                        <button type="button" class="btn btn-primary" id="addtime" data-toggle="modal"
                             data-target=".bd-example-modal-sm"> เพิ่มเวลา</button>
 
                     </div>
@@ -425,11 +440,12 @@ document.getElementById("date_start_update").disabled = true;
     </div>
     </div>
 
+
     <!-- ============================================================== -->
     <!-- modal  -->
     <!-- ============================================================== -->
 
-    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    <div class="modal fade bd-example-modal-sm"  id="modaladd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
