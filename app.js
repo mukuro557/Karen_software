@@ -170,7 +170,7 @@ const email = req.params.email
     upload(req, res, function (err) {
         if (err) {
             // An unknown error occurred when uploading.
-            res.status(500).send("Upload failed");
+            res.status(500).send("ไม่สามารถอัพโหลดไฟล์นี้ได้");
             return;
         }
         // Everything went fine.
