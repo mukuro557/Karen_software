@@ -43,8 +43,9 @@
 
     <script>
         var table
+        var user
         $(document).ready(function () {
-
+            
             $("form").submit(function (e) {
                 e.preventDefault();
 
@@ -55,11 +56,14 @@
                     return;
                 }
                 const formData = new FormData(this);
+
+                
+
                 $.ajax({
                     method: "GET",
                     url: "/item/dashboard/showuser"
                 }).done(function (data, state, xhr) {
-                    if (data[0].Email_Committee != null) {
+                    if (!data||data[0].Email_Committee != null ) {
                         alert("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
                     } else {
 
@@ -72,14 +76,11 @@
                             if (dataSet[dataSet.length - 1].Year == yyyy) {
                                 var r = confirm("ปีนี้ได้อัพโหลดแล้ว ถ้าอัพโหลดซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
                                 if (r) {
-
-                                    $.ajax({
-                                        method: "GET",
-                                        url: "/profile/infouser"
-                                    }).done(function (data, state, xhr) {
+                                    console.log(user)
+                                    
                                         $.ajax({
                                             method: "POST",
-                                            url: "/uploadif/" + data.email,
+                                            url: "/uploadif/" + user,
                                             data: formData,
                                             contentType: false,
                                             processData: false,
@@ -92,23 +93,15 @@
 
                                             }
                                         })
-                                    }).fail(function (xhr, state, error) {
-                                        alert(xhr.responseText);
-
-                                    });
+                                    
                                 }
 
                             } else {
 
-                                const formData = new FormData(this);
-                                $.ajax({
-                                    method: "GET",
-                                    url: "/profile/infouser"
-                                }).done(function (data, state, xhr) {
-
+                               
                                     $.ajax({
                                         method: "POST",
-                                        url: "/uploading/" + data.email,
+                                        url: "/uploading/" + user,
                                         data: formData,
                                         contentType: false,     //tell jQuery not to add a Content-Type header for us
                                         processData: false,      //tell jQuery not to convert the formData object to a string
@@ -121,10 +114,7 @@
                                     });
                                     $("#upload").modal("hide");
                                     window.location.reload();
-                                }).fail(function (xhr, state, error) {
-                                    alert(xhr.responseText);
-
-                                });
+                                
                             }
                         })
                     }
@@ -487,6 +477,7 @@
                 method: "GET",
                 url: "/profile/infouser"
             }).done(function (data, state, xhr) {
+                user = data.email
                 $("#user").html(data.name);
                 document.getElementById('pic').src = data.photo;
                 if (data.email === undefined) {
