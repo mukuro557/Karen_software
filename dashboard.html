@@ -45,7 +45,7 @@
         var table
         var user
         $(document).ready(function () {
-            
+
             $("form").submit(function (e) {
                 e.preventDefault();
 
@@ -57,16 +57,17 @@
                 }
                 const formData = new FormData(this);
 
-                
+
 
                 $.ajax({
                     method: "GET",
                     url: "/item/dashboard/showuser"
                 }).done(function (data, state, xhr) {
-                    if (!data||data[0].Email_Committee != null ) {
+                    
+                    if (data.length != 0 && data.length !==1) {
                         alert("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
                     } else {
-
+                        alert("hello")
                         $.ajax({
                             method: "GET",
                             url: "/year/iteem"
@@ -76,45 +77,45 @@
                             if (dataSet[dataSet.length - 1].Year == yyyy) {
                                 var r = confirm("ปีนี้ได้อัพโหลดแล้ว ถ้าอัพโหลดซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
                                 if (r) {
-                                    console.log(user)
-                                    
-                                        $.ajax({
-                                            method: "POST",
-                                            url: "/uploadif/" + user,
-                                            data: formData,
-                                            contentType: false,
-                                            processData: false,
-                                            success: function (data, state, xhr) {
-                                                alert(data)
+                        
 
-                                            },
-                                            error: function (xhr, state, err) {
-                                                alert(xhr.responseText);
+                                    $.ajax({
+                                        method: "POST",
+                                        url: "/uploadif/" + user,
+                                        data: formData,
+                                        contentType: false,
+                                        processData: false,
+                                        success: function (data, state, xhr) {
+                                            alert(data)
 
-                                            }
-                                        })
-                                    
+                                        },
+                                        error: function (xhr, state, err) {
+                                            alert(xhr.responseText);
+
+                                        }
+                                    })
+
                                 }
 
                             } else {
 
-                               
-                                    $.ajax({
-                                        method: "POST",
-                                        url: "/uploading/" + user,
-                                        data: formData,
-                                        contentType: false,     //tell jQuery not to add a Content-Type header for us
-                                        processData: false,      //tell jQuery not to convert the formData object to a string
-                                        success: function (data, state, xhr) {
-                                            alert(data)
-                                        },
-                                        error: function (xhr, state, err) {
-                                            alert(xhr.responseText);
-                                        }
-                                    });
-                                    $("#upload").modal("hide");
-                                    window.location.reload();
-                                
+
+                                $.ajax({
+                                    method: "POST",
+                                    url: "/uploading/" + user,
+                                    data: formData,
+                                    contentType: false,     //tell jQuery not to add a Content-Type header for us
+                                    processData: false,      //tell jQuery not to convert the formData object to a string
+                                    success: function (data, state, xhr) {
+                                        alert(data)
+                                    },
+                                    error: function (xhr, state, err) {
+                                        alert(xhr.responseText);
+                                    }
+                                });
+                                $("#upload").modal("hide");
+                                window.location.reload();
+
                             }
                         })
                     }
@@ -466,7 +467,7 @@
                 } else {
                     window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
                     var storedArray = JSON.parse(sessionStorage.getItem("items"));
-                    window.location.href="/printqrcode";
+                    window.location.href = "/printqrcode";
                 }
 
 
