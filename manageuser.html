@@ -127,7 +127,7 @@
                         alert(data)
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert("กรุณากรอกอีเมล");
+                        alert(xhr.responseText);
                     });
                     $.ajax({
                         method: "GET",
