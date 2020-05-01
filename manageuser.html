@@ -150,7 +150,7 @@
                 let newmail = $("#editMail2").val();
                 let role;
                 if (!newmail || newmail.length === 0) {
-                alert("please type email")
+                alert("กรุณากรอกอีเมล")
                 }else{
                     var x = document.getElementById("admin").checked;
                 if (x) {
@@ -205,7 +205,7 @@
                         if (dataSet[i].role == 2) {
                             dataSet[i].role = "กรรมการ"
                         } else if (dataSet[i].role == 1) {
-                            dataSet[i].role = "admin"
+                            dataSet[i].role = "แอดมิน"
                         } 
                     }
                         $("#rol2").html(dataSet[0].role)
