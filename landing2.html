@@ -180,7 +180,7 @@
                             return '<img class="pic" src="' + data + '"style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
                         }
                     },
-                    { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
+                    { data: "Asset_Number", title: "รหัสครุภัณฑ์" },
                     { data: "Location", title: "สถานที่" },
                     { data: "Received_date", title: "วันที่ได้รับ" },
                     { data: "Original_value", title: "มูลค่า" },
@@ -215,14 +215,14 @@
 
             $('#myTable tbody').on('click', 'tr', function () {
                 var data = table.row(this).data();
-                var inven = data.Inventory_Number
+                var inven = data.Asset_Number
                 $.ajax({
                     method: "GET",
                     url: "/item5/" + inven
                 }).done(function (dataSet, state, xhr) {
                     document.getElementById('pic').src = dataSet[0].Image;
                     $(".date").html("วันที่ได้รับ : " + dataSet[0].Received_date + " วันที่อัพโหลด :" + dataSet[0].Date_Upload)
-                    $("#inventory").html(dataSet[0].Inventory_Number)
+                    $("#Asset_Number").html(dataSet[0].Asset_Number)
                     $("#des").html("คำอธิบาย : " + dataSet[0].Asset_Description)
                     $("#mod").html("โมเดล : " + dataSet[0].Model + "  ซีเรียล : " + dataSet[0].Serial + "  สถานที่ : " + dataSet[0].Location + " " + dataSet[0].Room)
                     $("#cos").html("รหัสแผนก : " + dataSet[0].Cost_center + "   แผนกที่จัดเก็บ : " + dataSet[0].Department)
@@ -374,7 +374,7 @@
                             <div class="card-body">
                                 <div><span>
                                         <h3>
-                                            <p id="inventory">711000100142033</p>
+                                            <p id="Asset_Number">711000100142033</p>
                                             <p>สถานะ : ปกติ</p>
                                         </h3>
                                     </span></div>
@@ -464,7 +464,7 @@
                             <div class="card-body">
                                 <div><span>
                                         <h3>
-                                            <p id="inventory">711000100142033</p>
+                                            <p id="Asset_Number">711000100142033</p>
                                             <p>สถานะ : ปกติ</p>
                                         </h3>
                                     </span></div>

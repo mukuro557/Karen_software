@@ -63,21 +63,25 @@
                     method: "GET",
                     url: "/item/dashboard/showuser"
                 }).done(function (data, state, xhr) {
-                    
-                    if (data.length != 0 && data.length !==1) {
+
+                    if (data.length > 1) {
+                        console.log(data.length)
                         alert("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
+                        $("#upload").modal("hide");
+                        window.location.reload();
                     } else {
-                        alert("hello")
+                        console.log('1')
                         $.ajax({
                             method: "GET",
                             url: "/year/iteem"
                         }).done(function (dataSet, state, xhr) {
+                            console.log('2')
                             var today = new Date();
                             var yyyy = today.getFullYear();
                             if (dataSet[dataSet.length - 1].Year == yyyy) {
                                 var r = confirm("ปีนี้ได้อัพโหลดแล้ว ถ้าอัพโหลดซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
                                 if (r) {
-                        
+
 
                                     $.ajax({
                                         method: "POST",
@@ -86,12 +90,14 @@
                                         contentType: false,
                                         processData: false,
                                         success: function (data, state, xhr) {
-                                            alert(data)
-
+                                            alert("บันทึกสำเร็จ")
+                                            $("#upload").modal("hide");
+                                            window.location.reload();
                                         },
                                         error: function (xhr, state, err) {
                                             alert(xhr.responseText);
-
+                                            $("#upload").modal("hide");
+                                            window.location.reload();
                                         }
                                     })
 
@@ -107,14 +113,18 @@
                                     contentType: false,     //tell jQuery not to add a Content-Type header for us
                                     processData: false,      //tell jQuery not to convert the formData object to a string
                                     success: function (data, state, xhr) {
-                                        alert(data)
+                                        alert("บันทึกสำเร็จ")
+                                        $("#upload").modal("hide");
+                                        window.location.reload();
                                     },
                                     error: function (xhr, state, err) {
                                         alert(xhr.responseText);
+                                        $("#upload").modal("hide");
+                                        window.location.reload();
                                     }
                                 });
-                                $("#upload").modal("hide");
-                                window.location.reload();
+                                // $("#upload").modal("hide");
+                                // window.location.reload();
 
                             }
                         })
@@ -123,8 +133,7 @@
                     alert(xhr.responseText);
 
                 });
-                $("#upload").modal("hide");
-                window.location.reload();
+
 
             });
 
@@ -307,12 +316,12 @@
                 $('select.status').change(function () {
                     var selected = $(this).children("option:selected").val();
                     let num
-                    if(selected == "ส่งซ่อม"){
-                       num = 2
-                    }else if(selected == "ปกติ"){
-                       num = 1
-                    }else if(selected == "สูญหาย"){
-                       num = 0
+                    if (selected == "ส่งซ่อม") {
+                        num = 2
+                    } else if (selected == "ปกติ") {
+                        num = 1
+                    } else if (selected == "สูญหาย") {
+                        num = 0
                     }
 
                     $.ajax({
@@ -402,7 +411,7 @@
 
                 columns: [
                     {
-                        "mData": "Inventory_Number", title: "<input type='checkbox' id='select-all' name='select-all'>",
+                        "mData": "Asset_Number", title: "<input type='checkbox' id='select-all' name='select-all'>",
                         "render": function (data) {
                             return '<input type="checkbox" name="singleCheckbox" value=' + data + '>';
                         }
@@ -413,7 +422,7 @@
                             return '<img class="pic" src="' + data + '" style="width: 100px;margin: 25px;-webkit-transition: all .4s ease-in-out;-moz-transition: all .4s ease-in-out;-o-transition: all .4s ease-in-out; -ms-transition: all .4s ease-in-out; "  />';
                         }
                     },
-                    { data: "Inventory_Number", title: "รหัสครุภัณฑ์" },
+                    { data: "Asset_Number", title: "รหัสครุภัณฑ์" },
                     { data: "Location", title: "สถานที่" },
                     { data: "Received_date", title: "วันที่ได้รับ" },
                     { data: "Original_value", title: "มูลค่า" },

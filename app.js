@@ -186,15 +186,16 @@ function importExelData2MySQL(res, filePath, email) {
         const date = new Date();
         rows.shift();
 
-        let sql = "INSERT INTO item (`Inventory_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer,Date_Upload) VALUES ?";
-
+        let sql = "INSERT INTO item (`Asset_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer,Date_Upload) VALUES ?";
+        var count = [1,4,5,6,7,8,9,10,11,12,13];
         for (var i = 0; i < rows.length; i++) {
             var temp = rows[i];
+           
             rows[i] = [];
 
-            for (var j = 3; j < 14; j++) {
+            for (var j = 0; j < 11; j++) {
 
-                rows[i].push(temp[j]);
+                rows[i].push(temp[count[j]]);
             }
             rows[i].push(d);
             rows[i].push(0);
@@ -244,15 +245,15 @@ function importfromexel(res, filePath, email) {
                 console.log(err)
             }
             else {
-                let sql = "INSERT INTO item (`Inventory_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer,Date_Upload) VALUES ?";
-
+                let sql = "INSERT INTO item (`Asset_Number`,`Asset_Description`,`Model`,`Serial`,`Location`,`Room`,`Received_date`,`Original_value`,`Cost_center`,`Department`,`Vendor_name`,Year,Status, Email_Importer,Date_Upload) VALUES ?";
+                var count = [1,4,5,6,7,8,9,10,11,12,13];
                 for (var i = 0; i < rows.length; i++) {
                     var temp = rows[i];
                     rows[i] = [];
 
-                    for (var j = 3; j < 14; j++) {
+                    for (var j = 0; j < 11; j++) {
 
-                        rows[i].push(temp[j]);
+                        rows[i].push(temp[count[j]]);
                     }
                     rows[i].push(d);
                     rows[i].push(0);
@@ -283,7 +284,7 @@ app.put("/item/take", function (req, res) {
 
     const image = req.body.take;
 
-    const sql = "UPDATE item SET takepicture = 1 where Inventory_Number IN(?) ;"
+    const sql = "UPDATE item SET takepicture = 1 where Asset_Number IN(?) ;"
     con.query(sql, [image], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
@@ -300,9 +301,9 @@ app.put("/item/take", function (req, res) {
 // Add image to an item
 app.put("/item/addImage", function (req, res) {
     const image = req.body.image;
-    const Inventory_Number = req.body.Inventory_Number;
-    const sql = "UPDATE item SET image=? where Inventory_Number=?;"
-    con.query(sql, [image, Inventory_Number], function (err, result, fields) {
+    const Asset_Number = req.body.Asset_Number;
+    const sql = "UPDATE item SET image=? where Asset_Number=?;"
+    con.query(sql, [image, Asset_Number], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
@@ -433,7 +434,7 @@ app.get("/user/index/info/emailUser/:Email_user", function (req, res) {
 // Load inspected item by the user
 app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
-    const sql = "select Image,Inventory_Number,Received_date,Date_scan,Model,Date_Scan,Department,Date_Upload,Status,Email_Committee from item where Email_Committee=?;"
+    const sql = "select Image,Asset_Number,Received_date,Date_scan,Model,Date_Scan,Department,Date_Upload,Status,Email_Committee from item where Email_Committee=?;"
 
     con.query(sql, [Email_Committee], function (err, result, fields) {
         if (err) {
@@ -446,7 +447,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
 
 // Load all item info
 app.get("/item/dashboard/showAllInfo", function (req, res) {
-    const sql = "select Year,Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
+    const sql = "select Year,Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -461,7 +462,7 @@ app.get("/item/dashboard/showAllInfo", function (req, res) {
 app.get("/item/dashboard/showuser", function (req, res) {
     const year = new Date().getFullYear();
 
-    const sql = "select DISTINCT Email_Committee from item WHERE Year = ? ORDER BY Email_Committee DESC"
+    const sql = "select DISTINCT Status from item WHERE Year = ?;"
 
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
@@ -475,7 +476,7 @@ app.get("/item/dashboard/showuser", function (req, res) {
 // Load all item info with location
 app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
     const location = req.params.location;
-    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Location = ?"
+    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Location = ?"
 
     con.query(sql, [location], function (err, result, fields) {
         if (err) {
@@ -573,7 +574,7 @@ app.get("/item/Status", function (req, res) {
 // Load all item info with Status
 app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
     const status = req.params.status;
-    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Status = ?"
+    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Status = ?"
 
     con.query(sql, [status], function (err, result, fields) {
         if (err) {
@@ -601,7 +602,7 @@ app.get("/item/Year", function (req, res) {
 // Load all item info with year
 app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
     const year = req.params.Year;
-    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Year = ?"
+    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Year = ?"
 
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
@@ -628,7 +629,7 @@ app.get("/item/Email_Committee", function (req, res) {
 // Load all item info with commitee
 app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
     const thecommittee = req.params.Email_Committee;
-    const sql = "select Image,Inventory_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Email_Committee  = ?"
+    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Email_Committee  = ?"
 
     con.query(sql, [thecommittee], function (err, result, fields) {
         if (err) {
@@ -642,7 +643,7 @@ app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
 
 // Load item info
 app.get("/item/:status", function (req, res) {
-    const sql = "select Image,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where status=? AND year =?"
+    const sql = "select Image,Asset_Number,Model,Serial,Location,Received_date,Original_value,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status from item where status=? AND year =?"
     const year = new Date().getFullYear();
     const status = req.params.status;
     con.query(sql, [status, year], function (err, result, fields) {
@@ -653,10 +654,10 @@ app.get("/item/:status", function (req, res) {
         }
     })
 });
-// UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?
+// UPDATE item,year_user SET item.Status=? where item.Asset_Number=? AND year_user.Email_user=?
 // For print barcode or QR code of item
 app.get("/item/forPrintQRcode_Barcode/:Email_Committee", function (req, res) {
-    const sql = "select Inventory_Number, Asset_Description, Received_date, Department, year,status, image from item where year=? and Email_Committee=?;"
+    const sql = "select Asset_Number, Asset_Description, Received_date, Department, year,status, image from item where year=? and Email_Committee=?;"
     const year = new Date().getFullYear();
     const Email_Committee = req.params.Email_Committee;
     con.query(sql, [year, Email_Committee], function (err, result, fields) {
@@ -670,7 +671,7 @@ app.get("/item/forPrintQRcode_Barcode/:Email_Committee", function (req, res) {
 
 // Load some info of item of landing1
 app.get("/landing1/showSomeInfo", function (req, res) {
-    const sql = "select Inventory_Number,Asset_description,Received_date,Department,Image from item"
+    const sql = "select Asset_Number,Asset_description,Received_date,Department,Image from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -683,7 +684,7 @@ app.get("/landing1/showSomeInfo", function (req, res) {
 
 // Load all info of item of landing1
 app.get("/landing1/showAllInfo", function (req, res) {
-    const sql = "select Inventory_Number,Status,Model,Location,Original_value,Email_Committee,Cost_center,Serial,Date_Upload,Asset_description,Received_date,Department,Image from item"
+    const sql = "select Asset_Number,Status,Model,Location,Original_value,Email_Committee,Cost_center,Serial,Date_Upload,Asset_description,Received_date,Department,Image from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -696,7 +697,7 @@ app.get("/landing1/showAllInfo", function (req, res) {
 
 // Load some info of item of landing2
 app.get("/landing2/showSomeInfo", function (req, res) {
-    const sql = "select Inventory_Number,Status,Model,Cost_center,Received_date,Department,Image from item"
+    const sql = "select Asset_Number,Status,Model,Cost_center,Received_date,Department,Image from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -736,7 +737,7 @@ app.get("/dateTime/showDateTime", function (req, res) {
 
 // Load info of main datatable page
 app.get("/maindataTable/info/:status", function (req, res) {
-    const sql = "select Image,Asset_Description,Inventory_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Room,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan from item where year=? and status=?"
+    const sql = "select Image,Asset_Description,Asset_Number,Model,Serial,Location,Received_date,Original_value,Cost_center,Room,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan from item where year=? and status=?"
     const year = new Date().getFullYear();
     const status = req.params.status;
     con.query(sql, [year, status], function (err, result, fields) {
@@ -751,10 +752,10 @@ app.get("/maindataTable/info/:status", function (req, res) {
 // Edit status of item
 app.put("/item/edit", function (req, res) {
     const Status = req.body.Status;
-    const Inventory_Number = req.body.Inventory_Number;
+    const Asset_Number = req.body.Asset_Number;
     const Email_user = req.body.Email_user;
-    const sql = "UPDATE item,year_user SET item.Status=? where item.Inventory_Number=? AND year_user.Email_user=?;"
-    con.query(sql, [Status, Inventory_Number, Email_user], function (err, result, fields) {
+    const sql = "UPDATE item,year_user SET item.Status=? where item.Asset_Number=? AND year_user.Email_user=?;"
+    con.query(sql, [Status, Asset_Number, Email_user], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         }
@@ -806,11 +807,11 @@ app.post("/manageUser/add/:Email_user/:Email_assigner/:role", function (req, res
 });
 
 // Load item info landing 2
-app.get("/item5/:inventory", function (req, res) {
-    const sql = "SELECT Image,Inventory_Number,Model,Serial,Location,Received_date,Asset_Description,Room,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan FROM `item` WHERE `Inventory_Number` =? AND year =?"
+app.get("/item5/:Asset_Number", function (req, res) {
+    const sql = "SELECT Image,Asset_Number,Model,Serial,Location,Received_date,Asset_Description,Room,Original_value,Cost_center,Department,Vendor_name,Date_Upload,Date_scan,Email_Committee,Status,Date_Scan FROM `item` WHERE `Asset_Number` =? AND year =?"
     const year = new Date().getFullYear();
-    const inventory = req.params.inventory;
-    con.query(sql, [inventory, year], function (err, result, fields) {
+    const Asset_Number = req.params.Asset_Number;
+    con.query(sql, [Asset_Number, year], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
