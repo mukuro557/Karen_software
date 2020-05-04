@@ -79,8 +79,6 @@
                             if (dataSet[dataSet.length - 1].Year == yyyy) {
                                 var r = confirm("ปีนี้ได้อัพโหลดแล้ว ถ้าอัพโหลดซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
                                 if (r) {
-
-
                                     $.ajax({
                                         method: "POST",
                                         url: "/uploadif/" + user,
@@ -98,12 +96,8 @@
                                             window.location.reload();
                                         }
                                     })
-
                                 }
-
                             } else {
-
-
                                 $.ajax({
                                     method: "POST",
                                     url: "/uploading/" + user,
@@ -123,7 +117,6 @@
                                 });
                                 // $("#upload").modal("hide");
                                 // window.location.reload();
-
                             }
                         })
                     }
@@ -1006,7 +999,7 @@
                             </div>
                             <div class="modal-body">
                                 <form method="post" enctype="multipart/form-data">
-                                    <input type="file" name="filetoupload" id="fileUpload" accept=".xlsx"><br>
+                                    <input type="file" name="filetoupload" id="fileUpload" accept=".xlsx, .xls"><br>
                                     <input type="submit" class="btn btn-primary mt-3" value="Upload">
                                 </form>
                             </div>
