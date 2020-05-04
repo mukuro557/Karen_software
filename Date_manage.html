@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="assets/vendor/daterangepicker/daterangepicker.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
     <link href='assets/vendor/full-calendar/css/fullcalendar.css' rel='stylesheet' />
     <link href='assets/vendor/full-calendar/css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
@@ -48,7 +48,6 @@
             $("#all").click(function () {
                 window.location.replace("/information");
             });
-
 
             $.ajax({
                 method: "GET",
@@ -69,6 +68,8 @@
                         }
                         if (dataSet[0].role == 2) {
                             $("#manageu").hide();
+                            $("#addtime").hide();
+                            $("#edittime").hide();
                         }
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].role == 2) {
@@ -78,8 +79,6 @@
                             }
                         }
                         $("#rol2").html(dataSet[0].role)
-
-
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
@@ -98,38 +97,81 @@
             }).done(function (data, state, xhr) {
                 $(".date_start_update").val(data[0].Date_start)
                 $(".date_end_update").val(data[0].Date_end)
-                $('#calendar1').fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listWeek'
-                    },
-                    navLinks: true, // can click day/week names to navigate views
-                    editable: true,
-                    eventLimit: true, // allow "more" link when too many events
-                    events: [
-                        {
-                            title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
-                            start: data[0].Date_start,
-                            end: data[0].Date_end
+                $.ajax({
+                    method: "GET",
+                    url: "/datescan/user"
+                }).done(function (dataSet, state, xhr) {
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/user/datescan"
+                    }).done(function (datas, state, xhr) {
+                        var date = 0
+                        var event = []
+                        var more
+                        for (let i = 0; i < dataSet.length - 1; i++) {
+
+                            let count = 0
+                            for (let j = 0; j < datas.length; j++) {
+
+                                if (datas[j].Date_Scan == dataSet[i].Date_Scan) {
+                                    count++;
+                                }
+                            }
+                            date = date + count
+                           more = datas.length - date
+                        //    'แสกน ' + count + ' ชิ้น คงเหลือ' + more,
+                            event.push(
+                                {
+                                    title: 'แสกนแล้ว ' + date ,
+                                    start: dataSet[i].Date_Scan,
+                                    end: dataSet[i].Date_Scan,
+                                    color: 'green'
+                                }
+                            )
                         }
-                    ]
-                });
+                        $(".scan").html("แสกนแล้ว : "+date+" ชิ้น")
+                        $(".count").html("คงเหลือ  : "+more+" ชิ้น")
+                        event.push(
+                            {
+                                title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
+                                start: data[0].Date_start,
+                                end: data[0].Date_end
+                            }
+                        )
+
+
+
+                        $('#calendar1').fullCalendar({
+                            header: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'month,agendaWeek,agendaDay,listWeek'
+                            },
+                            navLinks: true, // can click day/week names to navigate views
+                            editable: true,
+                            eventLimit: true, // allow "more" link when too many events
+                            events: event
+                        });
+
+                    })
+
+                })
                 var today = new Date();
                 var dd = String(today.getDate()).padStart(2, '0');
                 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
                 var yyyy = today.getFullYear();
 
                 today = yyyy + '-' + mm + '-' + dd;
-               
-                if(today>data[0].Date_start){
 
-document.getElementById("date_start_update").disabled = true;
+                if (today > data[0].Date_start) {
+
+                    document.getElementById("date_start_update").disabled = true;
                 }
-                if(!data[0]){
+                if (!data[0]) {
 
-                }else{
-$("#addtime").hide();
+                } else {
+                    $("#addtime").hide();
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
@@ -142,23 +184,23 @@ $("#addtime").hide();
                 let date_start_update = $("input[type=date][name=Date_start_update]").val();
                 let date_end_update = $("input[type=date][name=Date_end_update]").val();
 
-                if(!date_start_update||date_start_update.length ===0 || !date_end_update || date_end_update.length ===0 ){
-                   alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
-                }else{
-                    
-                $.ajax({
-                    method: "PUT",
-                    url: "/dateTime/updateTime/" + date_start_update + "/" + date_end_update
-                }).done(function (data, state, xhr) {
-                   
-                    $("#modaladd").modal("hide");
-                    alert(data);
-                    location.reload();
-                }).fail(function (xhr, state, error) {
-                    //get data failed
-                    alert(xhr.responseText);
-                });
-            }
+                if (!date_start_update || date_start_update.length === 0 || !date_end_update || date_end_update.length === 0) {
+                    alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                } else {
+
+                    $.ajax({
+                        method: "PUT",
+                        url: "/dateTime/updateTime/" + date_start_update + "/" + date_end_update
+                    }).done(function (data, state, xhr) {
+
+                        $("#modaladd").modal("hide");
+                        alert(data);
+                        location.reload();
+                    }).fail(function (xhr, state, error) {
+                        //get data failed
+                        alert(xhr.responseText);
+                    });
+                }
             });
 
 
@@ -168,23 +210,23 @@ $("#addtime").hide();
                 let date_start_add = $("input[type=date][name=Date_start_add]").val();
                 let date_end_add = $("input[type=date][name=Date_end_add]").val();
 
-                if(!date_start_add||date_start_add.length ===0 || !date_end_add || date_end_add.length ===0 ){
-                   alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
-                }else{
-                     $.ajax({
-                    method: "POST",
-                    url: "/dateTime/insertTime/" + date_start_add + "/" + date_end_add
-                }).done(function (data, state, xhr) {
-                    alert(data);
-                    $("#modaladd").modal("hide");
-                    location.reload();
-                }).fail(function (xhr, state, error) {
-                    //get data failed
-                    alert(xhr.responseText);
-                });
+                if (!date_start_add || date_start_add.length === 0 || !date_end_add || date_end_add.length === 0) {
+                    alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                } else {
+                    $.ajax({
+                        method: "POST",
+                        url: "/dateTime/insertTime/" + date_start_add + "/" + date_end_add
+                    }).done(function (data, state, xhr) {
+                        alert(data);
+                        $("#modaladd").modal("hide");
+                        location.reload();
+                    }).fail(function (xhr, state, error) {
+                        //get data failed
+                        alert(xhr.responseText);
+                    });
                 }
-                
-                
+
+
             });
         });
     </script>
@@ -206,11 +248,11 @@ $("#addtime").hide();
 
                 </div>
             </div>
-          
+
 
             <ul class="navbar-nav ml-auto navbar-right-top">
 
-              
+
 
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
@@ -287,7 +329,7 @@ $("#addtime").hide();
                             </div>
                         </li>
 
-                        <li class="nav-item " >
+                        <li class="nav-item ">
                             <a class="nav-link active" href="/Date_manage" aria-expanded="false"><i
                                     class="fa fa-clock"></i>จัดการเวลา
                             </a>
@@ -316,11 +358,14 @@ $("#addtime").hide();
                         <div class="page-header">
                             <h2 class="mb-2">ระยะเวลาการตรวจนับ
                             </h2>
-
+                            <h5 class=" scan">
+                            </h5>
+                            <h5 class=" count">
+                            </h5>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                        <button type="button" class="btn btn-warning" data-toggle="modal"
+                        <button type="button" class="btn btn-warning" id="edittime" data-toggle="modal"
                             data-target=".bd-example-modal-lg"> แก้ไขเวลา</button>
 
                         <button type="button" class="btn btn-primary" id="addtime" data-toggle="modal"
@@ -435,8 +480,8 @@ $("#addtime").hide();
     <!-- modal  -->
     <!-- ============================================================== -->
 
-    <div class="modal fade bd-example-modal-sm"  id="modaladd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
-        aria-hidden="true">
+    <div class="modal fade bd-example-modal-sm" id="modaladd" tabindex="-1" role="dialog"
+        aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -485,7 +530,8 @@ $("#addtime").hide();
                     <form>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">วันที่เริ่มต้น</label>
-                            <input type="date" class="form-control date_start_update" id="date_start_update" name="Date_start_update">
+                            <input type="date" class="form-control date_start_update" id="date_start_update"
+                                name="Date_start_update">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">วันที่สื้นสุด</label>

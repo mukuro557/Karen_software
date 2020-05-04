@@ -342,6 +342,20 @@ app.get("/user/profile/inspectedItem/Total/Number1/:Email_Committee", function (
     })
 });
 
+// Loadnumber people scan in that day
+app.get("/user/datescan", function (req, res) {
+    const year =  new Date().getFullYear();
+    const sql = "SELECT Date_Scan FROM item WHERE Year = ? ;"
+
+    con.query(sql,[year], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
 // Load inspected total item numbers by a user
 app.get("/user/profile/inspectedItem/Total/Number/:Email_Committee", function (req, res) {
     const Email_Committee = req.params.Email_Committee;
@@ -376,6 +390,21 @@ app.get("/year/user", function (req, res) {
 
 
     con.query(sql, function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.json(result)
+        }
+    })
+});
+
+// Load date scan
+app.get("/datescan/user", function (req, res) {
+    const year =  new Date().getFullYear();
+    const sql = "SELECT DISTINCT Date_Scan FROM item where Year = ?"
+
+
+    con.query(sql,[year], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
