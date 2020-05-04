@@ -97,23 +97,66 @@
             }).done(function (data, state, xhr) {
                 $(".date_start_update").val(data[0].Date_start)
                 $(".date_end_update").val(data[0].Date_end)
-                $('#calendar1').fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay,listWeek'
-                    },
-                    navLinks: true, // can click day/week names to navigate views
-                    editable: true,
-                    eventLimit: true, // allow "more" link when too many events
-                    events: [
-                        {
-                            title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
-                            start: data[0].Date_start,
-                            end: data[0].Date_end
+                $.ajax({
+                    method: "GET",
+                    url: "/datescan/user"
+                }).done(function (dataSet, state, xhr) {
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/user/datescan"
+                    }).done(function (datas, state, xhr) {
+                        var date = 0
+                        var event = []
+                        var more
+                        for (let i = 0; i < dataSet.length - 1; i++) {
+
+                            let count = 0
+                            for (let j = 0; j < datas.length; j++) {
+
+                                if (datas[j].Date_Scan == dataSet[i].Date_Scan) {
+                                    count++;
+                                }
+                            }
+                            date = date + count
+                           more = datas.length - date
+                        //    'แสกน ' + count + ' ชิ้น คงเหลือ' + more,
+                            event.push(
+                                {
+                                    title: 'แสกนแล้ว ' + date ,
+                                    start: dataSet[i].Date_Scan,
+                                    end: dataSet[i].Date_Scan,
+                                    color: 'green'
+                                }
+                            )
                         }
-                    ]
-                });
+                        $(".scan").html("แสกนแล้ว : "+date+" ชิ้น")
+                        $(".count").html("คงเหลือ  : "+more+" ชิ้น")
+                        event.push(
+                            {
+                                title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
+                                start: data[0].Date_start,
+                                end: data[0].Date_end
+                            }
+                        )
+
+
+
+                        $('#calendar1').fullCalendar({
+                            header: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'month,agendaWeek,agendaDay,listWeek'
+                            },
+                            navLinks: true, // can click day/week names to navigate views
+                            editable: true,
+                            eventLimit: true, // allow "more" link when too many events
+                            events: event
+                        });
+
+                    })
+
+                })
                 var today = new Date();
                 var dd = String(today.getDate()).padStart(2, '0');
                 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -315,7 +358,10 @@
                         <div class="page-header">
                             <h2 class="mb-2">ระยะเวลาการตรวจนับ
                             </h2>
-
+                            <h5 class=" scan">
+                            </h5>
+                            <h5 class=" count">
+                            </h5>
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
