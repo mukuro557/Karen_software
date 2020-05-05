@@ -149,10 +149,12 @@
             $("#save2").click(function () {
                 let newmail = $("#addMail2").val();
                 let role;
+                var pattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
                 if (!newmail || newmail.length === 0) {
-                    alert("กรุณากรอกอีเมล")
+                    alert("กรุณากรอกอีเมล");
                 } else {
-                    var x = document.getElementById("admin").checked;
+                    if(newmail.match(pattern)){
+                        var x = document.getElementById("admin").checked;
                     if (x) {
                         role = 1;
                     } else {
@@ -178,6 +180,12 @@
                         //get data failed
                         alert(xhr.responseText);
                     });
+                    }else{
+                        alert("รูปแบบอีเมลไม่ถูกต้อง");
+                    }
+
+
+ 
                 }
 
                 $(".modal").modal("hide");
