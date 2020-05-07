@@ -121,6 +121,7 @@
                 if (!newmail || newmail.length === 0) {
                     alert("กรุณากรอกอีเมล");
                 } else {
+                    alert("เปลี่ยนข้อมูลสำเร็จ")
                     if(newmail.match(pattern)){
                         $.ajax({
                     method: "GET",
