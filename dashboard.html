@@ -201,6 +201,13 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -256,6 +263,13 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -325,6 +339,13 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -380,6 +401,13 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                }
                         //    alert("ok");
                         table.clear();
                         //display modified JSON in DataTable
@@ -413,8 +441,8 @@
                     { data: "Location", title: "สถานที่" },
                     { data: "Received_date", title: "วันที่ได้รับ" },
                     { data: "Original_value", title: "มูลค่า" },
-                    { data: "Department", title: "แผนกที่ดูแล" },
-                    { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
+                    { data: "takepicture", title: "ถ่ายรูป" },
+                    { data: "Date_scan", title: "วันที่ตรวจสอบ" },
                     { data: "Email_Committee", title: "ผู้ตรวจ" },
                     { data: "Status", title: "สถานะ" },
                 ],
@@ -557,6 +585,7 @@
                 url: "/item/dashboard/showAllInfo"
             }).done(function (dataSet, state, xhr) {
                 //    alert("ok");
+                // takepicture
                 for (let i = 0; i < dataSet.length; i++) {
                     if (dataSet[i].Status == 0) {
                         dataSet[i].Status = "สูญหาย"
@@ -564,6 +593,13 @@
                         dataSet[i].Status = "ปกติ"
                     } else if (dataSet[i].Status == 2) {
                         dataSet[i].Status = "ส่งซ่อม"
+                    }
+                }
+                for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
                     }
                 }
                 table.clear();
