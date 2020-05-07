@@ -35,6 +35,7 @@
         var table;
         var Email_user;
         var rol;
+        var pattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         $(document).ready(function () {
             $.ajax({
                 method: "GET",
@@ -116,7 +117,12 @@
 
             $("#save").click(function () {
                 let newmail = $("#editMail").val();
-                $.ajax({
+
+                if (!newmail || newmail.length === 0) {
+                    alert("กรุณากรอกอีเมล");
+                } else {
+                    if(newmail.match(pattern)){
+                        $.ajax({
                     method: "GET",
                     url: "/profile/infouser"
                 }).done(function (dataSet, state, xhr) {
@@ -144,15 +150,22 @@
                 });
                 $(".modal").modal("hide");
                 location.reload()
+                    }else{
+                        alert("รูปแบบอีเมลไม่ถูกต้อง");
+                    }
+                }
+                
+
             });
 
             $("#save2").click(function () {
                 let newmail = $("#addMail2").val();
                 let role;
                 if (!newmail || newmail.length === 0) {
-                    alert("กรุณากรอกอีเมล")
+                    alert("กรุณากรอกอีเมล");
                 } else {
-                    var x = document.getElementById("admin").checked;
+                    if(newmail.match(pattern)){
+                        var x = document.getElementById("admin").checked;
                     if (x) {
                         role = 1;
                     } else {
@@ -178,6 +191,12 @@
                         //get data failed
                         alert(xhr.responseText);
                     });
+                    }else{
+                        alert("รูปแบบอีเมลไม่ถูกต้อง");
+                    }
+
+
+ 
                 }
 
                 $(".modal").modal("hide");
