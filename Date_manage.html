@@ -97,6 +97,7 @@
             }).done(function (data, state, xhr) {
                 $(".date_start_update").val(data[0].Date_start)
                 $(".date_end_update").val(data[0].Date_end)
+
                 $.ajax({
                     method: "GET",
                     url: "/datescan/user"
@@ -108,10 +109,16 @@
                     }).done(function (datas, state, xhr) {
                         var date = 0
                         var event = []
-                        var more
+                        var more = 0
+
+                        $.ajax({
+                        method: "GET",
+                        url: "/numberitem"
+                    }).done(function (dataitem, state, xhr) {
                         for (let i = 0; i < dataSet.length - 1; i++) {
 
                             let count = 0
+                           
                             for (let j = 0; j < datas.length; j++) {
 
                                 if (datas[j].Date_Scan == dataSet[i].Date_Scan) {
@@ -119,7 +126,8 @@
                                 }
                             }
                             date = date + count
-                           more = datas.length - date
+                            
+                               
                         //    'แสกน ' + count + ' ชิ้น คงเหลือ' + more,
                             event.push(
                                 {
@@ -130,6 +138,16 @@
                                 }
                             )
                         }
+                        var number = dataitem[0].numofitem
+                        var pointNum = parseInt(number);
+
+                        if(dataitem[0].numofitem ==0){
+                              
+                            more = 0;
+                        }else{
+                                more = number -date
+                            }
+                       
                         $(".scan").html("แสกนแล้ว : "+date+" ชิ้น")
                         $(".count").html("คงเหลือ  : "+more+" ชิ้น")
                         event.push(
@@ -153,7 +171,7 @@
                             eventLimit: true, // allow "more" link when too many events
                             events: event
                         });
-
+                    })
                     })
 
                 })

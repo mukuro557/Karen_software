@@ -850,6 +850,19 @@ app.get("/item5/:Asset_Number", function (req, res) {
     })
 });
 
+app.get("/numberitem", function (req, res) {
+    const year = new Date().getFullYear();
+    const sql = "SELECT count(Asset_Number) AS numofitem FROM item WHERE Year = ?"
+    con.query(sql, [year], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.send(result)
+            
+        }
+    })
+});
+
 // Insert Work Time
 app.post("/dateTime/insertTime/:Date_start/:Date_end", function (req, res) {
     // ฟิค years ไว้ใน database ทำให้ไม่สามารถใส่ปีซ้ำได้
