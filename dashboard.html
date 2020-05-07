@@ -932,15 +932,13 @@
                                 style="color: red;">รีเซตการกรอง</button></a><br><br>
 
                     </div>
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#upload"
+                        id="import">นำเข้าไฟล์</button>
                     <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushExcel"
-                        id="#">Export
-                        to Excel</button>
-                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushPDF">Export
-                        to PDF</button>
+                        id="#">นำออกไฟล์</button>
                     <button class="btn" id="qrcode">Qrcode</button>
                     <button class="btn" id="take">ถ่ายรูป</button>
-                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#upload"
-                        id="import">Import</button>
+                    
                     <br> <br><br><br>
                     <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
                     </table>
@@ -956,7 +954,7 @@
                         <div class="modal-content text-center">
                             <!--Header-->
                             <div class="modal-header d-flex justify-content-center">
-                                <p class="heading">นำออกไฟล์ Excel</p>
+                                <p class="heading">นำออกไฟล์</p>
                             </div>
 
                             <!--Body-->
@@ -964,14 +962,15 @@
 
                                 <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
 
-                                <p>ต้องการจะนำออกไฟล์ Excel ใช่หรือไม่</p>
+                                <p>ต้องการจะนำออกไฟล์ใช่หรือไม่</p>
 
                             </div>
 
                             <!--Footer-->
                             <div class="modal-footer flex-center">
 
-                                <button class="btn btn-info" id="excelExport">นำออก</button>
+                                <button class="btn btn-info" id="excelExport">นำออกไฟล์ Excel</button>
+                                <button class="btn btn-success" id="btn_export_PDF">นำออกไฟล์ PDF</button>
 
                                 <a type="button" class="btn btn-outline-info waves-effect"
                                     data-dismiss="modal">ยกเลิก</a>
@@ -1009,37 +1008,7 @@
                 <!-- ============================================================== -->
                 <!-- เสร็จ modal  -->
                 <!-- ============================================================== -->
-                <!--Modal: Export to PDF-->
-                <div class="modal fade" id="modalPushPDF" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-notify modal-info" role="document">
-                        <!--Content-->
-                        <div class="modal-content text-center">
-                            <!--Header-->
-                            <div class="modal-header d-flex justify-content-center">
-                                <p class="heading">นำออกไฟล์ PDF</p>
-                            </div>
-
-                            <!--Body-->
-                            <div class="modal-body">
-
-                                <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
-
-                                <p>ต้องการจะนำออกไฟล์ PDF ใช่หรือไม่</p>
-
-                            </div>
-
-                            <!--Footer-->
-                            <div class="modal-footer flex-center">
-                                <button class="btn btn-info" id="btn_export_PDF">นำออก</button>
-                                <a type="button" class="btn btn-outline-info waves-effect"
-                                    data-dismiss="modal">ยกเลิก</a>
-                            </div>
-                        </div>
-                        <!--/.Content-->
-                    </div>
-                </div>
-                <!--Modal: Export to PDF-->
+                
             </div>
 
             <!-- footer  -->
@@ -1122,8 +1091,8 @@
                     $('#excelExport').click(function () {
                         $('#myTable').table2excel({
                             exclude: ".noExl",
-                            name: "Asset",
-                            filename: "Assetdata"
+                            name: "ครุภัณฑ์",
+                            filename: "ครุภัณฑ์"
                         })
                     });
 
@@ -1148,7 +1117,7 @@
                                         width: 500
                                     }]
                                 };
-                                pdfMake.createPdf(docDefinition).download("Table.pdf");
+                                pdfMake.createPdf(docDefinition).download("ครุภัณฑ์.pdf");
                             }
                         });
                     });
