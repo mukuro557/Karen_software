@@ -54,12 +54,13 @@
                     return;
                 }
                 const formData = new FormData(this);
-
+                var today = new Date();
+                            var yyyy = today.getFullYear();
 
 
                 $.ajax({
                     method: "GET",
-                    url: "/item/dashboard/showuser"
+                    url: "/item/dashboard/number1/"+yyyy
                 }).done(function (data, state, xhr) {
 
                     if (data.length > 1) {
@@ -68,15 +69,11 @@
                         $("#upload").modal("hide");
                         window.location.reload();
                     } else {
-                        console.log('1')
                         $.ajax({
                             method: "GET",
-                            url: "/year/iteem"
+                            url: "/item/dashboard/showuser"
                         }).done(function (dataSet, state, xhr) {
-                            console.log('2')
-                            var today = new Date();
-                            var yyyy = today.getFullYear();
-                            if (dataSet[dataSet.length - 1].Year == yyyy) {
+                            if (dataSet.length != 0) {
                                 var r = confirm("ปีนี้ได้อัพโหลดแล้ว ถ้าอัพโหลดซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
                                 if (r) {
                                     $.ajax({
@@ -98,6 +95,7 @@
                                     })
                                 }
                             } else {
+                                
                                 $.ajax({
                                     method: "POST",
                                     url: "/uploading/" + user,
@@ -105,18 +103,16 @@
                                     contentType: false,     //tell jQuery not to add a Content-Type header for us
                                     processData: false,      //tell jQuery not to convert the formData object to a string
                                     success: function (data, state, xhr) {
-                                        alert("บันทึกสำเร็จ")
-                                        $("#upload").modal("hide");
-                                        window.location.reload();
+                                        alert(data)
+                                       
                                     },
                                     error: function (xhr, state, err) {
                                         alert(xhr.responseText);
-                                        $("#upload").modal("hide");
-                                        window.location.reload();
+                                        
                                     }
                                 });
-                                // $("#upload").modal("hide");
-                                // window.location.reload();
+                                 $("#upload").modal("hide");
+                                window.location.reload();
                             }
                         })
                     }

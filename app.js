@@ -177,6 +177,7 @@ app.post("/uploading/:email", function (req, res) {
         console.log(email)
         importExelData2MySQL(res, __dirname + '/upload/' + req.file.filename, email)
         console.log(req.file.filename)
+        res.status(200).send("บันทึกสำเร็จ");
     })
 });
 // import
