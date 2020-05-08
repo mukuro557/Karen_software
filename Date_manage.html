@@ -112,66 +112,67 @@
                         var more = 0
 
                         $.ajax({
-                        method: "GET",
-                        url: "/numberitem"
-                    }).done(function (dataitem, state, xhr) {
-                        for (let i = 0; i < dataSet.length - 1; i++) {
+                            method: "GET",
+                            url: "/numberitem"
+                        }).done(function (dataitem, state, xhr) {
+                            for (let i = 0; i < dataSet.length - 1; i++) {
 
-                            let count = 0
-                           
-                            for (let j = 0; j < datas.length; j++) {
+                                for (let j = 0; j < datas.length; j++) {
 
-                                if (datas[j].Date_Scan == dataSet[i].Date_Scan) {
-                                    count++;
+                                    if (datas[j].Date_Scan !== null) {
+
+                                        if (datas[j].Date_Scan == dataSet[i].Date_Scan) {
+                                            date++;
+                                        }
+                                    }
                                 }
+
+
+
+
+                                event.push(
+                                    {
+                                        title: 'แสกนแล้ว ' + date,
+                                        start: dataSet[i].Date_Scan,
+                                        end: dataSet[i].Date_Scan,
+                                        color: 'green'
+                                    }
+                                )
                             }
-                            date = date + count
-                            
-                               
-                        //    'แสกน ' + count + ' ชิ้น คงเหลือ' + more,
+                            var number = dataitem[0].numofitem
+
+
+                            if (dataitem[0].numofitem == 0) {
+
+                                more = 0;
+                            } else {
+                                more = number - date
+                            }
+
+                            $(".scan").html("แสกนแล้ว : " + date + " ชิ้น")
+                            $(".count").html("คงเหลือ  : " + more + " ชิ้น")
                             event.push(
                                 {
-                                    title: 'แสกนแล้ว ' + date ,
-                                    start: dataSet[i].Date_Scan,
-                                    end: dataSet[i].Date_Scan,
-                                    color: 'green'
+                                    title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
+                                    start: data[0].Date_start,
+                                    end: data[0].Date_end
                                 }
                             )
-                        }
-                        var number = dataitem[0].numofitem
-            
-
-                        if(dataitem[0].numofitem ==0){
-                              
-                            more = 0;
-                        }else{
-                                more = number -date
-                            }
-                       
-                        $(".scan").html("แสกนแล้ว : "+date+" ชิ้น")
-                        $(".count").html("คงเหลือ  : "+more+" ชิ้น")
-                        event.push(
-                            {
-                                title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
-                                start: data[0].Date_start,
-                                end: data[0].Date_end
-                            }
-                        )
 
 
 
-                        $('#calendar1').fullCalendar({
-                            header: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'month,agendaWeek,agendaDay,listWeek'
-                            },
-                            navLinks: true, // can click day/week names to navigate views
-                            editable: true,
-                            eventLimit: true, // allow "more" link when too many events
-                            events: event
-                        });
-                    })
+                            $('#calendar1').fullCalendar({
+                                header: {
+                                    left: 'prev,next today',
+                                    center: 'title',
+                                    right: 'month,agendaWeek,agendaDay,listWeek'
+                                },
+                                navLinks: true, // can click day/week names to navigate views
+                                editable: true,
+                                eventLimit: true, // allow "more" link when too many events
+                                events: event
+                            });
+                        })
                     })
 
                 })
