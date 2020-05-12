@@ -115,7 +115,7 @@
                             method: "GET",
                             url: "/numberitem"
                         }).done(function (dataitem, state, xhr) {
-                            for (let i = 0; i < dataSet.length - 1; i++) {
+                            for (let i = 1; i < dataSet.length ; i++) {
 
                                 for (let j = 0; j < datas.length; j++) {
 
@@ -126,9 +126,6 @@
                                         }
                                     }
                                 }
-
-
-
 
                                 event.push(
                                     {

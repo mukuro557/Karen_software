@@ -402,7 +402,7 @@ app.get("/year/user", function (req, res) {
 // Load date scan
 app.get("/datescan/user", function (req, res) {
     const year =  new Date().getFullYear();
-    const sql = "SELECT DISTINCT Date_Scan FROM item where Year = ? ORDER BY Date_scan DESC"
+    const sql = "SELECT DISTINCT Date_Scan FROM item where Year = ? ORDER BY Date_scan"
 
 
     con.query(sql,[year], function (err, result, fields) {
