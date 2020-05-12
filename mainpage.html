@@ -73,6 +73,7 @@
                             window.location.replace("/checkpage")
                         }
                         if(dataSet[0].role == 2){
+                            $("#manag").hide();
                             $("#manageu").hide();
                         }
                         for (let i = 0; i < dataSet.length; i++) {
@@ -109,12 +110,6 @@
                     <img src="img/logoit.JPG" style="width: 280px;">
                 </div>
             </div>
-
-
-            
-
-
-
 
             <ul class="navbar-nav ml-auto navbar-right-top">
 
@@ -278,7 +273,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3" id="manag">
                         <div class="row card" style="width: 6cm;height: 2cm;">
                             <a href="/manageuser">
                             <div class="col-sm-9 class-body">
