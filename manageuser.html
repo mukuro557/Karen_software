@@ -80,7 +80,8 @@
                             } else if (dataSet[i].role == 1) {
                                 dataSet[i].role = "แอดมิน"
                             }
-
+                            var nf = new Intl.NumberFormat();
+                            dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
                         }
 
                         table.clear();
@@ -99,7 +100,8 @@
                         } else if (dataSet[i].role == 1) {
                             dataSet[i].role = "แอดมิน"
                         }
-
+                        var nf = new Intl.NumberFormat();
+                        dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
                     }
                     table.clear();
                     //display modified JSON in DataTable

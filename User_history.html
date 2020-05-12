@@ -87,6 +87,8 @@
                         } else if (dataSet[i].Status == 2) {
                             dataSet[i].Status = "ส่งซ่อม"
                         }
+                        var nf = new Intl.NumberFormat();
+                        dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
                     }
                         //    alert("ok");
                         table.clear();
@@ -149,6 +151,8 @@
                             } else if (dataSet[i].Status == 2) {
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
+                            var nf = new Intl.NumberFormat();
+                            dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
                         }
                         table.clear();
                         //display modified JSON in DataTable
@@ -211,6 +215,8 @@
                         } else if (dataSet[i].Status == 2) {
                             dataSet[i].Status = "ส่งซ่อม"
                         }
+                        var nf = new Intl.NumberFormat();
+                        dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
                     }
 
 
@@ -325,6 +331,8 @@
                         } else if (dataSet[i].Status == 2) {
                             dataSet[i].Status = "ส่งซ่อม"
                         }
+                        var nf = new Intl.NumberFormat();
+                        dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
                     }
 
                     table.clear();
