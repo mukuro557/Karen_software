@@ -230,6 +230,9 @@
                     method: "GET",
                     url: "/item5/" + inven
                 }).done(function (dataSet, state, xhr) {
+                    if (dataSet[0].Image === null) {
+                                dataSet[0].Image = "/img/noimg.png"
+                            } 
                     document.getElementById('pic').src = dataSet[0].Image;
                     $(".date").html("วันที่ได้รับ : " + dataSet[0].Received_date + " วันที่อัพโหลด :" + dataSet[0].Date_Upload)
                     $("#Asset_Number").html(dataSet[0].Asset_Number)
@@ -363,48 +366,6 @@
     <!-- ============================================================== -->
     <!-- เสร็จ navbar -->
     <!-- ============================================================== -->
-
-    <!-- <div class="dashboard-wrapper mt-5">
-        <div class="dashboard-finance">
-            <div class="container-fluid dashboard-content"> -->
-                <!-- ============================================================== -->
-                <!-- หัวกระดาษ  -->
-                <!-- ============================================================== -->
-
-                <!-- <div class="page-header ml-5 mt-2">
-                    <h3 class="mb-2 ">รายละเอียดครุภัณฑ์ </h3>
-                </div> -->
-
-                <!-- ============================================================== -->
-                <!-- การ์ด  -->
-                <!-- ============================================================== -->
-                <!-- <div class="card shadow p-3 mb-5 ml-4 bg-white rounded" style="width:1150px">
-                    <div class="row mb-3">
-                        <div class="col-sm-5">
-                            <img class="card-img-top mx-auto " id="pic" src="img/Pixels.png" alt="Card image"
-                                style="width:80%" height="70%">
-                        </div>
-                        <div class="col-sm-7 mt-5">
-
-                            <div class="card-body">
-                                <div><span>
-                                        <h3>
-                                            <p id="Asset_Number">711000100142033</p>
-                                            <p>สถานะ : ปกติ</p>
-                                        </h3>
-                                    </span></div>
-
-                                <p class="date">วันที่ได้รับ : 2-20-2020 วันที่อัพโหลด : 2-20-2020</p>
-                                <p id="des">คำอธิบาย : โต๊ะยาวมากๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆ</p>
-                                <p id="mod">โมเดล : Gundum Expo ซีเรียล **** สถานที่ :E3</p>
-                                <p id="cos">รหัสแผนก : 1234 แผนกที่จัดเก็บ : สำนักเทคโนโลยีสารสนเทศ </p>
-                                <p id="value">ราคา : 500000 แหล่งที่มา : ร้านรับจ้างสารพัด ของคุณกิน</p> <br> <br> <br>
-                                <br>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> -->
 
                 <div class="dashboard-wrapper">
                     <div class="container-fluid dashboard-content">
