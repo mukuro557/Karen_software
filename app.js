@@ -901,5 +901,5 @@ app.use("/JS_Files", express.static(path.join(__dirname, 'JS_Files')));
 // ========== Starting server ============
 const PORT = 35000
 app.listen(PORT, function () {
-    console.log("Sever is running at " + PORT);
+    console.log("Server is running at " + PORT);
 });
