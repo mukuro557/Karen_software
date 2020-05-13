@@ -50,7 +50,8 @@
                 if (document.getElementById("fileUpload").files.length == 0) {
                     //or use jQuery
                     // if($('#fileUpload')[0].files.length === 0)
-                    alert("กรุณาเลือกไฟล์");
+                    $(".alertText").html("กรุณาเลือกไฟล์")
+                        $("#alertmodal").modal();
                     return;
                 }
                 const formData = new FormData(this);
@@ -64,10 +65,11 @@
                 }).done(function (data, state, xhr) {
 
                     if (data.length > 1) {
-                        console.log(data.length)
-                        alert("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                        $(".alertText").html("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
+                        $("#alertmodal").modal();
                         $("#upload").modal("hide");
-                        window.location.reload();
                     } else {
                         $.ajax({
                             method: "GET",
@@ -83,14 +85,19 @@
                                         contentType: false,
                                         processData: false,
                                         success: function (data, state, xhr) {
-                                            alert("บันทึกสำเร็จ")
+                                            $(".btn-sm").hide();
+                                            $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                            $(".alertText").html("บันทึกสำเร็จ")
+                                            $("#alertmodal").modal();
                                             $("#upload").modal("hide");
-                                            window.location.reload();
                                         },
                                         error: function (xhr, state, err) {
-                                            alert(xhr.responseText);
+                                            $(".btn-sm").hide();
+                                            $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                            $(".alertText").html(xhr.responseText)
+                                            $("#alertmodal").modal();
                                             $("#upload").modal("hide");
-                                            window.location.reload();
+                                            
                                         }
                                     })
                                 }
@@ -103,21 +110,29 @@
                                     contentType: false,     //tell jQuery not to add a Content-Type header for us
                                     processData: false,      //tell jQuery not to convert the formData object to a string
                                     success: function (data, state, xhr) {
-                                        alert(data)
+                                        $(".btn-sm").hide();
+                                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                        $(".alertText").html(data)
+                                        $("#alertmodal").modal();
+                                        
                                        
                                     },
                                     error: function (xhr, state, err) {
-                                        alert(xhr.responseText);
+                                        $(".btn-sm").hide();
+                                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                        $(".alertText").html(xhr.responseText)
+                                        $("#alertmodal").modal();
                                         
                                     }
                                 });
                                  $("#upload").modal("hide");
-                                window.location.reload();
+                                
                             }
                         })
                     }
                 }).fail(function (xhr, state, error) {
-                    alert(xhr.responseText);
+                   $(".alertText").html(xhr.responseText)
+                    $("#alertmodal").modal();
 
                 });
 
@@ -191,7 +206,6 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo4/" + selected
                     }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -258,7 +272,6 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo/" + selected
                     }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -339,7 +352,7 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo1/" + num
                     }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
+                        
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -428,7 +441,7 @@
                         dataSet[i].Image = "/img/noimg.png"
                     } 
                 }
-                        //    alert("ok");
+                        
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -495,15 +508,18 @@
 
                 }).done(function (dataSet, state, xhr) {
                     if (selectedItem[0] === undefined) {
-                        alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
+                        $(".alertText").html("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น")
+                        $("#alertmodal").modal();
                     } else {
-                        alert("บันทึกสำเร็จ")
+                        $(".alertText").html("บันทึกสำเร็จ")
+                        $("#alertmodal").modal();
+                        
                     }
 
 
                 }).fail(function (xhr, state, error) {
-                    alert(xhr.responseText);
-
+                    $(".alertText").html(xhr.responseText)
+                    $("#alertmodal").modal();
                 });
 
             });
@@ -515,7 +531,8 @@
                     selectedItem.push($(this).val());
                 });
                 if (selectedItem[0] === undefined) {
-                    alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
+                    $(".alertText").html("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น")
+                    $("#alertmodal").modal();
                 } else {
                     window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
                     var storedArray = JSON.parse(sessionStorage.getItem("items"));
@@ -560,12 +577,14 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
             // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  number  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             $.ajax({
@@ -604,7 +623,7 @@
                 method: "GET",
                 url: "/item/dashboard/showAllInfo"
             }).done(function (dataSet, state, xhr) {
-                //    alert("ok");
+               
                 // takepicture
                 for (let i = 0; i < dataSet.length; i++) {
                     if (dataSet[i].Status == 0) {
@@ -666,7 +685,7 @@
 
 
                     }
-                    // alert(year[0]+"  "+dis[0]+"  "+fix[0])
+                   
 
                     var datas = [];
                     let count = year.length
@@ -702,7 +721,8 @@
 
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
         }
     </script>
@@ -1054,7 +1074,23 @@
                 <!-- ============================================================== -->
                 <!-- เสร็จ modal  -->
                 <!-- ============================================================== -->
-                
+                <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content"  style="background-color : #3f3f3f">
+                        <div class="modal-body">
+                            <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+                          <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                          <input class="btn btn-sm" type="button" value = "ตกลง" onclick = " window.location.replace('/auth/logout')" style="float: right; background-color: #0a72c1; color:white">
+                          <!-- <button  type="button" class="btn btn-primary" style="width: 2cm; float: right;" onclick = " window.location.replace('/auth/logout')">ตกลง</button> -->
+                        </div>
+                          
+                        
+                      </div>
+                    </div>
+                  </div>
+                 <!-- ============================================================== -->
+                <!-- เสร็จ modal  -->
+                <!-- ============================================================== -->
             </div>
 
             <!-- footer  -->
