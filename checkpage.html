@@ -38,8 +38,10 @@
                 url: "/profile/infouser"
             }).done(function (data, state, xhr) {
                 if (data.email === undefined) {
-                    alert("กรุณาเข้าสู่ระบบ")
-                    window.location.replace("/auth/logout")
+                    
+                    $(".alertText").html("กรุณาเข้าสู่ระบบ")
+                    $("#exampleModal").modal();
+                   // window.location.replace("/auth/logout")
                 } else {
                     $.ajax({
                         method: "GET",
@@ -69,15 +71,17 @@
 
 <body>
     
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal bd-example-modal-sm fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
+          <div class="modal-content"  style="background-color : #3f3f3f">
             <div class="modal-body">
-              <p class="alertText">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+              <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+              <input class="btn btn-sm" type="button" value = "ตกลง" onclick = " window.location.replace('/auth/logout')" style="float: right; background-color: #0a72c1; color:white">
+              <!-- <button  type="button" class="btn btn-primary" style="width: 2cm; float: right;" onclick = " window.location.replace('/auth/logout')">ตกลง</button> -->
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" onclick = " window.location.replace('/auth/logout')">ตกลง</button>
-            </div>
+              
+            
           </div>
         </div>
       </div>

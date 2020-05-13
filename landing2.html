@@ -231,8 +231,8 @@
                     url: "/item5/" + inven
                 }).done(function (dataSet, state, xhr) {
                     if (dataSet[0].Image === null) {
-                                dataSet[0].Image = "/img/noimg.png"
-                            } 
+                        dataSet[0].Image = "/img/noimg.png"
+                    } 
                     document.getElementById('pic').src = dataSet[0].Image;
                     $(".date").html("วันที่ได้รับ : " + dataSet[0].Received_date + " วันที่อัพโหลด :" + dataSet[0].Date_Upload)
                     $("#Asset_Number").html(dataSet[0].Asset_Number)
