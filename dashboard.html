@@ -683,13 +683,17 @@
                         dis[i] = disna;
                         fix[i] = fixna;
 
-
                     }
                    
-
                     var datas = [];
                     let count = year.length
-                    for (let i = 0; i < 5; i++) {
+                    let graph =0
+                    if(year.length>=5){
+                        graph =5
+                    }else{
+                        graph =year.length
+                    }
+                    for (let i = 0; i < graph; i++) {
 
                         if (count == year.length) {
                             datas = [{ y: year[i], a: normal[i], b: dis[i], c: fix[i] }]
