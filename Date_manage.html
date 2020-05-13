@@ -82,12 +82,15 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
+                    
                     });
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
 
 
@@ -97,6 +100,7 @@
             }).done(function (data, state, xhr) {
                 $(".date_start_update").val(data[0].Date_start)
                 $(".date_end_update").val(data[0].Date_end)
+
                 $.ajax({
                     method: "GET",
                     url: "/datescan/user"
@@ -108,52 +112,67 @@
                     }).done(function (datas, state, xhr) {
                         var date = 0
                         var event = []
-                        var more
-                        for (let i = 0; i < dataSet.length - 1; i++) {
+                        var more = 0
 
-                            let count = 0
-                            for (let j = 0; j < datas.length; j++) {
+                        $.ajax({
+                            method: "GET",
+                            url: "/numberitem"
+                        }).done(function (dataitem, state, xhr) {
+                            for (let i = 1; i < dataSet.length ; i++) {
 
-                                if (datas[j].Date_Scan == dataSet[i].Date_Scan) {
-                                    count++;
+                                for (let j = 0; j < datas.length; j++) {
+
+                                    if (datas[j].Date_Scan !== null) {
+
+                                        if (datas[j].Date_Scan == dataSet[i].Date_Scan) {
+                                            date++;
+                                        }
+                                    }
                                 }
+
+                                event.push(
+                                    {
+                                        title: 'แสกนแล้ว ' + date,
+                                        start: dataSet[i].Date_Scan,
+                                        end: dataSet[i].Date_Scan,
+                                        color: 'green'
+                                    }
+                                )
                             }
-                            date = date + count
-                           more = datas.length - date
-                        //    'แสกน ' + count + ' ชิ้น คงเหลือ' + more,
+                            var number = dataitem[0].numofitem
+
+
+                            if (dataitem[0].numofitem == 0) {
+
+                                more = 0;
+                            } else {
+                                more = number - date
+                            }
+
+                            $(".scan").html("แสกนแล้ว : " + date + " ชิ้น")
+                            $(".count").html("คงเหลือ  : " + more + " ชิ้น")
                             event.push(
                                 {
-                                    title: 'แสกนแล้ว ' + date ,
-                                    start: dataSet[i].Date_Scan,
-                                    end: dataSet[i].Date_Scan,
-                                    color: 'green'
+                                    title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
+                                    start: data[0].Date_start,
+                                    end: data[0].Date_end
                                 }
                             )
-                        }
-                        $(".scan").html("แสกนแล้ว : "+date+" ชิ้น")
-                        $(".count").html("คงเหลือ  : "+more+" ชิ้น")
-                        event.push(
-                            {
-                                title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
-                                start: data[0].Date_start,
-                                end: data[0].Date_end
-                            }
-                        )
 
 
 
-                        $('#calendar1').fullCalendar({
-                            header: {
-                                left: 'prev,next today',
-                                center: 'title',
-                                right: 'month,agendaWeek,agendaDay,listWeek'
-                            },
-                            navLinks: true, // can click day/week names to navigate views
-                            editable: true,
-                            eventLimit: true, // allow "more" link when too many events
-                            events: event
-                        });
-
+                            $('#calendar1').fullCalendar({
+                                header: {
+                                    left: 'prev,next today',
+                                    center: 'title',
+                                    right: 'month,agendaWeek,agendaDay,listWeek'
+                                },
+                                navLinks: true, // can click day/week names to navigate views
+                                editable: true,
+                                eventLimit: true, // allow "more" link when too many events
+                                events: event
+                            });
+                        })
                     })
 
                 })
@@ -175,7 +194,8 @@
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
 
 
@@ -185,7 +205,8 @@
                 let date_end_update = $("input[type=date][name=Date_end_update]").val();
 
                 if (!date_start_update || date_start_update.length === 0 || !date_end_update || date_end_update.length === 0) {
-                    alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $(".alertText").html("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $("#alertmodal").modal();
                 } else {
 
                     $.ajax({
@@ -193,12 +214,17 @@
                         url: "/dateTime/updateTime/" + date_start_update + "/" + date_end_update
                     }).done(function (data, state, xhr) {
 
-                        $("#modaladd").modal("hide");
-                        alert(data);
-                        location.reload();
+                        
+                        $(".alertText").html(data)
+                        $("#alertmodal").modal();
+                       $("#modaladd").modal("hide");
+                       $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
+                    
                     });
                 }
             });
@@ -211,18 +237,24 @@
                 let date_end_add = $("input[type=date][name=Date_end_add]").val();
 
                 if (!date_start_add || date_start_add.length === 0 || !date_end_add || date_end_add.length === 0) {
-                    alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $(".alertText").html("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $("#alertmodal").modal();
                 } else {
                     $.ajax({
                         method: "POST",
                         url: "/dateTime/insertTime/" + date_start_add + "/" + date_end_add
                     }).done(function (data, state, xhr) {
-                        alert(data);
+                        $(".alertText").html(data)
+                        $("#alertmodal").modal();
                         $("#modaladd").modal("hide");
-                        location.reload();
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                       
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
+                       
                     });
                 }
 
@@ -233,26 +265,28 @@
 </head>
 
 <body>
+    <div class="dashboard-main-wrapper">
     <!-- navbar -->
     <!-- ============================================================== -->
     <div class="dashboard-header">
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
-                <div class="col-sm-2 ml-4 ">
-                    <img src="img/itlogo.png" style="width: 100%;">
-                </div>
-                <div>
-
-                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;">
-                        สำนักเทคโนโลยีสารสนเทศ</div>
-
+                <div class="col-sm-2 ml-4">
+                    <img src="img/logoit.JPG" style="width: 280px;">
                 </div>
             </div>
 
-
             <ul class="navbar-nav ml-auto navbar-right-top">
 
+                <li class="nav-item dropdown notification">
+                   
+                    <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
 
+                        <li>
+                            <div class="list-footer"> <a href="#">การแจ้งเตือนทั้งหมด</a></div>
+                        </li>
+                    </ul>
+                </li>
 
                 <li class="nav-item dropdown nav-user">
                     <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
@@ -549,7 +583,26 @@
     <!-- ============================================================== -->
     <!-- เสร็จ modal2  -->
     <!-- ============================================================== -->
-
+    <!-- ============================================================== -->
+    <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content"  style="background-color : #3f3f3f">
+            <div class="modal-body">
+                <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+                <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                <div class="but"></div>
+                <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal" style="float: right; background-color: #0a72c1; color:white">
+             
+            </div>
+              
+            
+          </div>
+        </div>
+      </div>
+     <!-- ============================================================== -->
+    <!-- เสร็จ modal  -->
+    <!-- ============================================================== -->
+</div>
 </body>
 
 </html>

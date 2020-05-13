@@ -50,7 +50,8 @@
                 if (document.getElementById("fileUpload").files.length == 0) {
                     //or use jQuery
                     // if($('#fileUpload')[0].files.length === 0)
-                    alert("กรุณาเลือกไฟล์");
+                    $(".alertText").html("กรุณาเลือกไฟล์")
+                        $("#alertmodal").modal();
                     return;
                 }
                 const formData = new FormData(this);
@@ -64,10 +65,11 @@
                 }).done(function (data, state, xhr) {
 
                     if (data.length > 1) {
-                        console.log(data.length)
-                        alert("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                        $(".alertText").html("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
+                        $("#alertmodal").modal();
                         $("#upload").modal("hide");
-                        window.location.reload();
                     } else {
                         $.ajax({
                             method: "GET",
@@ -83,14 +85,19 @@
                                         contentType: false,
                                         processData: false,
                                         success: function (data, state, xhr) {
-                                            alert("บันทึกสำเร็จ")
+                                            $(".btn-sm").hide();
+                                            $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                            $(".alertText").html("บันทึกสำเร็จ")
+                                            $("#alertmodal").modal();
                                             $("#upload").modal("hide");
-                                            window.location.reload();
                                         },
                                         error: function (xhr, state, err) {
-                                            alert(xhr.responseText);
+                                            $(".btn-sm").hide();
+                                            $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                            $(".alertText").html(xhr.responseText)
+                                            $("#alertmodal").modal();
                                             $("#upload").modal("hide");
-                                            window.location.reload();
+                                            
                                         }
                                     })
                                 }
@@ -103,21 +110,29 @@
                                     contentType: false,     //tell jQuery not to add a Content-Type header for us
                                     processData: false,      //tell jQuery not to convert the formData object to a string
                                     success: function (data, state, xhr) {
-                                        alert(data)
+                                        $(".btn-sm").hide();
+                                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                        $(".alertText").html(data)
+                                        $("#alertmodal").modal();
+                                        
                                        
                                     },
                                     error: function (xhr, state, err) {
-                                        alert(xhr.responseText);
+                                        $(".btn-sm").hide();
+                                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                                        $(".alertText").html(xhr.responseText)
+                                        $("#alertmodal").modal();
                                         
                                     }
                                 });
                                  $("#upload").modal("hide");
-                                window.location.reload();
+                                
                             }
                         })
                     }
                 }).fail(function (xhr, state, error) {
-                    alert(xhr.responseText);
+                   $(".alertText").html(xhr.responseText)
+                    $("#alertmodal").modal();
 
                 });
 
@@ -191,7 +206,6 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo4/" + selected
                     }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -201,6 +215,18 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                    var nf = new Intl.NumberFormat();
+                    dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                    if (dataSet[i].Image === null) {
+                        dataSet[i].Image = "/img/noimg.png"
+                    } 
+                }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -246,7 +272,6 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo/" + selected
                     }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -256,6 +281,18 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                    var nf = new Intl.NumberFormat();
+                    dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                    if (dataSet[i].Image === null) {
+                        dataSet[i].Image = "/img/noimg.png"
+                    } 
+                }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -315,7 +352,7 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo1/" + num
                     }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
+                        
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -325,6 +362,18 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                    var nf = new Intl.NumberFormat();
+                    dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                    if (dataSet[i].Image === null) {
+                        dataSet[i].Image = "/img/noimg.png"
+                    } 
+                }
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -380,7 +429,19 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
-                        //    alert("ok");
+                        for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                    var nf = new Intl.NumberFormat();
+                    dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                    if (dataSet[i].Image === null) {
+                        dataSet[i].Image = "/img/noimg.png"
+                    } 
+                }
+                        
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -413,8 +474,8 @@
                     { data: "Location", title: "สถานที่" },
                     { data: "Received_date", title: "วันที่ได้รับ" },
                     { data: "Original_value", title: "มูลค่า" },
-                    { data: "Department", title: "แผนกที่ดูแล" },
-                    { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
+                    { data: "takepicture", title: "ถ่ายรูป" },
+                    { data: "Date_scan", title: "วันที่ตรวจสอบ" },
                     { data: "Email_Committee", title: "ผู้ตรวจ" },
                     { data: "Status", title: "สถานะ" },
                 ],
@@ -447,15 +508,18 @@
 
                 }).done(function (dataSet, state, xhr) {
                     if (selectedItem[0] === undefined) {
-                        alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
+                        $(".alertText").html("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น")
+                        $("#alertmodal").modal();
                     } else {
-                        alert("บันทึกสำเร็จ")
+                        $(".alertText").html("บันทึกสำเร็จ")
+                        $("#alertmodal").modal();
+                        
                     }
 
 
                 }).fail(function (xhr, state, error) {
-                    alert(xhr.responseText);
-
+                    $(".alertText").html(xhr.responseText)
+                    $("#alertmodal").modal();
                 });
 
             });
@@ -467,7 +531,8 @@
                     selectedItem.push($(this).val());
                 });
                 if (selectedItem[0] === undefined) {
-                    alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
+                    $(".alertText").html("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น")
+                    $("#alertmodal").modal();
                 } else {
                     window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
                     var storedArray = JSON.parse(sessionStorage.getItem("items"));
@@ -512,12 +577,14 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
             // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  number  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             $.ajax({
@@ -556,7 +623,8 @@
                 method: "GET",
                 url: "/item/dashboard/showAllInfo"
             }).done(function (dataSet, state, xhr) {
-                //    alert("ok");
+               
+                // takepicture
                 for (let i = 0; i < dataSet.length; i++) {
                     if (dataSet[i].Status == 0) {
                         dataSet[i].Status = "สูญหาย"
@@ -565,6 +633,18 @@
                     } else if (dataSet[i].Status == 2) {
                         dataSet[i].Status = "ส่งซ่อม"
                     }
+                }
+                for (let i = 0; i < dataSet.length; i++) {
+                    if (dataSet[i].takepicture == 0) {
+                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
+                    } else if (dataSet[i].takepicture == 1) {
+                        dataSet[i].takepicture = "ต้องการรูป"
+                    }
+                    var nf = new Intl.NumberFormat();
+                    dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                    if (dataSet[i].Image === null) {
+                        dataSet[i].Image = "/img/noimg.png"
+                    } 
                 }
                 table.clear();
                 //display modified JSON in DataTable
@@ -603,13 +683,17 @@
                         dis[i] = disna;
                         fix[i] = fixna;
 
-
                     }
-                    // alert(year[0]+"  "+dis[0]+"  "+fix[0])
-
+                   
                     var datas = [];
                     let count = year.length
-                    for (let i = 0; i < year.length; i++) {
+                    let graph =0
+                    if(year.length>=5){
+                        graph =5
+                    }else{
+                        graph =year.length
+                    }
+                    for (let i = 0; i < graph; i++) {
 
                         if (count == year.length) {
                             datas = [{ y: year[i], a: normal[i], b: dis[i], c: fix[i] }]
@@ -641,7 +725,8 @@
 
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
         }
     </script>
@@ -667,33 +752,22 @@
 
 </head>
 
-<body>
+<body  style="background-color:rgba(255, 255, 255, 0.768)">
+    <div class="dashboard-main-wrapper">
     <!-- navbar -->
     <!-- ============================================================== -->
     <div class="dashboard-header">
         <nav class="navbar navbar-expand-lg bg-white fixed-top">
             <div class="row">
-                <div class="col-sm-2 ml-4 ">
-                    <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
-                </div>
-                <div>
-
-                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
-                        สำนักเทคโนโลยีสารสนเทศ</div>
-
+                <div class="col-sm-2 ml-4">
+                    <img src="img/logoit.JPG" style="width: 280px;">
                 </div>
             </div>
-
-
-
-
-
-
 
             <ul class="navbar-nav ml-auto navbar-right-top">
 
                 <li class="nav-item dropdown notification">
-
+                   
                     <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
 
                         <li>
@@ -709,7 +783,7 @@
                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
                         aria-labelledby="navbarDropdownMenuLink2">
                         <div class="nav-user-info">
-                            <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
+                            <h5 class="mb-0 text-white nav-user-name user" id="user">Ruttathorn </h5>
                             <span class="status"></span><span class="ml-2" id="rol2">กรรมการ</span>
                         </div>
                         <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
@@ -1004,7 +1078,23 @@
                 <!-- ============================================================== -->
                 <!-- เสร็จ modal  -->
                 <!-- ============================================================== -->
-                
+                <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content"  style="background-color : #3f3f3f">
+                        <div class="modal-body">
+                            <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+                          <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                          <input class="btn btn-sm" type="button" value = "ตกลง" onclick = " window.location.replace('/auth/logout')" style="float: right; background-color: #0a72c1; color:white">
+                          <!-- <button  type="button" class="btn btn-primary" style="width: 2cm; float: right;" onclick = " window.location.replace('/auth/logout')">ตกลง</button> -->
+                        </div>
+                          
+                        
+                      </div>
+                    </div>
+                  </div>
+                 <!-- ============================================================== -->
+                <!-- เสร็จ modal  -->
+                <!-- ============================================================== -->
             </div>
 
             <!-- footer  -->
@@ -1124,5 +1214,5 @@
             <!-- ======================== เสร็จ footer ========================= -->
             <!-- ============================================================== -->
         </div>
-
+    </div>
 </body>

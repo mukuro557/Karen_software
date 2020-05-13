@@ -402,7 +402,7 @@ app.get("/year/user", function (req, res) {
 // Load date scan
 app.get("/datescan/user", function (req, res) {
     const year =  new Date().getFullYear();
-    const sql = "SELECT DISTINCT Date_Scan FROM item where Year = ?"
+    const sql = "SELECT DISTINCT Date_Scan FROM item where Year = ? ORDER BY Date_scan"
 
 
     con.query(sql,[year], function (err, result, fields) {
@@ -477,7 +477,7 @@ app.get("/user/profile/inspectedInfoItem/:Email_Committee", function (req, res) 
 
 // Load all item info
 app.get("/item/dashboard/showAllInfo", function (req, res) {
-    const sql = "select Year,Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item"
+    const sql = "select * from item"
 
     con.query(sql, function (err, result, fields) {
         if (err) {
@@ -506,7 +506,7 @@ app.get("/item/dashboard/showuser", function (req, res) {
 // Load all item info with location
 app.get("/item/dashboard/showAllInfo/:location", function (req, res) {
     const location = req.params.location;
-    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Location = ?"
+    const sql = "select * FROM item WHERE Location = ?"
 
     con.query(sql, [location], function (err, result, fields) {
         if (err) {
@@ -604,7 +604,7 @@ app.get("/item/Status", function (req, res) {
 // Load all item info with Status
 app.get("/item/dashboard/showAllInfo1/:status", function (req, res) {
     const status = req.params.status;
-    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Status = ?"
+    const sql = "select * from item WHERE Status = ?"
 
     con.query(sql, [status], function (err, result, fields) {
         if (err) {
@@ -632,7 +632,7 @@ app.get("/item/Year", function (req, res) {
 // Load all item info with year
 app.get("/item/dashboard/showAllInfo4/:Year", function (req, res) {
     const year = req.params.Year;
-    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Year = ?"
+    const sql = "select * from item WHERE Year = ?"
 
     con.query(sql, [year], function (err, result, fields) {
         if (err) {
@@ -659,7 +659,7 @@ app.get("/item/Email_Committee", function (req, res) {
 // Load all item info with commitee
 app.get("/item/dashboard/showAllInfo3/:Email_Committee", function (req, res) {
     const thecommittee = req.params.Email_Committee;
-    const sql = "select Image,Asset_Number,Location,Received_date,Original_value,Department,Date_Scan,Email_Committee,Status,Model,Serial,Cost_center,Vendor_name,Date_Upload,Date_scan from item WHERE Email_Committee  = ?"
+    const sql = "select * from item WHERE Email_Committee  = ?"
 
     con.query(sql, [thecommittee], function (err, result, fields) {
         if (err) {
@@ -846,6 +846,19 @@ app.get("/item5/:Asset_Number", function (req, res) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
         } else {
             res.json(result)
+        }
+    })
+});
+
+app.get("/numberitem", function (req, res) {
+    const year = new Date().getFullYear();
+    const sql = "SELECT count(Asset_Number) AS numofitem FROM item WHERE Year = ?"
+    con.query(sql, [year], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        } else {
+            res.send(result)
+            
         }
     })
 });

@@ -80,7 +80,11 @@
                             } else if (dataSet[i].role == 1) {
                                 dataSet[i].role = "แอดมิน"
                             }
-
+                            var nf = new Intl.NumberFormat();
+                            dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                            if (dataSet[i].Image === null) {
+                        dataSet[i].Image = "/img/noimg.png"
+                    } 
                         }
 
                         table.clear();
@@ -99,14 +103,20 @@
                         } else if (dataSet[i].role == 1) {
                             dataSet[i].role = "แอดมิน"
                         }
-
+                        var nf = new Intl.NumberFormat();
+                        dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                        if (dataSet[i].Image === null) {
+                        dataSet[i].Image = "/img/noimg.png"
+                    } 
                     }
                     table.clear();
                     //display modified JSON in DataTable
                     table.rows.add(dataSet).draw();
                 }).fail(function (xhr, state, error) {
                     //get data failed
-                    alert(xhr.responseText);
+                    $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
+                    
                 });
 
 
@@ -119,8 +129,12 @@
                 let newmail = $("#editMail").val();
 
                 if (!newmail || newmail.length === 0) {
-                    alert("กรุณากรอกอีเมล");
+                    $(".alertText").html("กรุณากรอกอีเมล")
+                    $("#alertmodal").modal();
+                    
                 } else {
+                    $(".alertText").html("เปลี่ยนข้อมูลสำเร็จ")
+                    $("#alertmodal").modal();
                     if(newmail.match(pattern)){
                         $.ajax({
                     method: "GET",
@@ -130,10 +144,12 @@
                         method: "PUT",
                         url: "/manageUser/update/" + newmail + "/" + dataSet.email + "/" + rol + "/" + Email_user
                     }).done(function (data, state, xhr) {
-                        alert(data)
+                        $(".alertText").html(data)
+                        $("#alertmodal").modal();
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                     $.ajax({
                         method: "GET",
@@ -142,16 +158,19 @@
                         $("#all").html(dataSet[0].Numbers_of_Inspected_Item);
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                 }).fail(function (xhr, state, error) {
                     //get data failed
-                    alert(xhr.responseText);
+                    $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                 });
                 $(".modal").modal("hide");
                 location.reload()
                     }else{
-                        alert("รูปแบบอีเมลไม่ถูกต้อง");
+                        $(".alertText").html("รูปแบบอีเมลไม่ถูกต้อง")
+                        $("#alertmodal").modal();
                     }
                 }
                 
@@ -162,7 +181,8 @@
                 let newmail = $("#addMail2").val();
                 let role;
                 if (!newmail || newmail.length === 0) {
-                    alert("กรุณากรอกอีเมล");
+                    $(".alertText").html("กรุณากรอกอีเมล")
+                        $("#alertmodal").modal();
                 } else {
                     if(newmail.match(pattern)){
                         var x = document.getElementById("admin").checked;
@@ -181,18 +201,23 @@
                             method: "POST",
                             url: "/manageUser/add/" + newmail + "/" + dataSet.email + "/" + role
                         }).done(function (data, state, xhr) {
-                            alert(data)
+                            $(".alertText").html(data)
+                        $("#alertmodal").modal();
+                        
                         }).fail(function (xhr, state, error) {
                             //get data failed
-                            alert(xhr.responseText);
+                            $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                         });
                         location.reload()
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                     }else{
-                        alert("รูปแบบอีเมลไม่ถูกต้อง");
+                        $(".alertText").html("รูปแบบอีเมลไม่ถูกต้อง")
+                        $("#alertmodal").modal();
                     }
 
 
@@ -233,12 +258,14 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
             table = $('#myTable').DataTable({
                 columns: [
@@ -272,17 +299,20 @@
                         if (dataSet[0].Numbers_of_Inspected_Item == 0) {
                             $(".bd-example-modal-sm").modal();
                         } else {
-                            alert("ผู้ใช้นี้ได้เริ่มสแกนแล้ว")
+                        $(".alertText").html("ผู้ใช้นี้ได้เริ่มสแกนแล้ว")
+                        $("#alertmodal").modal();
 
                         }
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
 
                 }).fail(function (xhr, state, error) {
                     //get data failed
-                    alert(xhr.responseText);
+                    $(".alertText").html(xhr.responseText)
+                    $("#alertmodal").modal();
                 });
 
 
@@ -295,8 +325,8 @@
         function GetSelectedValue() {
             var e = document.getElementById("year");
             var result = e.options[e.selectedIndex].value;
-
-            alert(result)
+            $(".alertText").html(result
+            $("#alertmodal").modal();
         }
     </script>
 </head>
@@ -626,6 +656,25 @@
     </div>
     <!-- ============================================================== -->
     <!-- เสร็จ modal2  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content"  style="background-color : #3f3f3f">
+            <div class="modal-body">
+                <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+                <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                <div class="but"></div>
+                <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal" style="float: right; background-color: #0a72c1; color:white">
+             
+            </div>
+              
+            
+          </div>
+        </div>
+      </div>
+     <!-- ============================================================== -->
+    <!-- เสร็จ modal  -->
     <!-- ============================================================== -->
 
 
