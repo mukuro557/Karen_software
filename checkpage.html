@@ -46,8 +46,8 @@
                         url: "/manageUser/showAllUsers/" + data.email
                     }).done(function (dataSet, state, xhr) {
                         if (dataSet[0] === undefined) {
-                            alert("กรุณติดต่อเพื่อขอใช้บริการ")
-                            window.location.replace("/auth/logout")
+                           $("#exampleModal").modal();
+                            //  window.location.replace("/auth/logout")
                         }else{
                             
                             window.location.replace("/mainpage")
@@ -69,5 +69,17 @@
 
 <body>
     
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <p class="alertText">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick = " window.location.replace('/auth/logout')">ตกลง</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 </html>

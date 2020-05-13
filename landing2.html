@@ -94,6 +94,9 @@
                             }
                             var nf = new Intl.NumberFormat();
                             dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                            if (dataSet[i].Image === null) {
+                                dataSet[i].Image = "/img/noimg.png"
+                            } 
                         }
                         table.clear();
                         //display modified JSON in DataTable
@@ -162,6 +165,9 @@
                             }
                             var nf = new Intl.NumberFormat();
                             dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                            if (dataSet[i].Image === null) {
+                                dataSet[i].Image = "/img/noimg.png"
+                            } 
                         }
                         table.clear();
                         //display modified JSON in DataTable
@@ -258,6 +264,9 @@
                     }
                     var nf = new Intl.NumberFormat();
                     dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
+                    if (dataSet[i].Image === null) {
+                                dataSet[i].Image = "/img/noimg.png"
+                            } 
                 }
                 table.clear();
                 table.rows.add(dataSet).draw();
