@@ -82,12 +82,15 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
+                    
                     });
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
 
 
@@ -191,7 +194,8 @@
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                $("#alertmodal").modal();
             });
 
 
@@ -201,7 +205,8 @@
                 let date_end_update = $("input[type=date][name=Date_end_update]").val();
 
                 if (!date_start_update || date_start_update.length === 0 || !date_end_update || date_end_update.length === 0) {
-                    alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $(".alertText").html("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $("#alertmodal").modal();
                 } else {
 
                     $.ajax({
@@ -209,12 +214,17 @@
                         url: "/dateTime/updateTime/" + date_start_update + "/" + date_end_update
                     }).done(function (data, state, xhr) {
 
-                        $("#modaladd").modal("hide");
-                        alert(data);
-                        location.reload();
+                        
+                        $(".alertText").html(data)
+                        $("#alertmodal").modal();
+                       $("#modaladd").modal("hide");
+                       $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
+                    
                     });
                 }
             });
@@ -227,18 +237,24 @@
                 let date_end_add = $("input[type=date][name=Date_end_add]").val();
 
                 if (!date_start_add || date_start_add.length === 0 || !date_end_add || date_end_add.length === 0) {
-                    alert("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $(".alertText").html("กรุณาใส่วันที่เริ่มต้น หรือ วันที่สิ้นสุด")
+                    $("#alertmodal").modal();
                 } else {
                     $.ajax({
                         method: "POST",
                         url: "/dateTime/insertTime/" + date_start_add + "/" + date_end_add
                     }).done(function (data, state, xhr) {
-                        alert(data);
+                        $(".alertText").html(data)
+                        $("#alertmodal").modal();
                         $("#modaladd").modal("hide");
-                        location.reload();
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                       
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
+                       
                     });
                 }
 
@@ -566,6 +582,25 @@
     </div>
     <!-- ============================================================== -->
     <!-- เสร็จ modal2  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content"  style="background-color : #3f3f3f">
+            <div class="modal-body">
+                <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+                <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                <div class="but"></div>
+                <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal" style="float: right; background-color: #0a72c1; color:white">
+             
+            </div>
+              
+            
+          </div>
+        </div>
+      </div>
+     <!-- ============================================================== -->
+    <!-- เสร็จ modal  -->
     <!-- ============================================================== -->
 </div>
 </body>

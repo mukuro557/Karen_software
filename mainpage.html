@@ -89,12 +89,14 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
             });
         }
     </script>
@@ -355,6 +357,27 @@
                     <!-- ============================================================== -->
                     <!-- เสร็จประกาศ  -->
                     <!-- ============================================================== -->
+                    <!-- เสร็จ modal2  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content"  style="background-color : #3f3f3f">
+            <div class="modal-body">
+                <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+                <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                <div class="but"></div>
+                <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal" style="float: right; background-color: #0a72c1; color:white">
+             
+            </div>
+              
+            
+          </div>
+        </div>
+      </div>
+     <!-- ============================================================== -->
+    <!-- เสร็จ modal  -->
+    <!-- ============================================================== -->
                 </div>
             </div>
             <!-- footer  -->

@@ -40,7 +40,7 @@
                 if (data.email === undefined) {
                     
                     $(".alertText").html("กรุณาเข้าสู่ระบบ")
-                    $("#exampleModal").modal();
+                    $("#alertmodal").modal();
                    // window.location.replace("/auth/logout")
                 } else {
                     $.ajax({
@@ -48,7 +48,7 @@
                         url: "/manageUser/showAllUsers/" + data.email
                     }).done(function (dataSet, state, xhr) {
                         if (dataSet[0] === undefined) {
-                           $("#exampleModal").modal();
+                           $("#alertmodal").modal();
                             //  window.location.replace("/auth/logout")
                         }else{
                             
@@ -71,7 +71,7 @@
 
 <body>
     
-    <div class="modal bd-example-modal-sm fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content"  style="background-color : #3f3f3f">
             <div class="modal-body">

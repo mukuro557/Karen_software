@@ -93,7 +93,7 @@
                         dataSet[i].Image = "/img/noimg.png"
                     } 
                     }
-                        //    alert("ok");
+                        
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -145,7 +145,7 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo1/" + selected
                     }).done(function (dataSet, state, xhr) {
-                        //    alert("ok");
+                        
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -292,7 +292,8 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        alert(xhr.responseText);
+                        $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                     });
                 }
 
@@ -304,7 +305,8 @@
                     $("#all").html(dataSet[0].Numbers_of_Inspected_Item);
                 }).fail(function (xhr, state, error) {
                     //get data failed
-                    alert(xhr.responseText);
+                    $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                 });
                 $.ajax({
                     method: "GET",
@@ -329,8 +331,7 @@
                     method: "GET",
                     url: "/user/profile/inspectedInfoItem/" + data.email
                 }).done(function (dataSet, state, xhr) {
-                    //    alert("ok");
-                     
+                    
                    
                     for (let i = 0; i < dataSet.length; i++) {
                         if (dataSet[i].Status == 0) {
@@ -352,12 +353,14 @@
                     table.rows.add(dataSet).draw();
                 }).fail(function (xhr, state, error) {
                     //get data failed
-                    alert(xhr.responseText);
+                    $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
                 });
 
             }).fail(function (xhr, state, error) {
                 //get data failed
-                alert(xhr.responseText);
+                $(".alertText").html(xhr.responseText)
+                        $("#alertmodal").modal();
             });
 
 
@@ -595,6 +598,27 @@
                             <!-- เสร็จตารางข้อมูล -->
                             <!-- ============================================================== -->
                             <!-- ============================================================== -->
+                            <!-- เสร็จ modal2  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content"  style="background-color : #3f3f3f">
+            <div class="modal-body">
+                <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
+                <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                <div class="but"></div>
+                <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal" style="float: right; background-color: #0a72c1; color:white">
+             
+            </div>
+              
+            
+          </div>
+        </div>
+      </div>
+     <!-- ============================================================== -->
+    <!-- เสร็จ modal  -->
+    <!-- ============================================================== -->
                         </div>
 
                     </div>
