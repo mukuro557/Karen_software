@@ -510,7 +510,9 @@
                     if (selectedItem[0] === undefined) {
                         $(".alertText").html("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น")
                         $("#alertmodal").modal();
-                    } else {
+                    } else { 
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
                         $(".alertText").html("บันทึกสำเร็จ")
                         $("#alertmodal").modal();
                         
@@ -1084,7 +1086,7 @@
                         <div class="modal-body">
                             <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
                           <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
-                          <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal" style="float: right; background-color: #0a72c1; color:white">
+                          <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal"   style="float: right; background-color: #0a72c1; color:white">
                           <!-- <button  type="button" class="btn btn-primary" style="width: 2cm; float: right;" onclick = " window.location.replace('/auth/logout')">ตกลง</button> -->
                         </div>
                           

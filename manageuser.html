@@ -115,14 +115,10 @@
                 }).fail(function (xhr, state, error) {
                     //get data failed
                     $(".alertText").html(xhr.responseText)
-                        $("#alertmodal").modal();
-                    
+                     $("#alertmodal").modal();
                 });
 
-
-
             })
-
 
 
             $("#save").click(function () {
@@ -133,6 +129,8 @@
                     $("#alertmodal").modal();
                     
                 } else {
+                    $(".btn-sm").hide();
+                    $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
                     $(".alertText").html("เปลี่ยนข้อมูลสำเร็จ")
                     $("#alertmodal").modal();
                     if(newmail.match(pattern)){
@@ -158,16 +156,20 @@
                         $("#all").html(dataSet[0].Numbers_of_Inspected_Item);
                     }).fail(function (xhr, state, error) {
                         //get data failed
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
                         $(".alertText").html(xhr.responseText)
                         $("#alertmodal").modal();
                     });
                 }).fail(function (xhr, state, error) {
                     //get data failed
+                    $(".btn-sm").hide();
+                    $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
                     $(".alertText").html(xhr.responseText)
-                        $("#alertmodal").modal();
+                    $("#alertmodal").modal();
                 });
                 $(".modal").modal("hide");
-                location.reload()
+                
                     }else{
                         $(".alertText").html("รูปแบบอีเมลไม่ถูกต้อง")
                         $("#alertmodal").modal();
@@ -182,7 +184,7 @@
                 let role;
                 if (!newmail || newmail.length === 0) {
                     $(".alertText").html("กรุณากรอกอีเมล")
-                        $("#alertmodal").modal();
+                    $("#alertmodal").modal();
                 } else {
                     if(newmail.match(pattern)){
                         var x = document.getElementById("admin").checked;
@@ -201,15 +203,19 @@
                             method: "POST",
                             url: "/manageUser/add/" + newmail + "/" + dataSet.email + "/" + role
                         }).done(function (data, state, xhr) {
-                            $(".alertText").html(data)
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
+                    
+                        $(".alertText").html(data)
                         $("#alertmodal").modal();
                         
                         }).fail(function (xhr, state, error) {
                             //get data failed
-                            $(".alertText").html(xhr.responseText)
+                            
+                            $(".alertText").html("มีผู้ใช้นี้แล้ว")
                         $("#alertmodal").modal();
                         });
-                        location.reload()
+                        
                     }).fail(function (xhr, state, error) {
                         //get data failed
                         $(".alertText").html(xhr.responseText)
@@ -225,7 +231,7 @@
                 }
 
                 $(".modal").modal("hide");
-                location.reload()
+           
             });
 
             $.ajax({
@@ -297,8 +303,10 @@
                         url: "/user/profile/inspectedItem/Total/Number1/" + data.email
                     }).done(function (dataSet, state, xhr) {
                         if (dataSet[0].Numbers_of_Inspected_Item == 0) {
-                            $(".bd-example-modal-sm").modal();
+                            $(".modalH").modal();
                         } else {
+                        $(".btn-sm").hide();
+                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
                         $(".alertText").html("ผู้ใช้นี้ได้เริ่มสแกนแล้ว")
                         $("#alertmodal").modal();
 
@@ -595,7 +603,7 @@
     <!-- modal  -->
     <!-- ============================================================== -->
 
-    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    <div class="modal fade bd-example-modal-sm modalH" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -663,7 +671,7 @@
           <div class="modal-content"  style="background-color : #3f3f3f">
             <div class="modal-body">
                 <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
-                <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
+                <p class="alertText" style="color: white"></p>
                 <div class="but"></div>
                 <input class="btn btn-sm" type="button" value = "ตกลง" data-dismiss="modal" style="float: right; background-color: #0a72c1; color:white">
              
