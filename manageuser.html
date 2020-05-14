@@ -300,9 +300,10 @@
                 }).done(function (data, state, xhr) {
                     $.ajax({
                         method: "GET",
-                        url: "/user/profile/inspectedItem/Total/Number1/" + data.email
+                        url: "/user/profile/inspectedItem/Total/Number1/" + Email_user
                     }).done(function (dataSet, state, xhr) {
                         if (dataSet[0].Numbers_of_Inspected_Item == 0) {
+                           
                             $(".modalH").modal();
                         } else {
                         $(".btn-sm").hide();
