@@ -132,7 +132,7 @@
 
                                 event.push(
                                     {
-                                        title: 'ตรวจนับแล้ว ' + date,
+                                        title: 'ตรวจสอบแล้ว ' + date,
                                         start: dataSet[i].Date_Scan,
                                         end: dataSet[i].Date_Scan,
                                         color: 'green'
@@ -149,11 +149,11 @@
                                 more = number - date
                             }
 
-                            $(".scan").html("ตรวจนับแล้ว : " + date + " ชิ้น")
+                            $(".scan").html("ตรวจสอบแล้ว : " + date + " ชิ้น")
                             $(".count").html("คงเหลือ  : " + more + " ชิ้น")
                             event.push(
                                 {
-                                    title: 'ช่วงเวลาการตรวจนับครุภัณฑ์ ประจำปี ' + data[0].years,
+                                    title: 'ช่วงเวลาการตรวจสอบครุภัณฑ์ ประจำปี ' + data[0].years,
                                     start: data[0].Date_start,
                                     end: data[0].Date_end
                                 }
@@ -390,7 +390,7 @@
                 <div class="row">
                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
                         <div class="page-header">
-                            <h2 class="mb-2">ระยะเวลาการตรวจนับ
+                            <h2 class="mb-2">ระยะเวลาการตรวจสอบ
                             </h2>
                             <h5 class="scan">
                             </h5>
@@ -519,7 +519,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มเวลาในการตรวจนับ</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มเวลาในการตรวจสอบ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -555,7 +555,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขเวลาในการตรวจนับ</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขเวลาในการตรวจสอบ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
