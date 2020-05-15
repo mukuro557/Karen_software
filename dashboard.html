@@ -49,7 +49,7 @@
 
                 if (document.getElementById("fileUpload").files.length == 0) {
                     //or use jQuery
-                    // if($('#fileUpload')[0].files.length === 0)
+                   
                     $(".alertText").html("กรุณาเลือกไฟล์")
                     $("#alertmodal").modal();
                     return;
@@ -1088,6 +1088,7 @@
                                     <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
                                     <input class="btn btn-sm" type="button" value="ตกลง" data-dismiss="modal"
                                         style="float: right; background-color: #0a72c1; color:white">
+                                        <div class="but"></div>
                                     <!-- <button  type="button" class="btn btn-primary" style="width: 2cm; float: right;" onclick = " window.location.replace('/auth/logout')">ตกลง</button> -->
                                 </div>
 
