@@ -75,7 +75,7 @@
                             if (dataSet[i].role == 2) {
                                 dataSet[i].role = "กรรมการ"
                             } else if (dataSet[i].role == 1) {
-                                dataSet[i].role = "แอดมิน"
+                                dataSet[i].role = "ผู้ดูแลระบบ"
                             }
                         }
                         $("#rol2").html(dataSet[0].role)
@@ -132,7 +132,7 @@
 
                                 event.push(
                                     {
-                                        title: 'แสกนแล้ว ' + date,
+                                        title: 'ตรวจนับแล้ว ' + date,
                                         start: dataSet[i].Date_Scan,
                                         end: dataSet[i].Date_Scan,
                                         color: 'green'
@@ -149,11 +149,11 @@
                                 more = number - date
                             }
 
-                            $(".scan").html("แสกนแล้ว : " + date + " ชิ้น")
+                            $(".scan").html("ตรวจนับแล้ว : " + date + " ชิ้น")
                             $(".count").html("คงเหลือ  : " + more + " ชิ้น")
                             event.push(
                                 {
-                                    title: 'ช่วงเวลาแสกน ประจำปี ' + data[0].years,
+                                    title: 'ช่วงเวลาการตรวจนับครุภัณฑ์ ประจำปี ' + data[0].years,
                                     start: data[0].Date_start,
                                     end: data[0].Date_end
                                 }
@@ -334,7 +334,7 @@
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link " href="/User_history" aria-expanded="false"><i
-                                    class="fa fa-user"></i>โปรไฟล์ </a>
+                                    class="fa fa-user"></i>ประวัติส่วนตัว </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
@@ -519,7 +519,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มเวลาในการตรวจเช็ค</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มเวลาในการตรวจนับ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -555,7 +555,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขในการตรวจเช็ค</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขเวลาในการตรวจนับ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

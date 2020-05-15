@@ -78,7 +78,7 @@
                             if (dataSet[i].role == 2) {
                                 dataSet[i].role = "กรรมการ"
                             } else if (dataSet[i].role == 1) {
-                                dataSet[i].role = "แอดมิน"
+                                dataSet[i].role = "ผู้ดูแลระบบ"
                             }
                             var nf = new Intl.NumberFormat();
                             dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
@@ -101,7 +101,7 @@
                         if (dataSet[i].role == 2) {
                             dataSet[i].role = "กรรมการ"
                         } else if (dataSet[i].role == 1) {
-                            dataSet[i].role = "แอดมิน"
+                            dataSet[i].role = "ผู้ดูแลระบบ"
                         }
                         var nf = new Intl.NumberFormat();
                         dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
@@ -255,7 +255,7 @@
                             if (dataSet[i].role == 2) {
                                 dataSet[i].role = "กรรมการ"
                             } else if (dataSet[i].role == 1) {
-                                dataSet[i].role = "แอดมิน"
+                                dataSet[i].role = "ผู้ดูแลระบบ"
                             }
                         }
                         $("#rol2").html(dataSet[0].role)
@@ -308,7 +308,7 @@
                         } else {
                         $(".btn-sm").hide();
                         $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
-                        $(".alertText").html("ผู้ใช้นี้ได้เริ่มสแกนแล้ว")
+                        $(".alertText").html("ผู้ใช้นี้ได้เริ่มตรวจนับแล้ว")
                         $("#alertmodal").modal();
 
                         }
@@ -416,7 +416,7 @@
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link " href="/User_history" aria-expanded="false"><i
-                                    class="fa fa-user"></i>โปรไฟล์ </a>
+                                    class="fa fa-user"></i>ประวัติส่วนตัว </a>
                             <div id="submenu-1" class="collapse submenu">
                                 <ul class="nav flex-column">
 
@@ -617,7 +617,7 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="email-edit" class="col-form-label">Email ผู้ใช้ที่แก้ไข : </label>
+                            <label for="email-edit" class="col-form-label">อีเมลผู้ใช้ที่แก้ไข : </label>
                             <input type="email" class="form-control" id="editMail">
                         </div>
                     </form>
@@ -649,11 +649,11 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="email-edit" class="col-form-label">Email ผู้ใช้ใหม่ : </label>
+                            <label for="email-edit" class="col-form-label">อีเมลผู้ใช้ใหม่ : </label>
                             <input type="email" class="form-control" id="addMail2">
                         </div>
                         <input type="checkbox" id="admin" name="admin" value="admin">
-                        <label for="vehicle1">แอดมิน</label>
+                        <label for="vehicle1">ผู้ดูแลระบบ</label>
                     </form>
                 </div>
                 <div class="modal-footer">
