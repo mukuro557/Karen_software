@@ -49,14 +49,12 @@
 
                 if (document.getElementById("fileUpload").files.length == 0) {
                     //or use jQuery
-                   
-                    $(".alertText").html("กรุณาเลือกไฟล์")
-                    $("#alertmodal").modal();
+                    // if($('#fileUpload')[0].files.length === 0)
+                    alert("กรุณาเลือกไฟล์");
                     return;
                 }
                 const formData = new FormData(this);
-                var today = new Date();
-                var yyyy = today.getFullYear();
+
 
 
                 $.ajax({
@@ -65,18 +63,21 @@
                 }).done(function (data, state, xhr) {
 
                     if (data.length > 1) {
-                        $(".btn-sm").hide();
-                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
-                        $(".alertText").html("ปีนี้ได้ทำการตรวจนับแล้ว จึงไม่สามารถนำเข้าไฟล์เพิ่มเติม")
-                        $("#alertmodal").modal();
+                        console.log(data.length)
+                        alert("ปีนี้ได้ทำการแสกนแล้ว จึงไม่สามารถอัพโหลดเพิ่มเติม")
                         $("#upload").modal("hide");
+                        window.location.reload();
                     } else {
+                        console.log('1')
                         $.ajax({
                             method: "GET",
-                            url: "/item/dashboard/showuser"
+                            url: "/year/iteem"
                         }).done(function (dataSet, state, xhr) {
-                            if (dataSet.length != 0) {
-                                var r = confirm("ปีนี้ได้มีการนำเข้าไฟล์แล้ว ถ้านำเข้าซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
+                            console.log('2')
+                            var today = new Date();
+                            var yyyy = today.getFullYear();
+                            if (dataSet[dataSet.length - 1].Year == yyyy) {
+                                var r = confirm("ปีนี้ได้อัพโหลดแล้ว ถ้าอัพโหลดซ้ำ จะทำการล้างข้อมูลเก่าทั้งหมด");
                                 if (r) {
                                     $.ajax({
                                         method: "POST",
@@ -85,24 +86,18 @@
                                         contentType: false,
                                         processData: false,
                                         success: function (data, state, xhr) {
-                                            $(".btn-sm").hide();
-                                            $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
-                                            $(".alertText").html("บันทึกสำเร็จ")
-                                            $("#alertmodal").modal();
+                                            alert("บันทึกสำเร็จ")
                                             $("#upload").modal("hide");
+                                            window.location.reload();
                                         },
                                         error: function (xhr, state, err) {
-                                            $(".btn-sm").hide();
-                                            $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
-                                            $(".alertText").html(xhr.responseText)
-                                            $("#alertmodal").modal();
+                                            alert(xhr.responseText);
                                             $("#upload").modal("hide");
-
+                                            window.location.reload();
                                         }
                                     })
                                 }
                             } else {
-
                                 $.ajax({
                                     method: "POST",
                                     url: "/uploading/" + user,
@@ -110,29 +105,23 @@
                                     contentType: false,     //tell jQuery not to add a Content-Type header for us
                                     processData: false,      //tell jQuery not to convert the formData object to a string
                                     success: function (data, state, xhr) {
-                                        $(".btn-sm").hide();
-                                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
-                                        $(".alertText").html(data)
-                                        $("#alertmodal").modal();
-
-
+                                        alert("บันทึกสำเร็จ")
+                                        $("#upload").modal("hide");
+                                        window.location.reload();
                                     },
                                     error: function (xhr, state, err) {
-                                        $(".btn-sm").hide();
-                                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
-                                        $(".alertText").html(xhr.responseText)
-                                        $("#alertmodal").modal();
-
+                                        alert(xhr.responseText);
+                                        $("#upload").modal("hide");
+                                        window.location.reload();
                                     }
                                 });
-                                $("#upload").modal("hide");
-
+                                // $("#upload").modal("hide");
+                                // window.location.reload();
                             }
                         })
                     }
                 }).fail(function (xhr, state, error) {
-                    $(".alertText").html(xhr.responseText)
-                    $("#alertmodal").modal();
+                    alert(xhr.responseText);
 
                 });
 
@@ -206,6 +195,7 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo4/" + selected
                     }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -213,18 +203,6 @@
                                 dataSet[i].Status = "ปกติ"
                             } else if (dataSet[i].Status == 2) {
                                 dataSet[i].Status = "ส่งซ่อม"
-                            }
-                        }
-                        for (let i = 0; i < dataSet.length; i++) {
-                            if (dataSet[i].takepicture == 0) {
-                                dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
-                            } else if (dataSet[i].takepicture == 1) {
-                                dataSet[i].takepicture = "ต้องการรูป"
-                            }
-                            var nf = new Intl.NumberFormat();
-                            dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
-                            if (dataSet[i].Image === null) {
-                                dataSet[i].Image = "/img/noimg.png"
                             }
                         }
                         table.clear();
@@ -272,6 +250,7 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo/" + selected
                     }).done(function (dataSet, state, xhr) {
+                        //    alert("ok");
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -279,18 +258,6 @@
                                 dataSet[i].Status = "ปกติ"
                             } else if (dataSet[i].Status == 2) {
                                 dataSet[i].Status = "ส่งซ่อม"
-                            }
-                        }
-                        for (let i = 0; i < dataSet.length; i++) {
-                            if (dataSet[i].takepicture == 0) {
-                                dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
-                            } else if (dataSet[i].takepicture == 1) {
-                                dataSet[i].takepicture = "ต้องการรูป"
-                            }
-                            var nf = new Intl.NumberFormat();
-                            dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
-                            if (dataSet[i].Image === null) {
-                                dataSet[i].Image = "/img/noimg.png"
                             }
                         }
                         table.clear();
@@ -352,7 +319,7 @@
                         method: "GET",
                         url: "/item/dashboard/showAllInfo1/" + num
                     }).done(function (dataSet, state, xhr) {
-
+                        //    alert("ok");
                         for (let i = 0; i < dataSet.length; i++) {
                             if (dataSet[i].Status == 0) {
                                 dataSet[i].Status = "สูญหาย"
@@ -360,18 +327,6 @@
                                 dataSet[i].Status = "ปกติ"
                             } else if (dataSet[i].Status == 2) {
                                 dataSet[i].Status = "ส่งซ่อม"
-                            }
-                        }
-                        for (let i = 0; i < dataSet.length; i++) {
-                            if (dataSet[i].takepicture == 0) {
-                                dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
-                            } else if (dataSet[i].takepicture == 1) {
-                                dataSet[i].takepicture = "ต้องการรูป"
-                            }
-                            var nf = new Intl.NumberFormat();
-                            dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
-                            if (dataSet[i].Image === null) {
-                                dataSet[i].Image = "/img/noimg.png"
                             }
                         }
                         table.clear();
@@ -429,19 +384,7 @@
                                 dataSet[i].Status = "ส่งซ่อม"
                             }
                         }
-                        for (let i = 0; i < dataSet.length; i++) {
-                            if (dataSet[i].takepicture == 0) {
-                                dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
-                            } else if (dataSet[i].takepicture == 1) {
-                                dataSet[i].takepicture = "ต้องการรูป"
-                            }
-                            var nf = new Intl.NumberFormat();
-                            dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
-                            if (dataSet[i].Image === null) {
-                                dataSet[i].Image = "/img/noimg.png"
-                            }
-                        }
-
+                        //    alert("ok");
                         table.clear();
                         //display modified JSON in DataTable
                         table.rows.add(dataSet).draw();
@@ -474,9 +417,9 @@
                     { data: "Location", title: "สถานที่" },
                     { data: "Received_date", title: "วันที่ได้รับ" },
                     { data: "Original_value", title: "มูลค่า" },
-                    { data: "takepicture", title: "ถ่ายรูป" },
-                    { data: "Date_scan", title: "วันที่ตรวจสอบ" },
-                    { data: "Email_Committee", title: "ผู้ตรวจสอบ" },
+                    { data: "Department", title: "แผนกที่ดูแล" },
+                    { data: "Date_Scan", title: "วันที่ตรวจสอบ" },
+                    { data: "Email_Committee", title: "ผู้ตรวจ" },
                     { data: "Status", title: "สถานะ" },
                 ],
 
@@ -508,20 +451,15 @@
 
                 }).done(function (dataSet, state, xhr) {
                     if (selectedItem[0] === undefined) {
-                        $(".alertText").html("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น")
-                        $("#alertmodal").modal();
+                        alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
                     } else {
-                        $(".btn-sm").hide();
-                        $(".but").append('<input class="btn btn-sm" type="button" value = "ตกลง" onclick = "location.reload()" style="float: right; background-color: #0a72c1; color:white">')
-                        $(".alertText").html("บันทึกสำเร็จ")
-                        $("#alertmodal").modal();
-
+                        alert("บันทึกสำเร็จ")
                     }
 
 
                 }).fail(function (xhr, state, error) {
-                    $(".alertText").html(xhr.responseText)
-                    $("#alertmodal").modal();
+                    alert(xhr.responseText);
+
                 });
 
             });
@@ -533,8 +471,7 @@
                     selectedItem.push($(this).val());
                 });
                 if (selectedItem[0] === undefined) {
-                    $(".alertText").html("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น")
-                    $("#alertmodal").modal();
+                    alert("กรุณาเลือกครุภัณฑ์อย่างน้อย 1 ชิ้น");
                 } else {
                     window.sessionStorage.setItem("items", JSON.stringify(selectedItem));
                     var storedArray = JSON.parse(sessionStorage.getItem("items"));
@@ -571,7 +508,7 @@
                             if (dataSet[i].role == 2) {
                                 dataSet[i].role = "กรรมการ"
                             } else if (dataSet[i].role == 1) {
-                                dataSet[i].role = "ผู้ดูแลระบบ"
+                                dataSet[i].role = "แอดมิน"
                             }
                         }
                         $("#rol2").html(dataSet[0].role)
@@ -579,14 +516,12 @@
 
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        $(".alertText").html(xhr.responseText)
-                        $("#alertmodal").modal();
+                        alert(xhr.responseText);
                     });
                 }
             }).fail(function (xhr, state, error) {
                 //get data failed
-                $(".alertText").html(xhr.responseText)
-                $("#alertmodal").modal();
+                alert(xhr.responseText);
             });
             // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  number  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             $.ajax({
@@ -625,8 +560,7 @@
                 method: "GET",
                 url: "/item/dashboard/showAllInfo"
             }).done(function (dataSet, state, xhr) {
-
-                // takepicture
+                //    alert("ok");
                 for (let i = 0; i < dataSet.length; i++) {
                     if (dataSet[i].Status == 0) {
                         dataSet[i].Status = "สูญหาย"
@@ -634,18 +568,6 @@
                         dataSet[i].Status = "ปกติ"
                     } else if (dataSet[i].Status == 2) {
                         dataSet[i].Status = "ส่งซ่อม"
-                    }
-                }
-                for (let i = 0; i < dataSet.length; i++) {
-                    if (dataSet[i].takepicture == 0) {
-                        dataSet[i].takepicture = "ไม่ต้องการรูปภาพ"
-                    } else if (dataSet[i].takepicture == 1) {
-                        dataSet[i].takepicture = "ต้องการรูป"
-                    }
-                    var nf = new Intl.NumberFormat();
-                    dataSet[i].Original_value = nf.format(dataSet[i].Original_value);
-                    if (dataSet[i].Image === null) {
-                        dataSet[i].Image = "/img/noimg.png"
                     }
                 }
                 table.clear();
@@ -685,17 +607,13 @@
                         dis[i] = disna;
                         fix[i] = fixna;
 
+
                     }
+                    // alert(year[0]+"  "+dis[0]+"  "+fix[0])
 
                     var datas = [];
                     let count = year.length
-                    let graph = 0
-                    if (year.length >= 5) {
-                        graph = 5
-                    } else {
-                        graph = year.length
-                    }
-                    for (let i = 0; i < graph; i++) {
+                    for (let i = 0; i < year.length; i++) {
 
                         if (count == year.length) {
                             datas = [{ y: year[i], a: normal[i], b: dis[i], c: fix[i] }]
@@ -714,7 +632,7 @@
                         data: datas,
                         xkey: 'y',
                         ykeys: ['a', 'b', 'c'],
-                        labels: ['ปกติ', 'ส่งซ่อม', 'สูญหาย'],
+                        labels: ['ปกติ', 'ซ่อม', 'สูญหาย'],
                         color: ['#ffffff', '#ffffff', '#ffffff'],
                         lineWidth: '3px',
                         barColors: ['#73e2a9', '#fdc538', '#fa986d'],
@@ -727,496 +645,490 @@
 
             }).fail(function (xhr, state, error) {
                 //get data failed
-                $(".alertText").html(xhr.responseText)
-                $("#alertmodal").modal();
+                alert(xhr.responseText);
             });
         }
     </script>
-    <style>
-        .morris-hover.morris-default-style {
-            border-radius: 10px;
-            padding: 6px;
-            color: #000000;
-            background: rgb(255, 255, 255);
-            border: solid 2px rgb(230, 230, 230);
-            font-family: sans-serif;
-            font-size: 12px;
-            text-align: center;
-        }
-    </style>
+<style>
+    
+
+    .morris-hover.morris-default-style {
+      border-radius: 10px;
+      padding: 6px;
+      color: #000000;
+      background: rgb(255, 255, 255);
+      border: solid 2px rgb(230, 230, 230);
+      font-family: sans-serif;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    
+
+   
+  </style>
 
 
 </head>
 
-<body style="background-color:rgba(255, 255, 255, 0.768)">
-    <div class="dashboard-main-wrapper">
-        <!-- navbar -->
-        <!-- ============================================================== -->
-        <div class="dashboard-header">
-            <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <div class="row">
-                    <div class="col-sm-2 ml-4">
-                        <img src="img/logoit.JPG" style="width: 280px;">
-                    </div>
+<body>
+    <!-- navbar -->
+    <!-- ============================================================== -->
+    <div class="dashboard-header">
+        <nav class="navbar navbar-expand-lg bg-white fixed-top">
+            <div class="row">
+                <div class="col-sm-2 ml-4 ">
+                    <img src="img/itlogo.png" style="width: 100%;" href="/mainpage">
                 </div>
+                <div>
 
-                <ul class="navbar-nav ml-auto navbar-right-top">
+                    <div class="ml-6 mt-1" style="font-size: 15pt; color:#007dff; font-weight: bold;" href="/mainpage">
+                        สำนักเทคโนโลยีสารสนเทศ</div>
 
-                    <li class="nav-item dropdown notification">
+                </div>
+            </div>
 
-                        <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
 
-                            <li>
-                                <div class="list-footer"> <a href="#">การแจ้งเตือนทั้งหมด</a></div>
-                            </li>
-                        </ul>
-                    </li>
 
-                    <li class="nav-item dropdown nav-user">
-                        <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false"><img id="pic" src="assets/images/avatar-1.jpg"
-                                alt="" class="user-avatar-md rounded-circle"></a>
-                        <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
-                            aria-labelledby="navbarDropdownMenuLink2">
-                            <div class="nav-user-info">
-                                <h5 class="mb-0 text-white nav-user-name user" id="user">Ruttathorn </h5>
-                                <span class="status"></span><span class="ml-2" id="rol2">กรรมการ</span>
-                            </div>
-                            <a class="dropdown-item" href="/auth/logout"><i
-                                    class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
+
+
+
+
+            <ul class="navbar-nav ml-auto navbar-right-top">
+
+                <li class="nav-item dropdown notification">
+
+                    <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
+
+                        <li>
+                            <div class="list-footer"> <a href="#">การแจ้งเตือนทั้งหมด</a></div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown nav-user">
+                    <a class="nav-link nav-user-img" href="#" id="navbarDropdownMenuLink2" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"><img id="pic" src="assets/images/avatar-1.jpg" alt=""
+                            class="user-avatar-md rounded-circle"></a>
+                    <div class="dropdown-menu dropdown-menu-right nav-user-dropdown"
+                        aria-labelledby="navbarDropdownMenuLink2">
+                        <div class="nav-user-info">
+                            <h5 class="mb-0 text-white nav-user-name" id="user">Ruttathorn </h5>
+                            <span class="status"></span><span class="ml-2" id="rol2">กรรมการ</span>
                         </div>
-                    </li>
-                </ul>
+                        <a class="dropdown-item" href="/auth/logout"><i class="fas fa-power-off mr-2"></i>ออกจากระบบ</a>
+                    </div>
+                </li>
+            </ul>
 
+        </nav>
+    </div>
+    <!-- ============================================================== -->
+    <!-- จบ navbar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- navbar ด้านข้าง -->
+    <!-- ============================================================== -->
+    <div class="nav-left-sidebar sidebar-light">
+        <div class="menu-list">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav flex-column">
+
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/mainpage" aria-expanded="false"><i
+                                    class="fa fa-home"></i>หน้าหลัก
+                            </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link " href="/User_history" aria-expanded="false"><i
+                                    class="fa fa-user"></i>โปรไฟล์ </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a class="nav-link active" href="/dashboard" aria-expanded="false"><i
+                                    class="fa fa-dashboard"></i>แดชบอร์ด </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item " id="manageu">
+                            <a class="nav-link " href="/manageUser" aria-expanded="false"><i
+                                    class="fa fa-edit"></i>จัดการผู้ใช้
+                            </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item ">
+                            <a class="nav-link " href="/Date_manage" aria-expanded="false"><i
+                                    class="fa fa-clock"></i>จัดการเวลา
+                            </a>
+                            <div id="submenu-1" class="collapse submenu">
+                                <ul class="nav flex-column">
+                                </ul>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </div>
-        <!-- ============================================================== -->
-        <!-- จบ navbar -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- navbar ด้านข้าง -->
-        <!-- ============================================================== -->
-        <div class="nav-left-sidebar sidebar-light">
-            <div class="menu-list">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav flex-column">
 
-                            <li class="nav-item ">
-                                <a class="nav-link" href="/mainpage" aria-expanded="false"><i
-                                        class="fa fa-home"></i>หน้าหลัก
-                                </a>
-                                <div id="submenu-1" class="collapse submenu">
-                                    <ul class="nav flex-column">
+    </div>
+    <!-- ============================================================== -->
+    <!-- เสร็จ navbar -->
+    <!-- ============================================================== -->
 
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="/User_history" aria-expanded="false"><i
-                                        class="fa fa-user"></i>โปรไฟล์ </a>
-                                <div id="submenu-1" class="collapse submenu">
-                                    <ul class="nav flex-column">
-
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="nav-item ">
-                                <a class="nav-link active" href="/dashboard" aria-expanded="false"><i
-                                        class="fa fa-dashboard"></i>แดชบอร์ด </a>
-                                <div id="submenu-1" class="collapse submenu">
-                                    <ul class="nav flex-column">
-
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="nav-item " id="manageu">
-                                <a class="nav-link " href="/manageUser" aria-expanded="false"><i
-                                        class="fa fa-edit"></i>จัดการผู้ใช้
-                                </a>
-                                <div id="submenu-1" class="collapse submenu">
-                                    <ul class="nav flex-column">
-
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="nav-item ">
-                                <a class="nav-link " href="/Date_manage" aria-expanded="false"><i
-                                        class="fa fa-clock"></i>จัดการเวลา
-                                </a>
-                                <div id="submenu-1" class="collapse submenu">
-                                    <ul class="nav flex-column">
-                                    </ul>
-
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-
-        </div>
-        <!-- ============================================================== -->
-        <!-- เสร็จ navbar -->
-        <!-- ============================================================== -->
-
-        <div class="dashboard-wrapper mt-5" style="background-color:rgba(255, 255, 255, 0.768)">
-            <div class="dashboard-finance">
-                <div class="container-fluid dashboard-content">
-                    <!-- ============================================================== -->
-                    <!-- หัวกระดาษ  -->
-                    <!-- ============================================================== -->
-                    <div class="row">
-                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
-                            <div class="page-header ml-5 mt-2">
-                                <h3 class="mb-2 ">แดชบอร์ด </h3>
-                            </div>
+    <div class="dashboard-wrapper mt-5" style="background-color:rgba(255, 255, 255, 0.768)">
+        <div class="dashboard-finance" >
+            <div class="container-fluid dashboard-content" >
+                <!-- ============================================================== -->
+                <!-- หัวกระดาษ  -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">
+                        <div class="page-header ml-5 mt-2">
+                            <h3 class="mb-2 ">แดชบอร์ด </h3>
                         </div>
-                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                            <!-- ======================================================== -->
-                            <!-- ดรอปดาว -->
-                            <!-- ======================================================== -->
-                            <div class="input-group mb-3">
-                                <div class="input-group-append be-addon">
-                                    <div class="btn-group" role="group">
-                                        <div class="year">
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                        <!-- ======================================================== -->
+                        <!-- ดรอปดาว -->
+                        <!-- ======================================================== -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-append be-addon">
+                                <div class="btn-group" role="group">
+                                    <div class="year">
 
-                                        </div>
                                     </div>
-
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row mt-3 ml-3">
-                    <div class=" col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
-
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-1 mr-5" style="background-color:#eeefff">
-                        <div class="card-body " style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9  ">
-                                    <b style="color: #000000;">ครุภัณฑ์ทั้งหมด</b>
-                                    <h1 id="all">5000</h1>
-                                </div>
-                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
-                                    <img class="" src="img/all.PNG " alt="" style="width:0.99cm;">
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 "
-                        style="background-color: #e7f5ee;">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9 ml-4  ">
-                                    <a style="color: black;">ครุภัณฑ์ปกติ</a>
-                                    <h1 id="normal">5000</h1>
-                                </div>
-                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
-                                    <img class="" src="img/normal.png" alt="" style="width:0.99cm;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 "
-                        style="background-color: #f9f2d5;">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9  ">
-                                    <a style="color: black;">ครุภัณฑ์ส่งซ่อม</a>
-                                    <h1 id="fix">5000</h1>
-                                </div>
-                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
-                                    <img class="" src="img/fix.PNG" alt="" style="width:0.99cm;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5" style="background-color: #fbe1d3;">
-                        <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
-                            <div class="row">
-                                <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9  ">
-                                    <a style="color: #000000;">ครุภัณฑ์สูญหาย</a>
-                                    <h1 id="dis">5000</h1>
-                                </div>
-                                <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
-                                    <img class="" src="img/dis.PNG" alt="" style="width:0.99cm;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- ============================================================== -->
-                <!-- เสร็จหัวกระดาษ  -->
-                <!-- ============================================================== -->
-                <!-- แถบ -->
-                <!-- ============================================================== -->
-                <!--กราฟ-->
-                <!-- ============================================================== -->
-                <div class="col">
-                    <div class="row ">
-                        <div class=" col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 ml-5 "
-                            style="background-color: white">
-                            <div id="bar-chart"></div>
-                        </div>
-                    </div>
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- ตารางข้อมูล -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <div class="container my-2 " style="background-color: white;">
-                        <br>
-                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-
-
-                            <div class="btn-group" role="group">
-                                <div class="btnGroupDrop1"></div>
-
-                            </div>
-
-
-                            <div class="btn-group" role="group">
-                                <div class="btnGroupDrop2"></div>
-                            </div>
-
-                            <div class="btn-group" role="group">
-                                <div class="commitee"></div>
-                            </div>
-                            <a href="/dashboard">
-                                <button type="button" href="#" class="btn "
-                                    style="color: red;">ล้างการกรองทั้งหมด</button></a><br><br>
-
-                        </div>
-                        <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#upload"
-                            id="import">นำเข้าไฟล์</button>
-                        <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushExcel"
-                            id="#">นำออกไฟล์</button>
-                        <button class="btn" id="qrcode">สร้างรหัส QR</button>
-                        <button class="btn" id="take">ตั้งค่าการถ่ายรูป</button>
-
-                        <br> <br><br><br>
-                        <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
-                        </table>
-                    </div>
-
-                    <!-- ============================================================== -->
-                    <!-- จบตาราง -->
-                    <!--Modal: Export to excel-->
-                    <div class="modal fade" id="modalPushExcel" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-notify modal-info" role="document">
-                            <!--Content-->
-                            <div class="modal-content text-center">
-                                <!--Header-->
-                                <div class="modal-header d-flex justify-content-center">
-                                    <p class="heading">นำออกไฟล์</p>
-                                </div>
-
-                                <!--Body-->
-                                <div class="modal-body">
-
-                                    <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
-
-                                    <p>ต้องการจะนำออกไฟล์ใช่หรือไม่</p>
-
-                                </div>
-
-                                <!--Footer-->
-                                <div class="modal-footer flex-center">
-
-                                    <button class="btn btn-info" id="excelExport">นำออกไฟล์ Excel</button>
-                                    <button class="btn btn-success" id="btn_export_PDF">นำออกไฟล์ PDF</button>
-
-                                    <a type="button" class="btn btn-outline-info waves-effect"
-                                        data-dismiss="modal">ยกเลิก</a>
-                                </div>
-                            </div>
-                            <!--/.Content-->
-                        </div>
-                    </div>
-                    <!--Modal: Export to excel-->
-
-
-                    <!-- ============================================================== -->
-                    <!-- modal  -->
-                    <!-- ============================================================== -->
-
-                    <div class="modal fade bd-example-modal-md" id="upload" tabindex="-1" role="dialog"
-                        aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">นำเข้าไฟล์ Excel ไปยังระบบ</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="post" enctype="multipart/form-data">
-                                        <input type="file" name="filetoupload" id="fileUpload" accept=".xlsx, .xls"><br>
-                                        <input type="submit" class="btn btn-primary mt-3" value="นำเข้าไฟล์">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ============================================================== -->
-                    <!-- เสร็จ modal  -->
-                    <!-- ============================================================== -->
-                    <div class="modal bd-example-modal-sm fade" id="alertmodal" tabindex="-1" role="dialog"
-                        aria-labelledby="mySmallModalLabel" data-backdrop="static" data-keyboard="false"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content" style="background-color : #3f3f3f">
-                                <div class="modal-body">
-                                    <h5 style="color: #ffffff; font-weight:bold;">ประกาศ</h5>
-                                    <p class="alertText" style="color: white">กรุณาติดต่อเพื่อขอใช้บริการ</p>
-                                    <input class="btn btn-sm" type="button" value="ตกลง" data-dismiss="modal"
-                                        style="float: right; background-color: #0a72c1; color:white">
-                                        <div class="but"></div>
-                                    <!-- <button  type="button" class="btn btn-primary" style="width: 2cm; float: right;" onclick = " window.location.replace('/auth/logout')">ตกลง</button> -->
-                                </div>
-
 
                             </div>
                         </div>
                     </div>
-                    <!-- ============================================================== -->
-                    <!-- เสร็จ modal  -->
-                    <!-- ============================================================== -->
                 </div>
 
-                <!-- footer  -->
-                <!-- ============================================================== -->
-
-                <div class="" style="background-color:  rgb(50, 50, 51);  ">
-                    <div class="row ml-5 mr-5" style="background-color: rgb(50, 50, 51);">
-                        <div class="col-xs-12 col-sm-12 col-md-4 mt-5">
-                            <h3>
-                                <blockquote>
-                                    <img src="/img/itlogo.png">
-                                    <h4 style="color:azure;font-size:30px;">สำนักวิชาเทคโนโลยีสารสนเทศ</h4>
-                                    <div style="border: 0.5px solid red; width: 7cm;"></div>
-                                    <code style="color: azure;font-size: 20px;">มหาวิทยาลัยแม่ฟ้าหลวง</code>
-                                </blockquote>
-                            </h3>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 mt-5">
-                            <div class="copyright">
-                                <h4 class="header-footer" style="color: azure;">ติดต่อ <br>
-                                    <div style="border: 1px solid red; width: 7cm;"></div>
-                                </h4>
-                                <p style="color: azure; font-size: 14px; font-weight: 200;">
-                                    สำนักวิชาเทคโนโลยีสารสนเทศ
-                                    <br>
-                                    มหาวิทยาลัยแม่ฟ้าหลวง
-                                    <br>
-                                    333 หมู่ 1 ตำบลท่าสุด อำเภอเมือง จังหวัดเชียงราย 57100
-                                    <br>
-                                    โทรศัพท์ 0 5391 6741-2
-                                    <br>
-                                    โทรสาร 0 5391 6743
-                                    <br>
-                                    อีเมล: itschool@mfu.ac.th
-                                </p>
-                                <p></p>
-                                <ul class="mfu-social">
-
-                                    <a href="https://www.facebook.com/itschool.mfu.page/" target="_blank"
-                                        class="facebook-icon mr-3">
-                                        <i class="fab fa-facebook">
-
-                                        </i>
-                                    </a>
-
-                                    <a href="https://www.youtube.com/channel/UCbvvlT0UyZHCYdPTXL7vHXQ/featured"
-                                        target="_blank" class="youtube-icon">
-                                        <i class="fab fa-youtube">
-
-                                        </i>
-                                    </a>
-                                </ul>
-                                <p></p>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-4 mt-5"><iframe
-                                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fitschool.mfu.page%2F&amp;tabs=timeline&amp;width=340&amp;height=250&amp;small_header=true&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=true&amp;appId"
-                                width="100%" height="300" style="border:none;overflow:hidden" scrolling="no"
-                                frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-
-
-                        </div>
-
-                    </div>
-                    <a class="scroll-to-top" style="display: none;">
-                        <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                    </a>
-                    <script>
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag() { dataLayer.push(arguments); }
-                        gtag('js', new Date());
-
-                        gtag('config', 'UA-148131712-1');
-                    </script>
-                    <script type="text/javascript" src="/assets/vendor/Export/jquery.table2excel.js"> </script>
-                    <script type="text/javascript" src="/assets/vendor/Export/jquery.table2excel.min.js"></script>
-
-
-                    <script type="text/javascript">
-                        $('#excelExport').click(function () {
-                            $('#myTable').table2excel({
-                                exclude: ".noExl",
-                                name: "ครุภัณฑ์",
-                                filename: "ครุภัณฑ์"
-                            })
-                        });
-
-
-
-                    </script>
-
-
-
-                    <script type="text/javascript"
-                        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
-                    <script type="text/javascript"
-                        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-                    <script type="text/javascript">
-                        $("body").on("click", "#btn_export_PDF", function () {
-                            html2canvas($('#myTable')[0], {
-                                onrendered: function (canvas) {
-                                    var data = canvas.toDataURL();
-                                    var docDefinition = {
-                                        content: [{
-                                            image: data,
-                                            width: 500
-                                        }]
-                                    };
-                                    pdfMake.createPdf(docDefinition).download("ครุภัณฑ์.pdf");
-                                }
-                            });
-                        });
-                    </script>
-
-                </div>
-                <!-- ============================================================== -->
-                <!-- ======================== เสร็จ footer ========================= -->
-                <!-- ============================================================== -->
             </div>
+            <div class="row mt-3 ml-3">
+                <div class=" col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1" >
+
+                </div>
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-1 mr-5" style="background-color:#eeefff">
+                    <div class="card-body " style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9  ">
+                               <b style="color: #000000;">ครุภัณฑ์ทั้งหมด</b> 
+                                <h1 id="all">5000</h1>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
+                                <img class="" src="img/all.PNG " alt="" style="width:0.99cm;">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 " style="background-color: #e7f5ee;">
+                    <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9 ml-4  ">
+                               <a style="color: black;">ครุภัณฑ์ปกติ</a> 
+                                <h1 id="normal">5000</h1>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
+                                <img class="" src="img/normal.png" alt="" style="width:0.99cm;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5 " style="background-color: #f9f2d5;">
+                    <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9  ">
+                               <a style="color: black;">ครุภัณฑ์ส่งซ่อม</a> 
+                                <h1 id="fix">5000</h1>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
+                                <img class="" src="img/fix.PNG" alt="" style="width:0.99cm;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mr-5" style="background-color: #fbe1d3;">
+                    <div class="card-body pr-4" style="height: 3cm; width: 5cm;">
+                        <div class="row">
+                            <div class="col-xl-8.9 col-lg-8.9  col-md-8.9  col-sm-8.9  col-8.9  ">
+                               <a style="color: #000000;">ครุภัณฑ์สูญหาย</a> 
+                                <h1 id="dis">5000</h1>
+                            </div>
+                            <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1 ml-4">
+                                <img class="" src="img/dis.PNG" alt="" style="width:0.99cm;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- เสร็จหัวกระดาษ  -->
+            <!-- ============================================================== -->
+            <!-- แถบ -->
+            <!-- ============================================================== -->
+            <!--กราฟ-->
+            <!-- ============================================================== -->
+            <div class="col">
+                <div class="row ">
+                    <div class=" col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 ml-5 " style="background-color: white">
+                        <div id="bar-chart"></div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- ตารางข้อมูล -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <div class="container my-2 " style="background-color: white;">
+                    <br>
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+
+                        <div class="btn-group" role="group">
+                            <div class="btnGroupDrop1"></div>
+
+                        </div>
+
+
+                        <div class="btn-group" role="group">
+                            <div class="btnGroupDrop2"></div>
+                        </div>
+
+                        <div class="btn-group" role="group">
+                            <div class="commitee"></div>
+                        </div>
+                        <a href="/dashboard">
+                            <button type="button" href="#" class="btn "
+                                style="color: red;">รีเซตการกรอง</button></a><br><br>
+
+                    </div>
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#upload"
+                        id="import">นำเข้าไฟล์</button>
+                    <button class="btn" class="btn btn-primary" data-toggle="modal" data-target="#modalPushExcel"
+                        id="#">นำออกไฟล์</button>
+                    <button class="btn" id="qrcode">Qrcode</button>
+                    <button class="btn" id="take">ถ่ายรูป</button>
+                    
+                    <br> <br><br><br>
+                    <table id="myTable" class="table table-striped table-bordered mt-3" style="width:100%">
+                    </table>
+                </div>
+
+                <!-- ============================================================== -->
+                <!-- จบตาราง -->
+                <!--Modal: Export to excel-->
+                <div class="modal fade" id="modalPushExcel" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-notify modal-info" role="document">
+                        <!--Content-->
+                        <div class="modal-content text-center">
+                            <!--Header-->
+                            <div class="modal-header d-flex justify-content-center">
+                                <p class="heading">นำออกไฟล์</p>
+                            </div>
+
+                            <!--Body-->
+                            <div class="modal-body">
+
+                                <i class="fas fa-bell fa-4x animated rotateIn mb-4"></i>
+
+                                <p>ต้องการจะนำออกไฟล์ใช่หรือไม่</p>
+
+                            </div>
+
+                            <!--Footer-->
+                            <div class="modal-footer flex-center">
+
+                                <button class="btn btn-info" id="excelExport">นำออกไฟล์ Excel</button>
+                                <button class="btn btn-success" id="btn_export_PDF">นำออกไฟล์ PDF</button>
+
+                                <a type="button" class="btn btn-outline-info waves-effect"
+                                    data-dismiss="modal">ยกเลิก</a>
+                            </div>
+                        </div>
+                        <!--/.Content-->
+                    </div>
+                </div>
+                <!--Modal: Export to excel-->
+
+
+                <!-- ============================================================== -->
+                <!-- modal  -->
+                <!-- ============================================================== -->
+
+                <div class="modal fade bd-example-modal-md" id="upload" tabindex="-1" role="dialog"
+                    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Upload exel ไปยังระบบ</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    <input type="file" name="filetoupload" id="fileUpload" accept=".xlsx, .xls"><br>
+                                    <input type="submit" class="btn btn-primary mt-3" value="Upload">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- เสร็จ modal  -->
+                <!-- ============================================================== -->
+                
+            </div>
+
+            <!-- footer  -->
+            <!-- ============================================================== -->
+
+            <div class="" style="background-color:  rgb(50, 50, 51);  ">
+                <div class="row ml-5 mr-5" style="background-color: rgb(50, 50, 51);">
+                    <div class="col-xs-12 col-sm-12 col-md-4 mt-5">
+                        <h3>
+                            <blockquote>
+                                <img src="/img/itlogo.png">
+                                <h4 style="color:azure;font-size:30px;">สำนักวิชาเทคโนโลยีสารสนเทศ</h4>
+                                <div style="border: 0.5px solid red; width: 7cm;"></div>
+                                <code style="color: azure;font-size: 20px;">มหาวิทยาลัยแม่ฟ้าหลวง</code>
+                            </blockquote>
+                        </h3>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 mt-5">
+                        <div class="copyright">
+                            <h4 class="header-footer" style="color: azure;">ติดต่อ <br>
+                                <div style="border: 1px solid red; width: 7cm;"></div>
+                            </h4>
+                            <p style="color: azure; font-size: 14px; font-weight: 200;">
+                                สำนักวิชาเทคโนโลยีสารสนเทศ
+                                <br>
+                                มหาวิทยาลัยแม่ฟ้าหลวง
+                                <br>
+                                333 หมู่ 1 ตำบลท่าสุด อำเภอเมือง จังหวัดเชียงราย 57100
+                                <br>
+                                โทรศัพท์ 0 5391 6741-2
+                                <br>
+                                โทรสาร 0 5391 6743
+                                <br>
+                                อีเมล: itschool@mfu.ac.th
+                            </p>
+                            <p></p>
+                            <ul class="mfu-social">
+
+                                <a href="https://www.facebook.com/itschool.mfu.page/" target="_blank"
+                                    class="facebook-icon mr-3">
+                                    <i class="fab fa-facebook">
+
+                                    </i>
+                                </a>
+
+                                <a href="https://www.youtube.com/channel/UCbvvlT0UyZHCYdPTXL7vHXQ/featured"
+                                    target="_blank" class="youtube-icon">
+                                    <i class="fab fa-youtube">
+
+                                    </i>
+                                </a>
+                            </ul>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 mt-5"><iframe
+                            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fitschool.mfu.page%2F&amp;tabs=timeline&amp;width=340&amp;height=250&amp;small_header=true&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=true&amp;appId"
+                            width="100%" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                            allowtransparency="true" allow="encrypted-media"></iframe>
+
+
+                    </div>
+
+                </div>
+                <a class="scroll-to-top" style="display: none;">
+                    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                </a>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() { dataLayer.push(arguments); }
+                    gtag('js', new Date());
+
+                    gtag('config', 'UA-148131712-1');
+                </script>
+                <script type="text/javascript" src="/assets/vendor/Export/jquery.table2excel.js"> </script>
+                <script type="text/javascript" src="/assets/vendor/Export/jquery.table2excel.min.js"></script>
+
+
+                <script type="text/javascript">
+                var today = new Date();
+                    $('#excelExport').click(function () {
+                        $('#myTable').table2excel({
+                            exclude: ".noExl",
+                            name: "ครุภัณฑ์",
+                            filename: "ครุภัณฑ์"+"."+today.getDate().toString()+"."+(today.getMonth()+1)+"."+today.getFullYear()+ '.xls'
+                        })
+                    });
+
+
+
+                </script>
+
+
+
+                <script type="text/javascript"
+                    src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+                <script type="text/javascript"
+                    src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+                <script type="text/javascript">
+                    $("body").on("click", "#btn_export_PDF", function () {
+                        var today = new Date();
+                        html2canvas($('#myTable')[0], {
+                            onrendered: function (canvas) {
+                                var data = canvas.toDataURL();
+                                var docDefinition = {
+                                    content: [{
+                                        image: data,
+                                        width: 500
+                                    }]
+                                };
+                                pdfMake.createPdf(docDefinition).download("ครุภัณฑ์"+"."+today.getDate().toString()+"."+(today.getMonth()+1)+"."+today.getFullYear()+".pdf");
+                            }
+                        });
+                    });
+                </script>
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- ======================== เสร็จ footer ========================= -->
+            <!-- ============================================================== -->
         </div>
+
 </body>
