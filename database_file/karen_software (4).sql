@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 13, 2020 at 05:16 PM
+-- Generation Time: May 08, 2020 at 08:02 AM
 -- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.5
+-- PHP Version: 7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,10 +19,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `itinventory`
+-- Database: `karen_software`
 --
-CREATE DATABASE IF NOT EXISTS `itinventory` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `itinventory`;
 
 -- --------------------------------------------------------
 
