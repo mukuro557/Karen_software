@@ -234,12 +234,12 @@
                         dataSet[0].Image = "/img/noimg.png"
                     } 
                     document.getElementById('pic').src = dataSet[0].Image;
-                    $(".date").html("วันที่ได้รับ : " + dataSet[0].Received_date + " วันที่อัพโหลด :" + dataSet[0].Date_Upload)
+                    $(".date").html("วันที่ได้รับ : " + dataSet[0].Received_date + " วันที่นำเข้า :" + dataSet[0].Date_Upload)
                     $("#Asset_Number").html(dataSet[0].Asset_Number)
                     $("#des").html("คำอธิบาย : " + dataSet[0].Asset_Description)
                     $("#mod").html("โมเดล : " + dataSet[0].Model + "  ซีเรียล : " + dataSet[0].Serial + "  สถานที่ : " + dataSet[0].Location + " " + dataSet[0].Room)
                     $("#cos").html("รหัสแผนก : " + dataSet[0].Cost_center + "   แผนกที่จัดเก็บ : " + dataSet[0].Department)
-                    $("#value").html("ราคา : " + dataSet[0].Original_value + "   แหล่งที่มา : " + dataSet[0].Vendor_name)
+                    $("#value").html("มูลค่า : " + dataSet[0].Original_value + "   แหล่งที่มา : " + dataSet[0].Vendor_name)
                     $(".bd-example-modal-lg").modal();
 
                 }).fail(function (xhr, state, error) {
