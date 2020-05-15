@@ -146,7 +146,7 @@
                         $("#alertmodal").modal();
                     }).fail(function (xhr, state, error) {
                         //get data failed
-                        $(".alertText").html(xhr.responseText)
+                        $(".alertText").html("มีผู้ใช้นี้แล้ว")
                         $("#alertmodal").modal();
                     });
                     $.ajax({
